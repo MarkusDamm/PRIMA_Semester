@@ -2,3 +2,6 @@
     - create hiracy with 1 arena, 1 agent, 1 laserObj with subObjs
     - all with visual representation
     - look up dot-product for collision-calculation
+
+19.10.
+    - fix Time
