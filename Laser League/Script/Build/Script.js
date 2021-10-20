@@ -42,9 +42,8 @@ var Script;
     let agent;
     let laser;
     let fps = 60;
-    let deltaTime = ƒ.Loop.timeFrameReal / 1000;
-    let moveSpeed = 5;
-    let rotateSpeed = 60;
+    let moveSpeed = 8;
+    let rotateSpeed = 180;
     document.addEventListener("interactiveViewportStarted", start);
     function start(_event) {
         viewport = _event.detail;
@@ -55,10 +54,11 @@ var Script;
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         // Adjust Camera Position
-        viewport.camera.mtxPivot.translateZ(-45);
+        viewport.camera.mtxPivot.translateZ(-30);
     }
     function update(_event) {
         // ƒ.Physics.world.simulate();  // if physics is included and used
+        let deltaTime = ƒ.Loop.timeFrameReal / 1000;
         // Movements
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP])) {
             agent.mtxLocal.translateY(moveSpeed * deltaTime);
