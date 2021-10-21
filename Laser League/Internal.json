@@ -195,173 +195,172 @@
                                   }
                                 ]
                               },
-                              "children": [
-                                {
-                                  "ƒ.Node": {
-                                    "name": "Beam",
-                                    "components": {
-                                      "ComponentMesh": [
-                                        {
-                                          "ƒ.ComponentMesh": {
-                                            "idMesh": "MeshQuad|2021-10-14T09:58:43.654Z|86674",
-                                            "pivot": {
-                                              "translation": "[0, 3, 0]",
-                                              "rotation": "[0, 0, 0]",
-                                              "scaling": "[0.3, 6, 1]"
-                                            },
-                                            "Component": {
-                                              "active": true
-                                            }
-                                          }
-                                        }
-                                      ],
-                                      "ComponentMaterial": [
-                                        {
-                                          "ƒ.ComponentMaterial": {
-                                            "sortForAlpha": false,
-                                            "clrPrimary": "[1, 1, 1, 1]",
-                                            "clrSecondary": "[1, 1, 1, 1]",
-                                            "pivot": {
-                                              "translation": "[0, 0]",
-                                              "rotation": 0,
-                                              "scaling": "[1, 1]"
-                                            },
-                                            "Component": {
-                                              "active": true
-                                            },
-                                            "idMaterial": "Material|2021-10-14T09:58:54.479Z|97370"
-                                          }
-                                        }
-                                      ],
-                                      "ComponentTransform": [
-                                        {
-                                          "ƒ.ComponentTransform": {
-                                            "local": {
-                                              "translation": "[0, 0, 0]",
-                                              "rotation": "[0, 0, 0]",
-                                              "scaling": "[1, 1, 1]"
-                                            },
-                                            "Component": {
-                                              "active": true
-                                            }
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "children": []
+                              "children": []
+                            }
+                          },
+                          {
+                            "ƒ.Node": {
+                              "name": "Beam",
+                              "components": {
+                                "ComponentMesh": [
+                                  {
+                                    "ƒ.ComponentMesh": {
+                                      "idMesh": "MeshQuad|2021-10-14T09:58:43.654Z|86674",
+                                      "pivot": {
+                                        "translation": "[0, 3, 0]",
+                                        "rotation": "[0, 0, 0]",
+                                        "scaling": "[0.30000001192092896, 6, 1]"
+                                      },
+                                      "Component": {
+                                        "active": true
+                                      }
+                                    }
                                   }
-                                },
-                                {
-                                  "ƒ.Node": {
-                                    "name": "Beam",
-                                    "components": {
-                                      "ComponentMesh": [
-                                        {
-                                          "ƒ.ComponentMesh": {
-                                            "idMesh": "MeshQuad|2021-10-14T09:58:43.654Z|86674",
-                                            "pivot": {
-                                              "translation": "[0, 3, 0]",
-                                              "rotation": "[0, 0, 0]",
-                                              "scaling": "[0.3, 6, 1]"
-                                            },
-                                            "Component": {
-                                              "active": true
-                                            }
-                                          }
-                                        }
-                                      ],
-                                      "ComponentMaterial": [
-                                        {
-                                          "ƒ.ComponentMaterial": {
-                                            "sortForAlpha": false,
-                                            "clrPrimary": "[1, 1, 1, 1]",
-                                            "clrSecondary": "[1, 1, 1, 1]",
-                                            "pivot": {
-                                              "translation": "[0, 0]",
-                                              "rotation": 0,
-                                              "scaling": "[1, 1]"
-                                            },
-                                            "Component": {
-                                              "active": true
-                                            },
-                                            "idMaterial": "Material|2021-10-14T09:58:54.479Z|97370"
-                                          }
-                                        }
-                                      ],
-                                      "ComponentTransform": [
-                                        {
-                                          "ƒ.ComponentTransform": {
-                                            "local": {
-                                              "translation": "[0, 0, 0]",
-                                              "rotation": "[0, 0, 120]",
-                                              "scaling": "[1, 1, 1]"
-                                            },
-                                            "Component": {
-                                              "active": true
-                                            }
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "children": []
+                                ],
+                                "ComponentMaterial": [
+                                  {
+                                    "ƒ.ComponentMaterial": {
+                                      "sortForAlpha": false,
+                                      "clrPrimary": "[1, 1, 1, 1]",
+                                      "clrSecondary": "[1, 1, 1, 1]",
+                                      "pivot": {
+                                        "translation": "[0, 0]",
+                                        "rotation": 0,
+                                        "scaling": "[1, 1]"
+                                      },
+                                      "Component": {
+                                        "active": true
+                                      },
+                                      "idMaterial": "Material|2021-10-14T09:58:54.479Z|97370"
+                                    }
                                   }
-                                },
-                                {
-                                  "ƒ.Node": {
-                                    "name": "Beam",
-                                    "components": {
-                                      "ComponentMesh": [
-                                        {
-                                          "ƒ.ComponentMesh": {
-                                            "idMesh": "MeshQuad|2021-10-14T09:58:43.654Z|86674",
-                                            "pivot": {
-                                              "translation": "[0, 3, 0]",
-                                              "rotation": "[0, 0, 0]",
-                                              "scaling": "[0.3, 6, 1]"
-                                            },
-                                            "Component": {
-                                              "active": true
-                                            }
-                                          }
-                                        }
-                                      ],
-                                      "ComponentMaterial": [
-                                        {
-                                          "ƒ.ComponentMaterial": {
-                                            "sortForAlpha": false,
-                                            "clrPrimary": "[1, 1, 1, 1]",
-                                            "clrSecondary": "[1, 1, 1, 1]",
-                                            "pivot": {
-                                              "translation": "[0, 0]",
-                                              "rotation": 0,
-                                              "scaling": "[1, 1]"
-                                            },
-                                            "Component": {
-                                              "active": true
-                                            },
-                                            "idMaterial": "Material|2021-10-14T09:58:54.479Z|97370"
-                                          }
-                                        }
-                                      ],
-                                      "ComponentTransform": [
-                                        {
-                                          "ƒ.ComponentTransform": {
-                                            "local": {
-                                              "translation": "[0, 0, 0]",
-                                              "rotation": "[0, 0, -120]",
-                                              "scaling": "[1, 1, 1]"
-                                            },
-                                            "Component": {
-                                              "active": true
-                                            }
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "children": []
+                                ],
+                                "ComponentTransform": [
+                                  {
+                                    "ƒ.ComponentTransform": {
+                                      "local": {
+                                        "translation": "[0, 0, 0]",
+                                        "rotation": "[0, 0, 0]",
+                                        "scaling": "[1, 1, 1]"
+                                      },
+                                      "Component": {
+                                        "active": true
+                                      }
+                                    }
                                   }
-                                }
-                              ]
+                                ]
+                              },
+                              "children": []
+                            }
+                          },
+                          {
+                            "ƒ.Node": {
+                              "name": "Beam",
+                              "components": {
+                                "ComponentMesh": [
+                                  {
+                                    "ƒ.ComponentMesh": {
+                                      "idMesh": "MeshQuad|2021-10-14T09:58:43.654Z|86674",
+                                      "pivot": {
+                                        "translation": "[0, 3, 0]",
+                                        "rotation": "[0, 0, 0]",
+                                        "scaling": "[0.30000001192092896, 6, 1]"
+                                      },
+                                      "Component": {
+                                        "active": true
+                                      }
+                                    }
+                                  }
+                                ],
+                                "ComponentMaterial": [
+                                  {
+                                    "ƒ.ComponentMaterial": {
+                                      "sortForAlpha": false,
+                                      "clrPrimary": "[1, 1, 1, 1]",
+                                      "clrSecondary": "[1, 1, 1, 1]",
+                                      "pivot": {
+                                        "translation": "[0, 0]",
+                                        "rotation": 0,
+                                        "scaling": "[1, 1]"
+                                      },
+                                      "Component": {
+                                        "active": true
+                                      },
+                                      "idMaterial": "Material|2021-10-14T09:58:54.479Z|97370"
+                                    }
+                                  }
+                                ],
+                                "ComponentTransform": [
+                                  {
+                                    "ƒ.ComponentTransform": {
+                                      "local": {
+                                        "translation": "[0, 0, 0]",
+                                        "rotation": "[0, 0, 120]",
+                                        "scaling": "[1, 1, 1]"
+                                      },
+                                      "Component": {
+                                        "active": true
+                                      }
+                                    }
+                                  }
+                                ]
+                              },
+                              "children": []
+                            }
+                          },
+                          {
+                            "ƒ.Node": {
+                              "name": "Beam",
+                              "components": {
+                                "ComponentMesh": [
+                                  {
+                                    "ƒ.ComponentMesh": {
+                                      "idMesh": "MeshQuad|2021-10-14T09:58:43.654Z|86674",
+                                      "pivot": {
+                                        "translation": "[0, 3, 0]",
+                                        "rotation": "[0, 0, 0]",
+                                        "scaling": "[0.30000001192092896, 6, 1]"
+                                      },
+                                      "Component": {
+                                        "active": true
+                                      }
+                                    }
+                                  }
+                                ],
+                                "ComponentMaterial": [
+                                  {
+                                    "ƒ.ComponentMaterial": {
+                                      "sortForAlpha": false,
+                                      "clrPrimary": "[1, 1, 1, 1]",
+                                      "clrSecondary": "[1, 1, 1, 1]",
+                                      "pivot": {
+                                        "translation": "[0, 0]",
+                                        "rotation": 0,
+                                        "scaling": "[1, 1]"
+                                      },
+                                      "Component": {
+                                        "active": true
+                                      },
+                                      "idMaterial": "Material|2021-10-14T09:58:54.479Z|97370"
+                                    }
+                                  }
+                                ],
+                                "ComponentTransform": [
+                                  {
+                                    "ƒ.ComponentTransform": {
+                                      "local": {
+                                        "translation": "[0, 0, 0]",
+                                        "rotation": "[0, 0, -120]",
+                                        "scaling": "[1, 1, 1]"
+                                      },
+                                      "Component": {
+                                        "active": true
+                                      }
+                                    }
+                                  }
+                                ]
+                              },
+                              "children": []
                             }
                           }
                         ]
@@ -389,7 +388,7 @@
                           "pivot": {
                             "translation": "[0, 0, 0]",
                             "rotation": "[0, 0, 0]",
-                            "scaling": "[0.7, 0.7, 1]"
+                            "scaling": "[0.699999988079071, 0.699999988079071, 1]"
                           },
                           "Component": {
                             "active": true

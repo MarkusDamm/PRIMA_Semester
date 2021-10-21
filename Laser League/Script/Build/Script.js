@@ -50,7 +50,7 @@ var Script;
     function start(_event) {
         viewport = _event.detail;
         root = viewport.getBranch();
-        console.log(root);
+        // console.log(root);
         laser = root.getChildrenByName("Laserformations")[0].getChildrenByName("Laserformation")[0].getChildrenByName("Laser01")[0];
         agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent01")[0];
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
@@ -78,12 +78,23 @@ var Script;
         let forwardSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]) +
             ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]));
         ctrForward.setInput(forwardSpeed * deltaTime);
-        console.log(ctrForward.getOutput());
+        // console.log(ctrForward.getOutput());
         agent.mtxLocal.translateY(ctrForward.getOutput());
         let laserRotationSpeed = 120;
         laser.getComponent(ƒ.ComponentTransform).mtxLocal.rotateZ(laserRotationSpeed * deltaTime);
         viewport.draw();
         ƒ.AudioManager.default.update();
+        let beams = laser.getChildrenByName("Beam");
+        for (let beam of beams) {
+            collisionTest(agent, beam);
+        }
+    }
+    function collisionTest(_agent, _beam) {
+        let testPosition = ƒ.Vector3.TRANSFORMATION(_agent.mtxWorld.translation, _beam.mtxWorldInverse);
+        let distance = ƒ.Vector2.DIFFERENCE(testPosition.toVector2(), _beam.mtxLocal.translation.toVector2());
+        if (distance.x < 1 && distance.x > -1 && distance.y < 7 && distance.y > -1) {
+            console.log("hit");
+        }
     }
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map

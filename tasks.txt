@@ -5,3 +5,7 @@
 
 19.10.
     - fix Time
+
+21.10.
+    // Collision detection: mtxWorld des Agent mit der mtxWorldInverse eines Lasers verrechnen. Dann ist es einfach, die Entfernung vom Laser zum Agent auszurechnen.
+    
