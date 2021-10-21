@@ -42,8 +42,9 @@ var Script;
     let agent;
     let laser;
     let fps = 60;
-    let deltaTime = ƒ.Loop.timeFrameReal / 1000;
-    let moveSpeed = 5;
+    let moveSpeed = 8;
+    let ctrForward = new ƒ.Control("Forward", moveSpeed, 0 /* PROPORTIONAL */);
+    ctrForward.setDelay(50);
     let rotateSpeed = 60;
     document.addEventListener("interactiveViewportStarted", start);
     function start(_event) {
@@ -59,27 +60,26 @@ var Script;
     }
     function update(_event) {
         // ƒ.Physics.world.simulate();  // if physics is included and used
-        // Movements
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP])) {
-            agent.mtxLocal.translateY(moveSpeed * deltaTime);
-            // agent.getComponent(ƒ.ComponentTransform).mtxLocal.translateY(0.3);
-            // begrenze Arena durch Kolissionen
-        }
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN])) {
-            agent.mtxLocal.translateY(-moveSpeed * deltaTime);
-        }
+        let deltaTime = ƒ.Loop.timeFrameReal / 1000;
+        // Sideways
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
             agent.mtxLocal.translateX(moveSpeed * deltaTime);
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A])) {
             agent.mtxLocal.translateX(-moveSpeed * deltaTime);
         }
+        // Rotation
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
             agent.mtxLocal.rotateZ(rotateSpeed * deltaTime);
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
             agent.mtxLocal.rotateZ(-rotateSpeed * deltaTime);
         }
+        let forwardSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]) +
+            ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]));
+        ctrForward.setInput(forwardSpeed * deltaTime);
+        console.log(ctrForward.getOutput());
+        agent.mtxLocal.translateY(ctrForward.getOutput());
         let laserRotationSpeed = 120;
         laser.getComponent(ƒ.ComponentTransform).mtxLocal.rotateZ(laserRotationSpeed * deltaTime);
         viewport.draw();
