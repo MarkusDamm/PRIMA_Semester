@@ -56,7 +56,7 @@ var Script;
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         // Adjust Camera Position
-        viewport.camera.mtxPivot.translateZ(-45);
+        viewport.camera.mtxPivot.translateZ(-30);
     }
     function update(_event) {
         // ƒ.Physics.world.simulate();  // if physics is included and used

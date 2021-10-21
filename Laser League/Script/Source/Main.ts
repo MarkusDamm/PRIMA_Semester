@@ -27,8 +27,8 @@ namespace Script {
     ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps);  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     
     // Adjust Camera Position
-    viewport.camera.mtxPivot.translateZ(-45);
-    
+    viewport.camera.mtxPivot.translateZ(-30);
+
   }
   
   function update(_event: Event): void {
@@ -40,8 +40,7 @@ namespace Script {
     {
       agent.mtxLocal.translateX(moveSpeed * deltaTime);
     }
-    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A]))
-    {
+    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A])) {
       agent.mtxLocal.translateX(-moveSpeed * deltaTime);
     }
     // Rotation
@@ -49,8 +48,7 @@ namespace Script {
     {
       agent.mtxLocal.rotateZ(rotateSpeed * deltaTime);
     }
-    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.ARROW_RIGHT]))
-    {
+    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
       agent.mtxLocal.rotateZ(-rotateSpeed * deltaTime);
     }
 
@@ -64,8 +62,8 @@ namespace Script {
     
     let laserRotationSpeed: number = 120;
     laser.getComponent(ƒ.ComponentTransform).mtxLocal.rotateZ(laserRotationSpeed * deltaTime);
-    
-    
+
+
     viewport.draw();
     ƒ.AudioManager.default.update();
   }
