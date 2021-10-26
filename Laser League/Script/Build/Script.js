@@ -40,7 +40,8 @@ var Script;
     let viewport;
     let root;
     let agent;
-    let laser;
+    let laserformation;
+    let laser1;
     let fps = 60;
     let moveSpeed = 8;
     let ctrForward = new ƒ.Control("Forward", moveSpeed, 0 /* PROPORTIONAL */);
@@ -51,7 +52,8 @@ var Script;
         viewport = _event.detail;
         root = viewport.getBranch();
         // console.log(root);
-        laser = root.getChildrenByName("Laserformations")[0].getChildrenByName("Laserformation")[0].getChildrenByName("Laser01")[0];
+        laserformation = root.getChildrenByName("Laserformations")[0].getChildrenByName("Laserformation")[0];
+        laser1 = laserformation.getChildrenByName("Laser01")[0];
         agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent01")[0];
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
@@ -81,20 +83,30 @@ var Script;
         // console.log(ctrForward.getOutput());
         agent.mtxLocal.translateY(ctrForward.getOutput());
         let laserRotationSpeed = 120;
-        laser.getComponent(ƒ.ComponentTransform).mtxLocal.rotateZ(laserRotationSpeed * deltaTime);
+        let lasers = laserformation.getChildren();
+        for (let laser of lasers) {
+            laser.getComponent(ƒ.ComponentTransform).mtxLocal.rotateZ(laserRotationSpeed * deltaTime);
+        }
         viewport.draw();
         ƒ.AudioManager.default.update();
-        let beams = laser.getChildrenByName("Beam");
-        for (let beam of beams) {
-            collisionTest(agent, beam);
+        for (let laser of lasers) {
+            let beams = laser.getChildrenByName("Beam");
+            for (let beam of beams) {
+                collisionTest(agent, beam);
+            }
         }
     }
     function collisionTest(_agent, _beam) {
         let testPosition = ƒ.Vector3.TRANSFORMATION(_agent.mtxWorld.translation, _beam.mtxWorldInverse);
         let distance = ƒ.Vector2.DIFFERENCE(testPosition.toVector2(), _beam.mtxLocal.translation.toVector2());
-        if (distance.x < 1 && distance.x > -1 && distance.y < 7 && distance.y > -1) {
+        // if (distance.x < 1 && distance.x > -1 && distance.y < 7 && distance.y > -1) {
+        //   console.log("hit");
+        // }
+        // auf negative Abfrage umgestellt mit || ( || ist schneller als && )
+        if (distance.x < -1 || distance.x > 1 || distance.y < -0.5 || distance.y > 6.5)
+            return;
+        else
             console.log("hit");
-        }
     }
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map

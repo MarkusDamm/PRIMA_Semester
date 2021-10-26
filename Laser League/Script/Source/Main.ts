@@ -6,7 +6,8 @@ namespace Script {
   let viewport: ƒ.Viewport;
   let root: ƒ.Node;
   let agent: ƒ.Node;
-  let laser: ƒ.Node;
+  let laserformation: ƒ.Node;
+  let laser1: ƒ.Node;
 
   let fps: number = 60;
   let moveSpeed: number = 8;
@@ -20,7 +21,8 @@ namespace Script {
     viewport = _event.detail;
     root = viewport.getBranch();
     // console.log(root);
-    laser = root.getChildrenByName("Laserformations")[0].getChildrenByName("Laserformation")[0].getChildrenByName("Laser01")[0];
+    laserformation = root.getChildrenByName("Laserformations")[0].getChildrenByName("Laserformation")[0];
+    laser1 = laserformation.getChildrenByName("Laser01")[0];
 
     agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent01")[0];
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
@@ -61,14 +63,22 @@ namespace Script {
     agent.mtxLocal.translateY(ctrForward.getOutput());
     
     let laserRotationSpeed: number = 120;
-    laser.getComponent(ƒ.ComponentTransform).mtxLocal.rotateZ(laserRotationSpeed * deltaTime);
+    let lasers: ƒ.Node[] = laserformation.getChildren();
+    for (let laser of lasers)
+    {
+      laser.getComponent(ƒ.ComponentTransform).mtxLocal.rotateZ(laserRotationSpeed * deltaTime);
+    }
 
     viewport.draw();
     ƒ.AudioManager.default.update();
-    let beams: ƒ.Node[] = laser.getChildrenByName("Beam");
-    for (let beam of beams)
+
+    for (let laser of lasers)
     {
-      collisionTest(agent, beam);
+      let beams: ƒ.Node[] = laser.getChildrenByName("Beam");
+      for (let beam of beams)
+      {
+        collisionTest(agent, beam);
+      }
     }
   }
 
@@ -76,8 +86,14 @@ namespace Script {
     let testPosition: ƒ.Vector3 = ƒ.Vector3.TRANSFORMATION(_agent.mtxWorld.translation, _beam.mtxWorldInverse);
     let distance: ƒ.Vector2 = ƒ.Vector2.DIFFERENCE(testPosition.toVector2(), _beam.mtxLocal.translation.toVector2());    
     
-    if (distance.x < 1 && distance.x > -1 && distance.y < 7 && distance.y > -1) {
-      console.log("hit");
-    }
+    // if (distance.x < 1 && distance.x > -1 && distance.y < 7 && distance.y > -1) {
+    //   console.log("hit");
+    // }
+    // auf negative Abfrage umgestellt mit || ( || ist schneller als && )
+    
+    if (distance.x <-1 || distance.x > 1 || distance.y < -0.5 || distance.y > 6.5)
+    return;
+    else
+    console.log("hit");
   }
 }
