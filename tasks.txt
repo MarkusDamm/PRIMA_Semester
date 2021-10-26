@@ -9,3 +9,6 @@
 21.10.
     // Collision detection: mtxWorld des Agent mit der mtxWorldInverse eines Lasers verrechnen. Dann ist es einfach, die Entfernung vom Laser zum Agent auszurechnen.
     
+26.10.
+    - look into custom scripts, try some things out
+    - fix copying instance (Jirka-Code)

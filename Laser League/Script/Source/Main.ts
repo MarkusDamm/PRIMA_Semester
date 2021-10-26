@@ -8,6 +8,7 @@ namespace Script {
   let agent: ƒ.Node;
   let laserformation: ƒ.Node;
   let laser1: ƒ.Node;
+  let copy: ƒ.GraphInstance;
 
   let fps: number = 60;
   let moveSpeed: number = 8;
@@ -17,12 +18,20 @@ namespace Script {
   
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
   
-  function start(_event: CustomEvent): void {
+  async function start(_event: CustomEvent): Promise<void> {
     viewport = _event.detail;
     root = viewport.getBranch();
     // console.log(root);
     laserformation = root.getChildrenByName("Laserformations")[0].getChildrenByName("Laserformation")[0];
     laser1 = laserformation.getChildrenByName("Laser01")[0];
+
+    let laserGraph: ƒ.Graph = await ƒ.Project.registerAsGraph(laser1, false);
+    copy = new ƒ.GraphInstance(laserGraph);
+    copy.addComponent(new ƒ.ComponentTransform);
+    console.log(copy);
+
+    copy.mtxLocal.translateY(-10);
+    laserformation.appendChild(copy);
 
     agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent01")[0];
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
@@ -37,6 +46,8 @@ namespace Script {
     // ƒ.Physics.world.simulate();  // if physics is included and used
     
     let deltaTime: number = ƒ.Loop.timeFrameReal / 1000;
+
+    // copy.mtxLocal.translation = ƒ
     // Sideways
     if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D]))
     {

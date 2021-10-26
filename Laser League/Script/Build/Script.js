@@ -42,18 +42,25 @@ var Script;
     let agent;
     let laserformation;
     let laser1;
+    let copy;
     let fps = 60;
     let moveSpeed = 8;
     let ctrForward = new ƒ.Control("Forward", moveSpeed, 0 /* PROPORTIONAL */);
     ctrForward.setDelay(50);
     let rotateSpeed = 60;
     document.addEventListener("interactiveViewportStarted", start);
-    function start(_event) {
+    async function start(_event) {
         viewport = _event.detail;
         root = viewport.getBranch();
         // console.log(root);
         laserformation = root.getChildrenByName("Laserformations")[0].getChildrenByName("Laserformation")[0];
         laser1 = laserformation.getChildrenByName("Laser01")[0];
+        let laserGraph = await ƒ.Project.registerAsGraph(laser1, false);
+        copy = new ƒ.GraphInstance(laserGraph);
+        copy.addComponent(new ƒ.ComponentTransform);
+        console.log(copy);
+        copy.mtxLocal.translateY(-10);
+        laserformation.appendChild(copy);
         agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent01")[0];
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
@@ -63,6 +70,7 @@ var Script;
     function update(_event) {
         // ƒ.Physics.world.simulate();  // if physics is included and used
         let deltaTime = ƒ.Loop.timeFrameReal / 1000;
+        // copy.mtxLocal.translation = ƒ
         // Sideways
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
             agent.mtxLocal.translateX(moveSpeed * deltaTime);
