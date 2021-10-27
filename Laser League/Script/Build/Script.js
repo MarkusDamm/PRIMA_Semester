@@ -41,80 +41,80 @@ var Script;
     let root;
     let agent;
     let laserformation;
-    let laser1;
+    let laserPrefab;
     let copy;
     let fps = 60;
-    let moveSpeed = 8;
-    let ctrForward = new ƒ.Control("Forward", moveSpeed, 0 /* PROPORTIONAL */);
+    let avatarMoveSpeed = 8;
+    let avatarRotateSpeed = 160;
+    let ctrForward = new ƒ.Control("Forward", avatarMoveSpeed, 0 /* PROPORTIONAL */);
     ctrForward.setDelay(50);
-    let rotateSpeed = 60;
+    let ctrSideways = new ƒ.Control("Sideways", avatarMoveSpeed, 0 /* PROPORTIONAL */);
+    ctrSideways.setDelay(50);
+    let ctrRotation = new ƒ.Control("Rotation", avatarRotateSpeed, 0 /* PROPORTIONAL */);
+    ctrRotation.setDelay(20);
     document.addEventListener("interactiveViewportStarted", start);
     async function start(_event) {
         viewport = _event.detail;
         root = viewport.getBranch();
         // console.log(root);
         laserformation = root.getChildrenByName("Laserformations")[0].getChildrenByName("Laserformation")[0];
-        laser1 = laserformation.getChildrenByName("Laser01")[0];
-        let laserGraph = await ƒ.Project.registerAsGraph(laser1, false);
-        copy = new ƒ.GraphInstance(laserGraph);
-        copy.addComponent(new ƒ.ComponentTransform);
-        console.log(copy);
-        copy.mtxLocal.translateY(-10);
-        laserformation.appendChild(copy);
+        laserPrefab = laserformation.getChildrenByName("Laser01")[0];
+        await placeLaser(new ƒ.Vector3(-10, -5, 0));
+        await placeLaser(new ƒ.Vector3(10, -5, 0));
+        await placeLaser(new ƒ.Vector3(10, 5, 0));
         agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent01")[0];
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         // Adjust Camera Position
         viewport.camera.mtxPivot.translateZ(-30);
     }
+    async function placeLaser(_translation) {
+        copy = await copyGraph(laserPrefab);
+        copy.mtxLocal.translation = _translation;
+        laserformation.appendChild(copy);
+    }
+    async function copyGraph(_copy) {
+        let graph = await ƒ.Project.registerAsGraph(_copy, false);
+        let graphInstance = await ƒ.Project.createGraphInstance(graph);
+        return graphInstance;
+    }
     function update(_event) {
         // ƒ.Physics.world.simulate();  // if physics is included and used
         let deltaTime = ƒ.Loop.timeFrameReal / 1000;
-        // copy.mtxLocal.translation = ƒ
-        // Sideways
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
-            agent.mtxLocal.translateX(moveSpeed * deltaTime);
-        }
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A])) {
-            agent.mtxLocal.translateX(-moveSpeed * deltaTime);
-        }
-        // Rotation
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
-            agent.mtxLocal.rotateZ(rotateSpeed * deltaTime);
-        }
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
-            agent.mtxLocal.rotateZ(-rotateSpeed * deltaTime);
-        }
         let forwardSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]) +
             ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]));
         ctrForward.setInput(forwardSpeed * deltaTime);
-        // console.log(ctrForward.getOutput());
         agent.mtxLocal.translateY(ctrForward.getOutput());
+        let sidewaysSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.D]) +
+            ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.A]));
+        ctrSideways.setInput(sidewaysSpeed * deltaTime);
+        agent.mtxLocal.translateX(ctrSideways.getOutput());
+        let rotationSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.ARROW_LEFT]) +
+            ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.ARROW_RIGHT]));
+        ctrRotation.setInput(rotationSpeed * deltaTime);
+        agent.mtxLocal.rotateZ(ctrRotation.getOutput());
         let laserRotationSpeed = 120;
         let lasers = laserformation.getChildren();
         for (let laser of lasers) {
             laser.getComponent(ƒ.ComponentTransform).mtxLocal.rotateZ(laserRotationSpeed * deltaTime);
         }
-        viewport.draw();
-        ƒ.AudioManager.default.update();
         for (let laser of lasers) {
             let beams = laser.getChildrenByName("Beam");
             for (let beam of beams) {
-                collisionTest(agent, beam);
+                if (collisionTest(agent, beam))
+                    console.log("hit");
             }
         }
+        viewport.draw();
+        ƒ.AudioManager.default.update();
     }
     function collisionTest(_agent, _beam) {
         let testPosition = ƒ.Vector3.TRANSFORMATION(_agent.mtxWorld.translation, _beam.mtxWorldInverse);
         let distance = ƒ.Vector2.DIFFERENCE(testPosition.toVector2(), _beam.mtxLocal.translation.toVector2());
-        // if (distance.x < 1 && distance.x > -1 && distance.y < 7 && distance.y > -1) {
-        //   console.log("hit");
-        // }
-        // auf negative Abfrage umgestellt mit || ( || ist schneller als && )
         if (distance.x < -1 || distance.x > 1 || distance.y < -0.5 || distance.y > 6.5)
-            return;
+            return false;
         else
-            console.log("hit");
+            return true;
     }
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map

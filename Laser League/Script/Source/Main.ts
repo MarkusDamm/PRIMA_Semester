@@ -7,104 +7,103 @@ namespace Script {
   let root: ƒ.Node;
   let agent: ƒ.Node;
   let laserformation: ƒ.Node;
-  let laser1: ƒ.Node;
+  let laserPrefab: ƒ.Node;
   let copy: ƒ.GraphInstance;
 
   let fps: number = 60;
-  let moveSpeed: number = 8;
-  let ctrForward: ƒ.Control = new ƒ.Control("Forward", moveSpeed, ƒ.CONTROL_TYPE.PROPORTIONAL);
+  let avatarMoveSpeed: number = 8;
+  let avatarRotateSpeed: number = 160;
+  let ctrForward: ƒ.Control = new ƒ.Control("Forward", avatarMoveSpeed, ƒ.CONTROL_TYPE.PROPORTIONAL);
   ctrForward.setDelay(50);
-  let rotateSpeed: number = 60;
-  
-  document.addEventListener("interactiveViewportStarted", <EventListener>start);
-  
+  let ctrSideways: ƒ.Control = new ƒ.Control("Sideways", avatarMoveSpeed, ƒ.CONTROL_TYPE.PROPORTIONAL);
+  ctrSideways.setDelay(50);
+  let ctrRotation: ƒ.Control = new ƒ.Control("Rotation", avatarRotateSpeed, ƒ.CONTROL_TYPE.PROPORTIONAL);
+  ctrRotation.setDelay(20);
+
+  document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
+
   async function start(_event: CustomEvent): Promise<void> {
     viewport = _event.detail;
     root = viewport.getBranch();
     // console.log(root);
     laserformation = root.getChildrenByName("Laserformations")[0].getChildrenByName("Laserformation")[0];
-    laser1 = laserformation.getChildrenByName("Laser01")[0];
+    laserPrefab = laserformation.getChildrenByName("Laser01")[0];
 
-    let laserGraph: ƒ.Graph = await ƒ.Project.registerAsGraph(laser1, false);
-    copy = new ƒ.GraphInstance(laserGraph);
-    copy.addComponent(new ƒ.ComponentTransform);
-    console.log(copy);
-
-    copy.mtxLocal.translateY(-10);
-    laserformation.appendChild(copy);
+    await placeLaser(new ƒ.Vector3(-10, -5, 0));
+    await placeLaser(new ƒ.Vector3(10, -5, 0));
+    await placeLaser(new ƒ.Vector3(10, 5, 0));
 
     agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent01")[0];
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps);  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
-    
+
     // Adjust Camera Position
     viewport.camera.mtxPivot.translateZ(-30);
-
   }
-  
+
+  async function placeLaser(_translation: ƒ.Vector3): Promise<void> {
+    copy = await copyGraph(laserPrefab);
+    copy.mtxLocal.translation = _translation;
+    laserformation.appendChild(copy);
+  }
+
+  async function copyGraph(_copy: ƒ.Node): Promise<ƒ.GraphInstance> {
+    let graph: ƒ.Graph = await ƒ.Project.registerAsGraph(_copy, false);
+    let graphInstance: ƒ.GraphInstance = await ƒ.Project.createGraphInstance(graph);
+    return graphInstance;
+  }
+
   function update(_event: Event): void {
     // ƒ.Physics.world.simulate();  // if physics is included and used
-    
+
     let deltaTime: number = ƒ.Loop.timeFrameReal / 1000;
 
-    // copy.mtxLocal.translation = ƒ
-    // Sideways
-    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D]))
-    {
-      agent.mtxLocal.translateX(moveSpeed * deltaTime);
-    }
-    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A])) {
-      agent.mtxLocal.translateX(-moveSpeed * deltaTime);
-    }
-    // Rotation
-    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.ARROW_LEFT]))
-    {
-      agent.mtxLocal.rotateZ(rotateSpeed * deltaTime);
-    }
-    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
-      agent.mtxLocal.rotateZ(-rotateSpeed * deltaTime);
-    }
-
     let forwardSpeed: number = (
-      ƒ.Keyboard.mapToValue(1,0,[ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]) +       
-      ƒ.Keyboard.mapToValue(-1,0,[ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]) 
+      ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]) +
+      ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN])
     );
     ctrForward.setInput(forwardSpeed * deltaTime);
-    // console.log(ctrForward.getOutput());
     agent.mtxLocal.translateY(ctrForward.getOutput());
-    
+
+    let sidewaysSpeed: number = (
+      ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.D]) +
+      ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.A])
+    );
+    ctrSideways.setInput(sidewaysSpeed * deltaTime);
+    agent.mtxLocal.translateX(ctrSideways.getOutput());
+
+    let rotationSpeed: number = (
+      ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.ARROW_LEFT]) +
+      ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.ARROW_RIGHT])
+    );
+    ctrRotation.setInput(rotationSpeed * deltaTime);
+    agent.mtxLocal.rotateZ(ctrRotation.getOutput());
+
     let laserRotationSpeed: number = 120;
     let lasers: ƒ.Node[] = laserformation.getChildren();
-    for (let laser of lasers)
-    {
+    for (let laser of lasers) {
       laser.getComponent(ƒ.ComponentTransform).mtxLocal.rotateZ(laserRotationSpeed * deltaTime);
+    }
+
+    for (let laser of lasers) {
+      let beams: ƒ.Node[] = laser.getChildrenByName("Beam");
+      for (let beam of beams) {
+        if (collisionTest(agent, beam))
+          console.log("hit");
+      }
     }
 
     viewport.draw();
     ƒ.AudioManager.default.update();
-
-    for (let laser of lasers)
-    {
-      let beams: ƒ.Node[] = laser.getChildrenByName("Beam");
-      for (let beam of beams)
-      {
-        collisionTest(agent, beam);
-      }
-    }
   }
 
-  function collisionTest(_agent: ƒ.Node, _beam: ƒ.Node) {
+  function collisionTest(_agent: ƒ.Node, _beam: ƒ.Node): boolean {
     let testPosition: ƒ.Vector3 = ƒ.Vector3.TRANSFORMATION(_agent.mtxWorld.translation, _beam.mtxWorldInverse);
-    let distance: ƒ.Vector2 = ƒ.Vector2.DIFFERENCE(testPosition.toVector2(), _beam.mtxLocal.translation.toVector2());    
-    
-    // if (distance.x < 1 && distance.x > -1 && distance.y < 7 && distance.y > -1) {
-    //   console.log("hit");
-    // }
-    // auf negative Abfrage umgestellt mit || ( || ist schneller als && )
-    
-    if (distance.x <-1 || distance.x > 1 || distance.y < -0.5 || distance.y > 6.5)
-    return;
+    let distance: ƒ.Vector2 = ƒ.Vector2.DIFFERENCE(testPosition.toVector2(), _beam.mtxLocal.translation.toVector2());
+
+    if (distance.x < -1 || distance.x > 1 || distance.y < -0.5 || distance.y > 6.5)
+      return false;
     else
-    console.log("hit");
+      return true;
   }
 }
