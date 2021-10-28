@@ -173,6 +173,15 @@
                                 }
                               }
                             }
+                          ],
+                          "ComponentScript": [],
+                          "CustomComponentScript": [
+                            {
+                              "Script.CustomComponentScript": {
+                                "active": true,
+                                "message": "LaserScript added to Laser:"
+                              }
+                            }
                           ]
                         },
                         "children": [

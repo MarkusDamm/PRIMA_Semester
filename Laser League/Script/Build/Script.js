@@ -8,17 +8,23 @@ var Script;
             super();
             // Properties may be mutated by users in the editor via the automatically created user interface
             this.message = "CustomComponentScript added to ";
+            this.laserRotationSpeed = 120;
             // Activate the functions of this component as response to events
             this.hndEvent = (_event) => {
                 switch (_event.type) {
                     case "componentAdd" /* COMPONENT_ADD */:
                         ƒ.Debug.log(this.message, this.node);
+                        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.hdlRotation);
                         break;
                     case "componentRemove" /* COMPONENT_REMOVE */:
                         this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
                         this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
                         break;
                 }
+            };
+            this.hdlRotation = (_event) => {
+                let deltaTime = ƒ.Loop.timeFrameReal / 1000;
+                this.node.getComponent(ƒ.ComponentTransform).mtxLocal.rotateZ(this.laserRotationSpeed * deltaTime);
             };
             // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
@@ -81,23 +87,8 @@ var Script;
     function update(_event) {
         // ƒ.Physics.world.simulate();  // if physics is included and used
         let deltaTime = ƒ.Loop.timeFrameReal / 1000;
-        let forwardSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]) +
-            ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]));
-        ctrForward.setInput(forwardSpeed * deltaTime);
-        agent.mtxLocal.translateY(ctrForward.getOutput());
-        let sidewaysSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.D]) +
-            ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.A]));
-        ctrSideways.setInput(sidewaysSpeed * deltaTime);
-        agent.mtxLocal.translateX(ctrSideways.getOutput());
-        let rotationSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.ARROW_LEFT]) +
-            ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.ARROW_RIGHT]));
-        ctrRotation.setInput(rotationSpeed * deltaTime);
-        agent.mtxLocal.rotateZ(ctrRotation.getOutput());
-        let laserRotationSpeed = 120;
+        hdlAvatarMovement(deltaTime);
         let lasers = laserformation.getChildren();
-        for (let laser of lasers) {
-            laser.getComponent(ƒ.ComponentTransform).mtxLocal.rotateZ(laserRotationSpeed * deltaTime);
-        }
         for (let laser of lasers) {
             let beams = laser.getChildrenByName("Beam");
             for (let beam of beams) {
@@ -107,6 +98,20 @@ var Script;
         }
         viewport.draw();
         ƒ.AudioManager.default.update();
+    }
+    function hdlAvatarMovement(_deltaTime) {
+        let forwardSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]) +
+            ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]));
+        ctrForward.setInput(forwardSpeed * _deltaTime);
+        agent.mtxLocal.translateY(ctrForward.getOutput());
+        let sidewaysSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.D]) +
+            ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.A]));
+        ctrSideways.setInput(sidewaysSpeed * _deltaTime);
+        agent.mtxLocal.translateX(ctrSideways.getOutput());
+        let rotationSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.ARROW_LEFT]) +
+            ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.ARROW_RIGHT]));
+        ctrRotation.setInput(rotationSpeed * _deltaTime);
+        agent.mtxLocal.rotateZ(ctrRotation.getOutput());
     }
     function collisionTest(_agent, _beam) {
         let testPosition = ƒ.Vector3.TRANSFORMATION(_agent.mtxWorld.translation, _beam.mtxWorldInverse);
