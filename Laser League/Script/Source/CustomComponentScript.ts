@@ -8,8 +8,6 @@ namespace Script {
     // Properties may be mutated by users in the editor via the automatically created user interface
     public message: string = "CustomComponentScript added to ";
 
-    private laserRotationSpeed: number = 120;
-
     constructor() {
       super();
 
@@ -26,19 +24,13 @@ namespace Script {
     public hndEvent = (_event: Event) => {
       switch (_event.type) {
         case ƒ.EVENT.COMPONENT_ADD:
-          ƒ.Debug.log(this.message, this.node);
-          ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.hdlRotation);
+          ƒ.Debug.log("Custom component script added", this.message, this.node);
           break;
         case ƒ.EVENT.COMPONENT_REMOVE:
           this.removeEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);
           this.removeEventListener(ƒ.EVENT.COMPONENT_REMOVE, this.hndEvent);
           break;
       }
-    }
-    
-    public hdlRotation = (_event: Event) =>{
-      let deltaTime: number = ƒ.Loop.timeFrameReal / 1000;      
-      this.node.getComponent(ƒ.ComponentTransform).mtxLocal.rotateZ(this.laserRotationSpeed * deltaTime)
     }
 
     // protected reduceMutator(_mutator: ƒ.Mutator): void {

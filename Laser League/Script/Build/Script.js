@@ -8,12 +8,43 @@ var Script;
             super();
             // Properties may be mutated by users in the editor via the automatically created user interface
             this.message = "CustomComponentScript added to ";
-            this.laserRotationSpeed = 120;
             // Activate the functions of this component as response to events
             this.hndEvent = (_event) => {
                 switch (_event.type) {
                     case "componentAdd" /* COMPONENT_ADD */:
-                        ƒ.Debug.log(this.message, this.node);
+                        ƒ.Debug.log("Custom component script added", this.message, this.node);
+                        break;
+                    case "componentRemove" /* COMPONENT_REMOVE */:
+                        this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                        this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                        break;
+                }
+            };
+            // Don't start when running in editor
+            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
+                return;
+            // Listen to this component being added to or removed from a node
+            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+        }
+    }
+    // Register the script as component for use in the editor via drag&drop
+    CustomComponentScript.iSubclass = ƒ.Component.registerSubclass(CustomComponentScript);
+    Script.CustomComponentScript = CustomComponentScript;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
+    class LaserScript extends Script.CustomComponentScript {
+        constructor() {
+            super();
+            this.message = "Laser Script added to ";
+            this.laserRotationSpeed = 120;
+            this.hndEvent = (_event) => {
+                switch (_event.type) {
+                    case "componentAdd" /* COMPONENT_ADD */:
+                        console.log("add listener for hdlRotation");
                         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.hdlRotation);
                         break;
                     case "componentRemove" /* COMPONENT_REMOVE */:
@@ -34,9 +65,7 @@ var Script;
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
         }
     }
-    // Register the script as component for use in the editor via drag&drop
-    CustomComponentScript.iSubclass = ƒ.Component.registerSubclass(CustomComponentScript);
-    Script.CustomComponentScript = CustomComponentScript;
+    Script.LaserScript = LaserScript;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {

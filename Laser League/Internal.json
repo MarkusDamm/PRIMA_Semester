@@ -174,12 +174,13 @@
                               }
                             }
                           ],
-                          "ComponentScript": [],
-                          "CustomComponentScript": [
+                          "CustomComponentScript": [],
+                          "LaserScript": [
                             {
-                              "Script.CustomComponentScript": {
+                              "Script.LaserScript": {
                                 "active": true,
-                                "message": "LaserScript added to Laser:"
+                                "message": "Laser Script added to ",
+                                "laserRotationSpeed": 120
                               }
                             }
                           ]
