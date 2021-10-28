@@ -8,12 +8,13 @@ declare namespace Script {
     }
 }
 declare namespace Script {
-    class LaserScript extends CustomComponentScript {
+    import ƒ = FudgeCore;
+    class LaserScript extends ƒ.ComponentScript {
         message: string;
         private laserRotationSpeed;
         constructor();
         hndEvent: (_event: Event) => void;
-        hdlRotation: (_event: Event) => void;
+        hndRotation: (_event: Event) => void;
     }
 }
 declare namespace Script {

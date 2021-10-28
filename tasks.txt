@@ -12,3 +12,8 @@
 26.10.
     - look into custom scripts, try some things out
     - fix copying instance (Jirka-Code)
+
+28.10.
+    - use nested loops for creating lasers
+    - look into ƒ.Random
+    - change rotation from lasers in Main.ts

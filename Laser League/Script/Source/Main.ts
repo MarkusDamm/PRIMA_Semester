@@ -11,6 +11,7 @@ namespace Script {
   let copy: ƒ.GraphInstance;
 
   let fps: number = 60;
+
   let avatarMoveSpeed: number = 8;
   let avatarRotateSpeed: number = 160;
   let ctrForward: ƒ.Control = new ƒ.Control("Forward", avatarMoveSpeed, ƒ.CONTROL_TYPE.PROPORTIONAL);
@@ -27,11 +28,22 @@ namespace Script {
     root = viewport.getBranch();
     // console.log(root);
     laserformation = root.getChildrenByName("Laserformations")[0].getChildrenByName("Laserformation")[0];
-    laserPrefab = laserformation.getChildrenByName("Laser01")[0];
+    let graphLaser: ƒ.Graph = <ƒ.Graph>FudgeCore.Project.resources["Graph|2021-10-28T13:13:43.242Z|36118"];
+    laserPrefab = await ƒ.Project.createGraphInstance(graphLaser);
+    // laserPrefab = laserformation.getChildrenByName("Laser01")[0];
 
-    await placeLaser(new ƒ.Vector3(-10, -5, 0));
-    await placeLaser(new ƒ.Vector3(10, -5, 0));
-    await placeLaser(new ƒ.Vector3(10, 5, 0));
+    let laserPlacementPosition: ƒ.Vector3 = new ƒ.Vector3(-10, 5, 0);
+    let xPosition: number = -10;
+    let yPosition: number = 5;
+    let amount: number = 6
+    for (let i = 0; i < amount; i++) {
+      if (i== amount/2) {
+        laserPlacementPosition = new ƒ.Vector3(xPosition, yPosition, 0);
+        yPosition = -5;
+      }
+      await placeLaser(laserPlacementPosition);
+      laserPlacementPosition.x - xPosition;
+    }
 
     agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent01")[0];
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
