@@ -102,17 +102,17 @@ var Script;
         let graphLaser = FudgeCore.Project.resources["Graph|2021-10-28T13:13:43.242Z|36118"];
         laserPrefab = await ƒ.Project.createGraphInstance(graphLaser);
         // laserPrefab = laserformation.getChildrenByName("Laser01")[0];
-        let laserPlacementPosition = new ƒ.Vector3(-10, 5, 0);
-        let xPosition = -10;
-        let yPosition = 5;
-        let amount = 6;
-        for (let i = 0; i < amount; i++) {
-            if (i == amount / 2) {
-                laserPlacementPosition = new ƒ.Vector3(xPosition, yPosition, 0);
-                yPosition = -5;
+        let laserPlacementPosition = new ƒ.Vector3(-12, 6.5, 0);
+        let laserAmounts = new ƒ.Vector2(3, 2);
+        let xPosition = -12;
+        let yPosition = 6.5;
+        for (let i = 0; i < laserAmounts.y; i++) {
+            for (let i = 0; i < laserAmounts.x; i++) {
+                await placeLaser(laserPlacementPosition);
+                laserPlacementPosition.x -= xPosition;
             }
-            await placeLaser(laserPlacementPosition);
-            laserPlacementPosition.x - xPosition;
+            yPosition = -yPosition;
+            laserPlacementPosition = new ƒ.Vector3(xPosition, yPosition, 0);
         }
         agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent01")[0];
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
@@ -162,7 +162,8 @@ var Script;
     function collisionTest(_agent, _beam) {
         let testPosition = ƒ.Vector3.TRANSFORMATION(_agent.mtxWorld.translation, _beam.mtxWorldInverse);
         let distance = ƒ.Vector2.DIFFERENCE(testPosition.toVector2(), _beam.mtxLocal.translation.toVector2());
-        if (distance.x < -1 || distance.x > 1 || distance.y < -0.5 || distance.y > 6.5)
+        let beamLength = _beam.getComponent(ƒ.ComponentMesh).mtxPivot.scaling.y;
+        if (distance.x < -1 || distance.x > 1 || distance.y < -0.5 || distance.y > 0.5 + beamLength)
             return false;
         else
             return true;

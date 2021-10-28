@@ -155,8 +155,7 @@
                       }
                     ]
                   },
-                  "children": [
-                  ]
+                  "children": []
                 }
               }
             ]
@@ -353,9 +352,9 @@
                   "ƒ.ComponentMesh": {
                     "idMesh": "MeshQuad|2021-10-14T09:58:43.654Z|86674",
                     "pivot": {
-                      "translation": "[0, 3, 0]",
+                      "translation": "[0, 2, 0]",
                       "rotation": "[0, 0, 0]",
-                      "scaling": "[0.30000001192092896, 6, 1]"
+                      "scaling": "[0.30000001192092896, 4, 1]"
                     },
                     "Component": {
                       "active": true
@@ -408,9 +407,9 @@
                   "ƒ.ComponentMesh": {
                     "idMesh": "MeshQuad|2021-10-14T09:58:43.654Z|86674",
                     "pivot": {
-                      "translation": "[0, 3, 0]",
+                      "translation": "[0, 2, 0]",
                       "rotation": "[0, 0, 0]",
-                      "scaling": "[0.30000001192092896, 6, 1]"
+                      "scaling": "[0.30000001192092896, 4, 1]"
                     },
                     "Component": {
                       "active": true
@@ -463,9 +462,9 @@
                   "ƒ.ComponentMesh": {
                     "idMesh": "MeshQuad|2021-10-14T09:58:43.654Z|86674",
                     "pivot": {
-                      "translation": "[0, 3, 0]",
+                      "translation": "[0, 2, 0]",
                       "rotation": "[0, 0, 0]",
-                      "scaling": "[0.30000001192092896, 6, 1]"
+                      "scaling": "[0.30000001192092896, 4, 1]"
                     },
                     "Component": {
                       "active": true
