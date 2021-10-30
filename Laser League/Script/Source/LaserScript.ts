@@ -24,7 +24,6 @@ namespace Script {
         public hndEvent = (_event: Event) => {
             switch (_event.type) {
                 case ƒ.EVENT.COMPONENT_ADD:
-                    console.log("add listener for hdlRotation");
                     let random: ƒ.Random = new ƒ.Random();
                     this.laserRotationSpeed = random.getRangeFloored(40, 80);
                     if (random.getBoolean())
@@ -43,5 +42,15 @@ namespace Script {
             let deltaTime: number = ƒ.Loop.timeFrameReal / 1000;
             this.node.getComponent(ƒ.ComponentTransform).mtxLocal.rotateZ(this.laserRotationSpeed * deltaTime)
         }
+
+        public static collisionTest(_agent: ƒ.Node, _beam: ƒ.Node): boolean {
+            let testPosition: ƒ.Vector3 = ƒ.Vector3.TRANSFORMATION(_agent.mtxWorld.translation, _beam.mtxWorldInverse);
+            let distance: ƒ.Vector2 = ƒ.Vector2.DIFFERENCE(testPosition.toVector2(), _beam.mtxLocal.translation.toVector2());
+            let beamLength: number = _beam.getComponent(ƒ.ComponentMesh).mtxPivot.scaling.y;
+            if (distance.x < -1 || distance.x > 1 || distance.y < -0.5 || distance.y > 0.5 + beamLength)
+              return false;
+            else
+              return true;
+          }
     }
 }

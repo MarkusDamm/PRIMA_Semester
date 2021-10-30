@@ -30,10 +30,11 @@ namespace Script {
     public hndEvent = (_event: Event) => {
       switch (_event.type) {
         case ƒ.EVENT.COMPONENT_ADD:
-          ƒ.Debug.log("Custom component script added", this.message, this.node);
+          // ƒ.Debug.log("Custom component script added", this.message, this.node);
           this.ctrForward.setDelay(50);
           this.ctrSideways.setDelay(50);
           this.ctrRotation.setDelay(20);
+          ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.hdlAgentMovement);
           break;
         case ƒ.EVENT.COMPONENT_REMOVE:
           this.removeEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);
@@ -42,26 +43,28 @@ namespace Script {
       }
     }
 
-    public hdlAgentMovement = (_deltaTime: number) => {
+    public hdlAgentMovement = () => {
+      let deltaTime: number = ƒ.Loop.timeFrameReal / 1000;
+
       let forwardSpeed: number = (
         ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]) +
         ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN])
       );
-      this.ctrForward.setInput(forwardSpeed * _deltaTime);
+      this.ctrForward.setInput(forwardSpeed * deltaTime);
       this.node.mtxLocal.translateY(this.ctrForward.getOutput());
   
       let sidewaysSpeed: number = (
         ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.D]) +
         ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.A])
       );
-      this.ctrSideways.setInput(sidewaysSpeed * _deltaTime);
+      this.ctrSideways.setInput(sidewaysSpeed * deltaTime);
       this.node.mtxLocal.translateX(this.ctrSideways.getOutput());
   
       let rotationSpeed: number = (
         ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.ARROW_LEFT]) +
         ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.ARROW_RIGHT])
       );
-      this.ctrRotation.setInput(rotationSpeed * _deltaTime);
+      this.ctrRotation.setInput(rotationSpeed * deltaTime);
       this.node.mtxLocal.rotateZ(this.ctrRotation.getOutput());
     }
 

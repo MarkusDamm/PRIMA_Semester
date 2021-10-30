@@ -10,12 +10,12 @@ declare namespace Script {
         private ctrRotation;
         constructor();
         hndEvent: (_event: Event) => void;
-        hdlAgentMovement: (_deltaTime: number) => void;
+        hdlAgentMovement: () => void;
     }
 }
 declare namespace Script {
     import ƒ = FudgeCore;
-    class CustomComponentScript extends ƒ.ComponentScript {
+    class ItemScript extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         message: string;
         constructor();
@@ -30,6 +30,7 @@ declare namespace Script {
         constructor();
         hndEvent: (_event: Event) => void;
         hndRotation: (_event: Event) => void;
+        static collisionTest(_agent: ƒ.Node, _beam: ƒ.Node): boolean;
     }
 }
 declare namespace Script {

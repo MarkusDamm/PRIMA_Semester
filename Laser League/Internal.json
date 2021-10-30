@@ -241,8 +241,8 @@
             "components": {},
             "children": [
               {
-                "ƒ.Node": {
-                  "name": "Item01",
+                "ƒ.GraphInstance": {
+                  "name": "Item",
                   "components": {
                     "ComponentMesh": [
                       {
@@ -290,9 +290,18 @@
                           }
                         }
                       }
+                    ],
+                    "ItemScript": [
+                      {
+                        "Script.ItemScript": {
+                          "active": true,
+                          "message": "ItemScript added to "
+                        }
+                      }
                     ]
                   },
-                  "children": []
+                  "children": [],
+                  "idSource": "Graph|2021-10-30T19:13:24.936Z|20390"
                 }
               }
             ]
@@ -588,6 +597,71 @@
       },
       "children": [],
       "idResource": "Graph|2021-10-30T17:45:58.435Z|50137",
+      "type": "Graph"
+    }
+  },
+  "Graph|2021-10-30T19:13:24.936Z|20390": {
+    "ƒ.Graph": {
+      "name": "Item",
+      "components": {
+        "ComponentMesh": [
+          {
+            "ƒ.ComponentMesh": {
+              "idMesh": "MeshSphere|2021-10-14T09:50:55.733Z|41324",
+              "pivot": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ComponentMaterial": [
+          {
+            "ƒ.ComponentMaterial": {
+              "sortForAlpha": false,
+              "clrPrimary": "[1, 1, 1, 1]",
+              "clrSecondary": "[1, 1, 1, 1]",
+              "pivot": {
+                "translation": "[0, 0]",
+                "rotation": 0,
+                "scaling": "[1, 1]"
+              },
+              "Component": {
+                "active": true
+              },
+              "idMaterial": "Material|2021-10-14T09:52:03.953Z|69326"
+            }
+          }
+        ],
+        "ComponentTransform": [
+          {
+            "ƒ.ComponentTransform": {
+              "local": {
+                "translation": "[-10, -3, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ItemScript": [
+          {
+            "Script.ItemScript": {
+              "active": true,
+              "message": "ItemScript added to "
+            }
+          }
+        ]
+      },
+      "children": [],
+      "idResource": "Graph|2021-10-30T19:13:24.936Z|20390",
       "type": "Graph"
     }
   }
