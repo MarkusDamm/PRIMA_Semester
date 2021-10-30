@@ -16,4 +16,4 @@
 28.10.
     - use nested loops for creating lasers
     - look into ƒ.Random
-    - change rotation from lasers in Main.ts
+    - change rotation from lasers in Main.ts?
