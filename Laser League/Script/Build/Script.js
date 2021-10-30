@@ -3,6 +3,61 @@ var Script;
 (function (Script) {
     var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
+    class AgentScript extends ƒ.ComponentScript {
+        constructor() {
+            super();
+            // Properties may be mutated by users in the editor via the automatically created user interface
+            this.message = "AgentScript added to ";
+            this.agentMoveSpeed = 8;
+            this.agentRotateSpeed = 160;
+            this.ctrForward = new ƒ.Control("Forward", this.agentMoveSpeed, 0 /* PROPORTIONAL */);
+            this.ctrSideways = new ƒ.Control("Sideways", this.agentMoveSpeed, 0 /* PROPORTIONAL */);
+            this.ctrRotation = new ƒ.Control("Rotation", this.agentRotateSpeed, 0 /* PROPORTIONAL */);
+            // Activate the functions of this component as response to events
+            this.hndEvent = (_event) => {
+                switch (_event.type) {
+                    case "componentAdd" /* COMPONENT_ADD */:
+                        ƒ.Debug.log("Custom component script added", this.message, this.node);
+                        this.ctrForward.setDelay(50);
+                        this.ctrSideways.setDelay(50);
+                        this.ctrRotation.setDelay(20);
+                        break;
+                    case "componentRemove" /* COMPONENT_REMOVE */:
+                        this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                        this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                        break;
+                }
+            };
+            this.hdlAgentMovement = (_deltaTime) => {
+                let forwardSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]) +
+                    ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]));
+                this.ctrForward.setInput(forwardSpeed * _deltaTime);
+                this.node.mtxLocal.translateY(this.ctrForward.getOutput());
+                let sidewaysSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.D]) +
+                    ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.A]));
+                this.ctrSideways.setInput(sidewaysSpeed * _deltaTime);
+                this.node.mtxLocal.translateX(this.ctrSideways.getOutput());
+                let rotationSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.ARROW_LEFT]) +
+                    ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.ARROW_RIGHT]));
+                this.ctrRotation.setInput(rotationSpeed * _deltaTime);
+                this.node.mtxLocal.rotateZ(this.ctrRotation.getOutput());
+            };
+            // Don't start when running in editor
+            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
+                return;
+            // Listen to this component being added to or removed from a node
+            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+        }
+    }
+    // Register the script as component for use in the editor via drag&drop
+    AgentScript.iSubclass = ƒ.Component.registerSubclass(AgentScript);
+    Script.AgentScript = AgentScript;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
     class CustomComponentScript extends ƒ.ComponentScript {
         constructor() {
             super();
@@ -46,10 +101,10 @@ var Script;
                 switch (_event.type) {
                     case "componentAdd" /* COMPONENT_ADD */:
                         console.log("add listener for hdlRotation");
-                        this.laserRotationSpeed = Math.random() * 80 + 40;
-                        if (Math.random() - 0.5 < 0) {
+                        let random = new ƒ.Random();
+                        this.laserRotationSpeed = random.getRangeFloored(40, 80);
+                        if (random.getBoolean())
                             this.laserRotationSpeed *= -1;
-                        }
                         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.hndRotation);
                         break;
                     case "componentRemove" /* COMPONENT_REMOVE */:
@@ -85,14 +140,6 @@ var Script;
     let laserPrefab;
     let copy;
     let fps = 60;
-    let avatarMoveSpeed = 8;
-    let avatarRotateSpeed = 160;
-    let ctrForward = new ƒ.Control("Forward", avatarMoveSpeed, 0 /* PROPORTIONAL */);
-    ctrForward.setDelay(50);
-    let ctrSideways = new ƒ.Control("Sideways", avatarMoveSpeed, 0 /* PROPORTIONAL */);
-    ctrSideways.setDelay(50);
-    let ctrRotation = new ƒ.Control("Rotation", avatarRotateSpeed, 0 /* PROPORTIONAL */);
-    ctrRotation.setDelay(20);
     document.addEventListener("interactiveViewportStarted", start);
     async function start(_event) {
         viewport = _event.detail;
@@ -114,7 +161,7 @@ var Script;
             yPosition = -yPosition;
             laserPlacementPosition = new ƒ.Vector3(xPosition, yPosition, 0);
         }
-        agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent01")[0];
+        agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent")[0];
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         // Adjust Camera Position
@@ -133,7 +180,7 @@ var Script;
     function update(_event) {
         // ƒ.Physics.world.simulate();  // if physics is included and used
         let deltaTime = ƒ.Loop.timeFrameReal / 1000;
-        hdlAvatarMovement(deltaTime);
+        agent.getComponent(Script.AgentScript).hdlAgentMovement(deltaTime);
         let lasers = laserformation.getChildren();
         for (let laser of lasers) {
             let beams = laser.getChildrenByName("Beam");
@@ -144,20 +191,6 @@ var Script;
         }
         viewport.draw();
         ƒ.AudioManager.default.update();
-    }
-    function hdlAvatarMovement(_deltaTime) {
-        let forwardSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]) +
-            ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]));
-        ctrForward.setInput(forwardSpeed * _deltaTime);
-        agent.mtxLocal.translateY(ctrForward.getOutput());
-        let sidewaysSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.D]) +
-            ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.A]));
-        ctrSideways.setInput(sidewaysSpeed * _deltaTime);
-        agent.mtxLocal.translateX(ctrSideways.getOutput());
-        let rotationSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.ARROW_LEFT]) +
-            ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.ARROW_RIGHT]));
-        ctrRotation.setInput(rotationSpeed * _deltaTime);
-        agent.mtxLocal.rotateZ(ctrRotation.getOutput());
     }
     function collisionTest(_agent, _beam) {
         let testPosition = ƒ.Vector3.TRANSFORMATION(_agent.mtxWorld.translation, _beam.mtxWorldInverse);

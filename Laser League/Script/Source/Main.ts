@@ -12,15 +12,6 @@ namespace Script {
 
   let fps: number = 60;
 
-  let avatarMoveSpeed: number = 8;
-  let avatarRotateSpeed: number = 160;
-  let ctrForward: ƒ.Control = new ƒ.Control("Forward", avatarMoveSpeed, ƒ.CONTROL_TYPE.PROPORTIONAL);
-  ctrForward.setDelay(50);
-  let ctrSideways: ƒ.Control = new ƒ.Control("Sideways", avatarMoveSpeed, ƒ.CONTROL_TYPE.PROPORTIONAL);
-  ctrSideways.setDelay(50);
-  let ctrRotation: ƒ.Control = new ƒ.Control("Rotation", avatarRotateSpeed, ƒ.CONTROL_TYPE.PROPORTIONAL);
-  ctrRotation.setDelay(20);
-
   document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
 
   async function start(_event: CustomEvent): Promise<void> {
@@ -45,7 +36,7 @@ namespace Script {
       laserPlacementPosition = new ƒ.Vector3(xPosition, yPosition, 0);
     }
 
-    agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent01")[0];
+    agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent")[0];
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps);  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
 
@@ -70,7 +61,7 @@ namespace Script {
 
     let deltaTime: number = ƒ.Loop.timeFrameReal / 1000;
 
-    hdlAvatarMovement(deltaTime);
+    agent.getComponent(AgentScript).hdlAgentMovement(deltaTime);
 
     let lasers: ƒ.Node[] = laserformation.getChildren();
 
@@ -84,29 +75,6 @@ namespace Script {
 
     viewport.draw();
     ƒ.AudioManager.default.update();
-  }
-
-  function hdlAvatarMovement(_deltaTime: number) {
-    let forwardSpeed: number = (
-      ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]) +
-      ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN])
-    );
-    ctrForward.setInput(forwardSpeed * _deltaTime);
-    agent.mtxLocal.translateY(ctrForward.getOutput());
-
-    let sidewaysSpeed: number = (
-      ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.D]) +
-      ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.A])
-    );
-    ctrSideways.setInput(sidewaysSpeed * _deltaTime);
-    agent.mtxLocal.translateX(ctrSideways.getOutput());
-
-    let rotationSpeed: number = (
-      ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.ARROW_LEFT]) +
-      ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.ARROW_RIGHT])
-    );
-    ctrRotation.setInput(rotationSpeed * _deltaTime);
-    agent.mtxLocal.rotateZ(ctrRotation.getOutput());
   }
 
   function collisionTest(_agent: ƒ.Node, _beam: ƒ.Node): boolean {
