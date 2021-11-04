@@ -5,6 +5,7 @@ var LaserLeague;
     class Agent extends ƒ.Node {
         constructor() {
             super("Agent");
+            this.name = "Agent Orange";
             this.agentMoveSpeed = 8;
             this.agentRotateSpeed = 160;
             this.ctrForward = new ƒ.Control("Forward", this.agentMoveSpeed, 0 /* PROPORTIONAL */);
@@ -26,13 +27,13 @@ var LaserLeague;
                 this.mtxLocal.rotateZ(this.ctrRotation.getOutput());
             };
             this.addComponent(new ƒ.ComponentTransform);
+            let mat = FudgeCore.Project.resources["Material|2021-10-14T10:04:26.091Z|43118"];
             this.addComponent(new ƒ.ComponentMesh(new ƒ.MeshPolygon("MeshAgent")));
-            this.addComponent(new ƒ.ComponentMaterial(new ƒ.Material("mtrAgent", ƒ.ShaderUniColor, new ƒ.CoatColored(new ƒ.Color(0.9, 0.75, 0, 1)))));
+            this.addComponent(new ƒ.ComponentMaterial(mat));
             this.ctrForward.setDelay(50);
             this.ctrSideways.setDelay(50);
             this.ctrRotation.setDelay(20);
             ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.hndAgentMovement);
-            // this.mtxLocal.scale(ƒ.Vector3.ONE(0.5));
         }
     }
     LaserLeague.Agent = Agent;
@@ -93,6 +94,27 @@ var LaserLeague;
     // Register the script as component for use in the editor via drag&drop
     AgentScript.iSubclass = ƒ.Component.registerSubclass(AgentScript);
     LaserLeague.AgentScript = AgentScript;
+})(LaserLeague || (LaserLeague = {}));
+var LaserLeague;
+(function (LaserLeague) {
+    var ƒ = FudgeCore;
+    var ƒui = FudgeUserInterface;
+    class GameState extends ƒ.Mutable {
+        constructor() {
+            super(...arguments);
+            this.hits = 0;
+        }
+        reduceMutator(_mutator) { }
+    }
+    LaserLeague.gameState = new GameState();
+    class Hud {
+        static start() {
+            let domHud = document.querySelector("#Hud");
+            Hud.controller = new ƒui.Controller(LaserLeague.gameState, domHud);
+            Hud.controller.updateUserInterface();
+        }
+    }
+    LaserLeague.Hud = Hud;
 })(LaserLeague || (LaserLeague = {}));
 var LaserLeague;
 (function (LaserLeague) {
@@ -167,8 +189,9 @@ var LaserLeague;
         static collisionCheck(_agent, _beam) {
             let testPosition = ƒ.Vector3.TRANSFORMATION(_agent.mtxWorld.translation, _beam.mtxWorldInverse);
             let distance = ƒ.Vector2.DIFFERENCE(testPosition.toVector2(), _beam.mtxLocal.translation.toVector2());
-            let beamLength = _beam.getComponent(ƒ.ComponentMesh).mtxPivot.scaling.y;
-            let beamWidth = _beam.getComponent(ƒ.ComponentMesh).mtxPivot.scaling.x;
+            let beamScaling = _beam.getComponent(ƒ.ComponentMesh).mtxPivot.scaling;
+            let beamLength = beamScaling.y;
+            let beamWidth = beamScaling.x;
             let agentWidth = _agent.getComponent(ƒ.ComponentMesh).mtxPivot.scaling.x;
             if (distance.x < -beamWidth - agentWidth || distance.x > beamWidth + agentWidth || distance.y < -agentWidth || distance.y > agentWidth + beamLength)
                 return false;
@@ -195,13 +218,13 @@ var LaserLeague;
     async function start(_event) {
         viewport = _event.detail;
         root = viewport.getBranch();
-        // console.log(root);
         setUpLasers();
-        // agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent")[0];
         agent = new LaserLeague.Agent();
         root.getChildrenByName("Agents")[0].addChild(agent);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+        let domAgentName = document.querySelector("#Hud>h1");
+        domAgentName.textContent = agent.name;
         // Adjust Camera Position
         viewport.camera.mtxPivot.translateZ(-30);
     }
@@ -242,6 +265,8 @@ var LaserLeague;
                     console.log("hit");
             }
         }
+        let domHealthBar = document.querySelector("input");
+        domHealthBar.value = agent.health.toString();
         viewport.draw();
         ƒ.AudioManager.default.update();
     }

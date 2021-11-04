@@ -18,16 +18,16 @@ namespace LaserLeague {
   async function start(_event: CustomEvent): Promise<void> {
     viewport = _event.detail;
     root = viewport.getBranch();
-    // console.log(root);
     
     setUpLasers();
 
-    // agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent")[0];
     agent = new Agent();
     root.getChildrenByName("Agents")[0].addChild(agent);
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps);  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
 
+    let domAgentName: HTMLElement = document.querySelector("#Hud>h1");
+    domAgentName.textContent = agent.name;
     // Adjust Camera Position
     viewport.camera.mtxPivot.translateZ(-30);
   }
@@ -76,6 +76,9 @@ namespace LaserLeague {
           console.log("hit");
       }
     }
+
+    let domHealthBar: HTMLInputElement = document.querySelector("input");
+    domHealthBar.value = agent.health.toString();
 
     viewport.draw();
     ƒ.AudioManager.default.update();

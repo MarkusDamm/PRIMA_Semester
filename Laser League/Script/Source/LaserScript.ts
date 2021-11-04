@@ -47,8 +47,9 @@ namespace LaserLeague {
             let testPosition: ƒ.Vector3 = ƒ.Vector3.TRANSFORMATION(_agent.mtxWorld.translation, _beam.mtxWorldInverse);
             
             let distance: ƒ.Vector2 = ƒ.Vector2.DIFFERENCE(testPosition.toVector2(), _beam.mtxLocal.translation.toVector2());
-            let beamLength: number = _beam.getComponent(ƒ.ComponentMesh).mtxPivot.scaling.y;
-            let beamWidth: number = _beam.getComponent(ƒ.ComponentMesh).mtxPivot.scaling.x;
+            let beamScaling: ƒ.Vector3 = _beam.getComponent(ƒ.ComponentMesh).mtxPivot.scaling;
+            let beamLength: number = beamScaling.y;
+            let beamWidth: number = beamScaling.x;
             let agentWidth: number = _agent.getComponent(ƒ.ComponentMesh).mtxPivot.scaling.x;
             
             if (distance.x < -beamWidth-agentWidth || distance.x > beamWidth+agentWidth || distance.y < -agentWidth || distance.y > agentWidth + beamLength)

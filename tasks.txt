@@ -20,3 +20,8 @@
 
 02.11.
     - create agent as child-Class from Node? (see Jirka Code)
+
+04.11.
+    - use FudgeUserInterface for Hud
+    - try out FUI Controller
+    - experiment with FUI Creator
