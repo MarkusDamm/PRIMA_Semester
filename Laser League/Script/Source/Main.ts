@@ -1,11 +1,12 @@
-namespace Script {
+namespace LaserLeague {
   // Don't forget to compile: Strg + Shift + B
   import ƒ = FudgeCore; // ALT+159
   ƒ.Debug.info("Main Program Template running!");
 
   let viewport: ƒ.Viewport;
   let root: ƒ.Node;
-  let agent: ƒ.Node;
+  // let agent: ƒ.Node;
+  let agent: Agent;
   let laserformation: ƒ.Node;
   let laserPrefab: ƒ.Node;
   let copy: ƒ.GraphInstance;
@@ -21,7 +22,9 @@ namespace Script {
     
     setUpLasers();
 
-    agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent")[0];
+    // agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent")[0];
+    agent = new Agent();
+    root.getChildrenByName("Agents")[0].addChild(agent);
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps);  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
 
@@ -69,7 +72,7 @@ namespace Script {
     for (let laser of lasers) {
       let beams: ƒ.Node[] = laser.getChildrenByName("Beam");
       for (let beam of beams) {
-        if (LaserScript.collisionTest(agent, beam))
+        if (LaserScript.collisionCheck(agent, beam))
           console.log("hit");
       }
     }

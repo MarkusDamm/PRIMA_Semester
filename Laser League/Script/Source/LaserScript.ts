@@ -1,6 +1,6 @@
-namespace Script {
+namespace LaserLeague {
     import ƒ = FudgeCore;
-    ƒ.Project.registerScriptNamespace(Script);  // Register the namespace to FUDGE for serialization
+    ƒ.Project.registerScriptNamespace(LaserLeague);  // Register the namespace to FUDGE for serialization
 
     export class LaserScript extends ƒ.ComponentScript {
 
@@ -43,11 +43,15 @@ namespace Script {
             this.node.getComponent(ƒ.ComponentTransform).mtxLocal.rotateZ(this.laserRotationSpeed * deltaTime)
         }
 
-        public static collisionTest(_agent: ƒ.Node, _beam: ƒ.Node): boolean {
+        public static collisionCheck(_agent: ƒ.Node, _beam: ƒ.Node): boolean {
             let testPosition: ƒ.Vector3 = ƒ.Vector3.TRANSFORMATION(_agent.mtxWorld.translation, _beam.mtxWorldInverse);
+            
             let distance: ƒ.Vector2 = ƒ.Vector2.DIFFERENCE(testPosition.toVector2(), _beam.mtxLocal.translation.toVector2());
             let beamLength: number = _beam.getComponent(ƒ.ComponentMesh).mtxPivot.scaling.y;
-            if (distance.x < -1 || distance.x > 1 || distance.y < -0.5 || distance.y > 0.5 + beamLength)
+            let beamWidth: number = _beam.getComponent(ƒ.ComponentMesh).mtxPivot.scaling.x;
+            let agentWidth: number = _agent.getComponent(ƒ.ComponentMesh).mtxPivot.scaling.x;
+            
+            if (distance.x < -beamWidth-agentWidth || distance.x > beamWidth+agentWidth || distance.y < -agentWidth || distance.y > agentWidth + beamLength)
               return false;
             else
               return true;

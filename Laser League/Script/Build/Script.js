@@ -1,8 +1,46 @@
 "use strict";
-var Script;
-(function (Script) {
+var LaserLeague;
+(function (LaserLeague) {
     var ƒ = FudgeCore;
-    ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
+    class Agent extends ƒ.Node {
+        constructor() {
+            super("Agent");
+            this.agentMoveSpeed = 8;
+            this.agentRotateSpeed = 160;
+            this.ctrForward = new ƒ.Control("Forward", this.agentMoveSpeed, 0 /* PROPORTIONAL */);
+            this.ctrSideways = new ƒ.Control("Sideways", this.agentMoveSpeed, 0 /* PROPORTIONAL */);
+            this.ctrRotation = new ƒ.Control("Rotation", this.agentRotateSpeed, 0 /* PROPORTIONAL */);
+            this.hndAgentMovement = () => {
+                let deltaTime = ƒ.Loop.timeFrameReal / 1000;
+                let forwardSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]) +
+                    ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]));
+                this.ctrForward.setInput(forwardSpeed * deltaTime);
+                this.mtxLocal.translateY(this.ctrForward.getOutput());
+                let sidewaysSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.D]) +
+                    ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.A]));
+                this.ctrSideways.setInput(sidewaysSpeed * deltaTime);
+                this.mtxLocal.translateX(this.ctrSideways.getOutput());
+                let rotationSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.ARROW_LEFT]) +
+                    ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.ARROW_RIGHT]));
+                this.ctrRotation.setInput(rotationSpeed * deltaTime);
+                this.mtxLocal.rotateZ(this.ctrRotation.getOutput());
+            };
+            this.addComponent(new ƒ.ComponentTransform);
+            this.addComponent(new ƒ.ComponentMesh(new ƒ.MeshPolygon("MeshAgent")));
+            this.addComponent(new ƒ.ComponentMaterial(new ƒ.Material("mtrAgent", ƒ.ShaderUniColor, new ƒ.CoatColored(new ƒ.Color(0.9, 0.75, 0, 1)))));
+            this.ctrForward.setDelay(50);
+            this.ctrSideways.setDelay(50);
+            this.ctrRotation.setDelay(20);
+            ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.hndAgentMovement);
+            // this.mtxLocal.scale(ƒ.Vector3.ONE(0.5));
+        }
+    }
+    LaserLeague.Agent = Agent;
+})(LaserLeague || (LaserLeague = {}));
+var LaserLeague;
+(function (LaserLeague) {
+    var ƒ = FudgeCore;
+    ƒ.Project.registerScriptNamespace(LaserLeague); // Register the namespace to FUDGE for serialization
     class AgentScript extends ƒ.ComponentScript {
         constructor() {
             super();
@@ -21,7 +59,7 @@ var Script;
                         this.ctrForward.setDelay(50);
                         this.ctrSideways.setDelay(50);
                         this.ctrRotation.setDelay(20);
-                        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.hdlAgentMovement);
+                        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.hndAgentMovement);
                         break;
                     case "componentRemove" /* COMPONENT_REMOVE */:
                         this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
@@ -29,7 +67,7 @@ var Script;
                         break;
                 }
             };
-            this.hdlAgentMovement = () => {
+            this.hndAgentMovement = () => {
                 let deltaTime = ƒ.Loop.timeFrameReal / 1000;
                 let forwardSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]) +
                     ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]));
@@ -54,12 +92,12 @@ var Script;
     }
     // Register the script as component for use in the editor via drag&drop
     AgentScript.iSubclass = ƒ.Component.registerSubclass(AgentScript);
-    Script.AgentScript = AgentScript;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
+    LaserLeague.AgentScript = AgentScript;
+})(LaserLeague || (LaserLeague = {}));
+var LaserLeague;
+(function (LaserLeague) {
     var ƒ = FudgeCore;
-    ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
+    ƒ.Project.registerScriptNamespace(LaserLeague); // Register the namespace to FUDGE for serialization
     class ItemScript extends ƒ.ComponentScript {
         constructor() {
             super();
@@ -87,12 +125,12 @@ var Script;
     }
     // Register the script as component for use in the editor via drag&drop
     ItemScript.iSubclass = ƒ.Component.registerSubclass(ItemScript);
-    Script.ItemScript = ItemScript;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
+    LaserLeague.ItemScript = ItemScript;
+})(LaserLeague || (LaserLeague = {}));
+var LaserLeague;
+(function (LaserLeague) {
     var ƒ = FudgeCore;
-    ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
+    ƒ.Project.registerScriptNamespace(LaserLeague); // Register the namespace to FUDGE for serialization
     class LaserScript extends ƒ.ComponentScript {
         constructor() {
             super();
@@ -126,25 +164,28 @@ var Script;
             this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
         }
-        static collisionTest(_agent, _beam) {
+        static collisionCheck(_agent, _beam) {
             let testPosition = ƒ.Vector3.TRANSFORMATION(_agent.mtxWorld.translation, _beam.mtxWorldInverse);
             let distance = ƒ.Vector2.DIFFERENCE(testPosition.toVector2(), _beam.mtxLocal.translation.toVector2());
             let beamLength = _beam.getComponent(ƒ.ComponentMesh).mtxPivot.scaling.y;
-            if (distance.x < -1 || distance.x > 1 || distance.y < -0.5 || distance.y > 0.5 + beamLength)
+            let beamWidth = _beam.getComponent(ƒ.ComponentMesh).mtxPivot.scaling.x;
+            let agentWidth = _agent.getComponent(ƒ.ComponentMesh).mtxPivot.scaling.x;
+            if (distance.x < -beamWidth - agentWidth || distance.x > beamWidth + agentWidth || distance.y < -agentWidth || distance.y > agentWidth + beamLength)
                 return false;
             else
                 return true;
         }
     }
-    Script.LaserScript = LaserScript;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
+    LaserLeague.LaserScript = LaserScript;
+})(LaserLeague || (LaserLeague = {}));
+var LaserLeague;
+(function (LaserLeague) {
     // Don't forget to compile: Strg + Shift + B
     var ƒ = FudgeCore; // ALT+159
     ƒ.Debug.info("Main Program Template running!");
     let viewport;
     let root;
+    // let agent: ƒ.Node;
     let agent;
     let laserformation;
     let laserPrefab;
@@ -156,7 +197,9 @@ var Script;
         root = viewport.getBranch();
         // console.log(root);
         setUpLasers();
-        agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent")[0];
+        // agent = root.getChildrenByName("Agents")[0].getChildrenByName("Agent")[0];
+        agent = new LaserLeague.Agent();
+        root.getChildrenByName("Agents")[0].addChild(agent);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         // Adjust Camera Position
@@ -195,12 +238,12 @@ var Script;
         for (let laser of lasers) {
             let beams = laser.getChildrenByName("Beam");
             for (let beam of beams) {
-                if (Script.LaserScript.collisionTest(agent, beam))
+                if (LaserLeague.LaserScript.collisionCheck(agent, beam))
                     console.log("hit");
             }
         }
         viewport.draw();
         ƒ.AudioManager.default.update();
     }
-})(Script || (Script = {}));
+})(LaserLeague || (LaserLeague = {}));
 //# sourceMappingURL=Script.js.map

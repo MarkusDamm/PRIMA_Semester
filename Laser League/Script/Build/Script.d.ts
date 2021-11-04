@@ -1,4 +1,16 @@
-declare namespace Script {
+declare namespace LaserLeague {
+    import ƒ = FudgeCore;
+    class Agent extends ƒ.Node {
+        constructor();
+        private agentMoveSpeed;
+        private agentRotateSpeed;
+        private ctrForward;
+        private ctrSideways;
+        private ctrRotation;
+        hndAgentMovement: () => void;
+    }
+}
+declare namespace LaserLeague {
     import ƒ = FudgeCore;
     class AgentScript extends ƒ.ComponentScript {
         static readonly iSubclass: number;
@@ -10,10 +22,10 @@ declare namespace Script {
         private ctrRotation;
         constructor();
         hndEvent: (_event: Event) => void;
-        hdlAgentMovement: () => void;
+        hndAgentMovement: () => void;
     }
 }
-declare namespace Script {
+declare namespace LaserLeague {
     import ƒ = FudgeCore;
     class ItemScript extends ƒ.ComponentScript {
         static readonly iSubclass: number;
@@ -22,7 +34,7 @@ declare namespace Script {
         hndEvent: (_event: Event) => void;
     }
 }
-declare namespace Script {
+declare namespace LaserLeague {
     import ƒ = FudgeCore;
     class LaserScript extends ƒ.ComponentScript {
         message: string;
@@ -30,8 +42,8 @@ declare namespace Script {
         constructor();
         hndEvent: (_event: Event) => void;
         hndRotation: (_event: Event) => void;
-        static collisionTest(_agent: ƒ.Node, _beam: ƒ.Node): boolean;
+        static collisionCheck(_agent: ƒ.Node, _beam: ƒ.Node): boolean;
     }
 }
-declare namespace Script {
+declare namespace LaserLeague {
 }

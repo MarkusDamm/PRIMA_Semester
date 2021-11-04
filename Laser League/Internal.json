@@ -165,74 +165,7 @@
           "ƒ.Node": {
             "name": "Agents",
             "components": {},
-            "children": [
-              {
-                "ƒ.GraphInstance": {
-                  "name": "Agent",
-                  "components": {
-                    "ComponentMesh": [
-                      {
-                        "ƒ.ComponentMesh": {
-                          "idMesh": "MeshPolygon|2021-10-14T09:55:04.792Z|97499",
-                          "pivot": {
-                            "translation": "[0, 0, 0]",
-                            "rotation": "[0, 0, 0]",
-                            "scaling": "[0.699999988079071, 0.699999988079071, 1]"
-                          },
-                          "Component": {
-                            "active": true
-                          }
-                        }
-                      }
-                    ],
-                    "ComponentMaterial": [
-                      {
-                        "ƒ.ComponentMaterial": {
-                          "sortForAlpha": false,
-                          "clrPrimary": "[1, 1, 1, 1]",
-                          "clrSecondary": "[1, 1, 1, 1]",
-                          "pivot": {
-                            "translation": "[0, 0]",
-                            "rotation": 0,
-                            "scaling": "[1, 1]"
-                          },
-                          "Component": {
-                            "active": true
-                          },
-                          "idMaterial": "Material|2021-10-14T10:04:26.091Z|43118"
-                        }
-                      }
-                    ],
-                    "ComponentTransform": [
-                      {
-                        "ƒ.ComponentTransform": {
-                          "local": {
-                            "translation": "[0, 0, 0]",
-                            "rotation": "[0, 0, 0]",
-                            "scaling": "[1, 1, 1]"
-                          },
-                          "Component": {
-                            "active": true
-                          }
-                        }
-                      }
-                    ],
-                    "AgentScript": [
-                      {
-                        "Script.AgentScript": {
-                          "active": true,
-                          "message": "AgentScript added to ",
-                          "agentMoveSpeed": 8,
-                          "agentRotateSpeed": 160
-                        }
-                      }
-                    ]
-                  },
-                  "children": [],
-                  "idSource": "Graph|2021-10-30T17:45:58.435Z|50137"
-                }
-              }
-            ]
+            "children": []
           }
         },
         {
@@ -293,7 +226,7 @@
                     ],
                     "ItemScript": [
                       {
-                        "Script.ItemScript": {
+                        "LaserLeague.ItemScript": {
                           "active": true,
                           "message": "ItemScript added to "
                         }
@@ -320,7 +253,7 @@
           {
             "ƒ.ComponentTransform": {
               "local": {
-                "translation": "[-10, 5, 0]",
+                "translation": "[0, 0, 0]",
                 "rotation": "[0, 0, 0]",
                 "scaling": "[1, 1, 1]"
               },
@@ -332,7 +265,7 @@
         ],
         "LaserScript": [
           {
-            "Script.LaserScript": {
+            "LaserLeague.LaserScript": {
               "active": true,
               "message": "Laser Script added to ",
               "laserRotationSpeed": 120
@@ -586,7 +519,7 @@
         ],
         "AgentScript": [
           {
-            "Script.AgentScript": {
+            "LaserLeague.AgentScript": {
               "active": true,
               "message": "AgentScript added to ",
               "agentMoveSpeed": 8,
@@ -653,7 +586,7 @@
         ],
         "ItemScript": [
           {
-            "Script.ItemScript": {
+            "LaserLeague.ItemScript": {
               "active": true,
               "message": "ItemScript added to "
             }

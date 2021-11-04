@@ -17,3 +17,6 @@
     - use nested loops for creating lasers
     - look into ƒ.Random
     - change rotation from lasers in Main.ts?
+
+02.11.
+    - create agent as child-Class from Node? (see Jirka Code)

@@ -1,6 +1,6 @@
-namespace Script {
+namespace LaserLeague {
   import ƒ = FudgeCore;
-  ƒ.Project.registerScriptNamespace(Script);  // Register the namespace to FUDGE for serialization
+  ƒ.Project.registerScriptNamespace(LaserLeague);  // Register the namespace to FUDGE for serialization
   export class AgentScript extends ƒ.ComponentScript {
     
     // Register the script as component for use in the editor via drag&drop
@@ -34,7 +34,7 @@ namespace Script {
           this.ctrForward.setDelay(50);
           this.ctrSideways.setDelay(50);
           this.ctrRotation.setDelay(20);
-          ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.hdlAgentMovement);
+          ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.hndAgentMovement);
           break;
         case ƒ.EVENT.COMPONENT_REMOVE:
           this.removeEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);
@@ -43,7 +43,7 @@ namespace Script {
       }
     }
 
-    public hdlAgentMovement = () => {
+    public hndAgentMovement = () => {
       let deltaTime: number = ƒ.Loop.timeFrameReal / 1000;
 
       let forwardSpeed: number = (
