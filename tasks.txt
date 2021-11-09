@@ -25,3 +25,6 @@
     - use FudgeUserInterface for Hud
     - try out FUI Controller
     - experiment with FUI Creator
+
+09.11.
+    - trigger sounds per script (footsteps, laser-collision)
