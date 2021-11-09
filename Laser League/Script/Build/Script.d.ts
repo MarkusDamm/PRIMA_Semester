@@ -9,7 +9,8 @@ declare namespace LaserLeague {
         private ctrSideways;
         private ctrRotation;
         constructor();
-        hndAgentMovement: () => void;
+        private update;
+        private hndAgentMovement;
     }
 }
 declare namespace LaserLeague {
@@ -30,7 +31,8 @@ declare namespace LaserLeague {
 declare namespace LaserLeague {
     import ƒ = FudgeCore;
     class GameState extends ƒ.Mutable {
-        hits: number;
+        name: string;
+        health: number;
         protected reduceMutator(_mutator: ƒ.Mutator): void;
     }
     export let gameState: GameState;

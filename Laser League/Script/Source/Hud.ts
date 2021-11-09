@@ -3,7 +3,8 @@ namespace LaserLeague {
   import ƒui = FudgeUserInterface;
 
   class GameState extends ƒ.Mutable {
-    public hits: number = 0;
+    public name: string = "";
+    public health: number = 1;
     protected reduceMutator(_mutator: ƒ.Mutator): void {/* */ }
   }
 

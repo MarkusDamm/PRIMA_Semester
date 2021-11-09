@@ -5,12 +5,18 @@ var LaserLeague;
     class Agent extends ƒ.Node {
         constructor() {
             super("Agent");
+            this.health = 1;
             this.name = "Agent Orange";
             this.agentMoveSpeed = 8;
             this.agentRotateSpeed = 160;
             this.ctrForward = new ƒ.Control("Forward", this.agentMoveSpeed, 0 /* PROPORTIONAL */);
             this.ctrSideways = new ƒ.Control("Sideways", this.agentMoveSpeed, 0 /* PROPORTIONAL */);
             this.ctrRotation = new ƒ.Control("Rotation", this.agentRotateSpeed, 0 /* PROPORTIONAL */);
+            this.update = () => {
+                this.hndAgentMovement();
+                this.health -= 0.001;
+                LaserLeague.gameState.health = this.health;
+            };
             this.hndAgentMovement = () => {
                 let deltaTime = ƒ.Loop.timeFrameReal / 1000;
                 let forwardSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]) +
@@ -30,10 +36,11 @@ var LaserLeague;
             let mat = FudgeCore.Project.resources["Material|2021-10-14T10:04:26.091Z|43118"];
             this.addComponent(new ƒ.ComponentMesh(new ƒ.MeshPolygon("MeshAgent")));
             this.addComponent(new ƒ.ComponentMaterial(mat));
+            LaserLeague.gameState.name = this.name;
             this.ctrForward.setDelay(50);
             this.ctrSideways.setDelay(50);
             this.ctrRotation.setDelay(20);
-            ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.hndAgentMovement);
+            ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }
     }
     LaserLeague.Agent = Agent;
@@ -102,7 +109,8 @@ var LaserLeague;
     class GameState extends ƒ.Mutable {
         constructor() {
             super(...arguments);
-            this.hits = 0;
+            this.name = "";
+            this.health = 1;
         }
         reduceMutator(_mutator) { }
     }
@@ -218,13 +226,12 @@ var LaserLeague;
     async function start(_event) {
         viewport = _event.detail;
         root = viewport.getBranch();
+        LaserLeague.Hud.start();
         setUpLasers();
         agent = new LaserLeague.Agent();
         root.getChildrenByName("Agents")[0].addChild(agent);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
-        let domAgentName = document.querySelector("#Hud>h1");
-        domAgentName.textContent = agent.name;
         // Adjust Camera Position
         viewport.camera.mtxPivot.translateZ(-30);
     }
@@ -265,8 +272,6 @@ var LaserLeague;
                     console.log("hit");
             }
         }
-        let domHealthBar = document.querySelector("input");
-        domHealthBar.value = agent.health.toString();
         viewport.draw();
         ƒ.AudioManager.default.update();
     }

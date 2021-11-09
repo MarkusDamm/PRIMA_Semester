@@ -3,7 +3,7 @@ namespace LaserLeague {
 
   export class Agent extends ƒ.Node {
 
-    public health: number;
+    public health: number = 1;
     public name: string = "Agent Orange"
     private agentMoveSpeed: number = 8;
     private agentRotateSpeed: number = 160;
@@ -19,13 +19,22 @@ namespace LaserLeague {
       this.addComponent(new ƒ.ComponentMesh(new ƒ.MeshPolygon("MeshAgent")));
       this.addComponent(new ƒ.ComponentMaterial(mat));
 
+      gameState.name = this.name;
+
       this.ctrForward.setDelay(50);
       this.ctrSideways.setDelay(50);
       this.ctrRotation.setDelay(20);
-      ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.hndAgentMovement);
+      ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
     }
 
-    public hndAgentMovement = () => {
+    private update = () => {
+      this.hndAgentMovement();
+      
+      this.health -= 0.001;
+      gameState.health = this.health;
+    }
+
+    private hndAgentMovement = () => {
       let deltaTime: number = ƒ.Loop.timeFrameReal / 1000;
 
       let forwardSpeed: number = (
