@@ -9,6 +9,7 @@ namespace LaserLeague {
   let agent: Agent;
   let laserformation: ƒ.Node;
   let laserPrefab: ƒ.Node;
+  let laserSound: ƒ.ComponentAudio;
   let copy: ƒ.GraphInstance;
 
   let fps: number = 60;
@@ -18,7 +19,7 @@ namespace LaserLeague {
   async function start(_event: CustomEvent): Promise<void> {
     viewport = _event.detail;
     root = viewport.getBranch();
-    
+
     Hud.start();
     setUpLasers();
 
@@ -27,6 +28,7 @@ namespace LaserLeague {
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps);  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
 
+    laserSound = root.getComponents(ƒ.ComponentAudio)[1];
     // Adjust Camera Position
     viewport.camera.mtxPivot.translateZ(-30);
   }
@@ -35,12 +37,12 @@ namespace LaserLeague {
     laserformation = root.getChildrenByName("Laserformations")[0].getChildrenByName("Laserformation")[0];
     let graphLaser: ƒ.Graph = <ƒ.Graph>FudgeCore.Project.resources["Graph|2021-10-28T13:13:43.242Z|36118"];
     laserPrefab = await ƒ.Project.createGraphInstance(graphLaser);
-    
+
     let laserPlacementPosition: ƒ.Vector3 = new ƒ.Vector3(-12, 6.5, 0);
-    let laserAmounts: ƒ.Vector2 = new ƒ.Vector2(3,2);
+    let laserAmounts: ƒ.Vector2 = new ƒ.Vector2(3, 2);
     let xPosition: number = -12;
     let yPosition: number = 6.5;
-    
+
     for (let i = 0; i < laserAmounts.y; i++) {
       for (let i = 0; i < laserAmounts.x; i++) {
         await placeLaser(laserPlacementPosition);
@@ -71,8 +73,10 @@ namespace LaserLeague {
     for (let laser of lasers) {
       let beams: ƒ.Node[] = laser.getChildrenByName("Beam");
       for (let beam of beams) {
-        if (LaserScript.collisionCheck(agent, beam))
+        if (LaserScript.collisionCheck(agent, beam)) {
+          laserSound.play(true);
           console.log("hit");
+        }
       }
     }
 

@@ -106,6 +106,15 @@
               "loop": true,
               "volume": 1
             }
+          },
+          {
+            "ƒ.ComponentAudio": {
+              "active": true,
+              "idResource": "Audio|2021-11-11T13:10:33.017Z|43575",
+              "playing": false,
+              "loop": false,
+              "volume": 1
+            }
           }
         ],
         "ComponentAudioListener": [
@@ -623,6 +632,22 @@
       "children": [],
       "idResource": "Graph|2021-10-30T19:13:24.936Z|20390",
       "type": "Graph"
+    }
+  },
+  "Audio|2021-11-11T13:10:33.017Z|43575": {
+    "ƒ.Audio": {
+      "url": "Sound\\laser.mp3",
+      "idResource": "Audio|2021-11-11T13:10:33.017Z|43575",
+      "name": "Sound\\laser.mp3",
+      "type": "Audio"
+    }
+  },
+  "Audio|2021-11-11T13:10:37.295Z|04028": {
+    "ƒ.Audio": {
+      "url": "Sound\\steps.mp3",
+      "idResource": "Audio|2021-11-11T13:10:37.295Z|04028",
+      "name": "Sound\\steps.mp3",
+      "type": "Audio"
     }
   }
 }

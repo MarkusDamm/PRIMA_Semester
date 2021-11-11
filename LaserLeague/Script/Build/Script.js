@@ -220,6 +220,7 @@ var LaserLeague;
     let agent;
     let laserformation;
     let laserPrefab;
+    let laserSound;
     let copy;
     let fps = 60;
     document.addEventListener("interactiveViewportStarted", start);
@@ -232,6 +233,7 @@ var LaserLeague;
         root.getChildrenByName("Agents")[0].addChild(agent);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+        laserSound = root.getComponents(ƒ.ComponentAudio)[1];
         // Adjust Camera Position
         viewport.camera.mtxPivot.translateZ(-30);
     }
@@ -268,8 +270,10 @@ var LaserLeague;
         for (let laser of lasers) {
             let beams = laser.getChildrenByName("Beam");
             for (let beam of beams) {
-                if (LaserLeague.LaserScript.collisionCheck(agent, beam))
+                if (LaserLeague.LaserScript.collisionCheck(agent, beam)) {
+                    laserSound.play(true);
                     console.log("hit");
+                }
             }
         }
         viewport.draw();
