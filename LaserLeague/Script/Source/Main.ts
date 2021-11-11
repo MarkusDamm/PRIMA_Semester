@@ -9,7 +9,6 @@ namespace LaserLeague {
   let agent: Agent;
   let laserformation: ƒ.Node;
   let laserPrefab: ƒ.Node;
-  let laserSound: ƒ.ComponentAudio;
   let copy: ƒ.GraphInstance;
 
   let fps: number = 60;
@@ -28,7 +27,9 @@ namespace LaserLeague {
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps);  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
 
-    laserSound = root.getComponents(ƒ.ComponentAudio)[1];
+    LaserScript.sound = root.getComponents(ƒ.ComponentAudio)[1]; // check for audio name/ ID instead
+    console.log(LaserScript.sound.getAudio());
+    
     // Adjust Camera Position
     viewport.camera.mtxPivot.translateZ(-30);
   }
@@ -74,7 +75,7 @@ namespace LaserLeague {
       let beams: ƒ.Node[] = laser.getChildrenByName("Beam");
       for (let beam of beams) {
         if (LaserScript.collisionCheck(agent, beam)) {
-          laserSound.play(true);
+          LaserScript.sound.play(true);
           console.log("hit");
         }
       }

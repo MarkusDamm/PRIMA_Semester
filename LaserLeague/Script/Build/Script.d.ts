@@ -56,6 +56,7 @@ declare namespace LaserLeague {
     class LaserScript extends ƒ.ComponentScript {
         message: string;
         private laserRotationSpeed;
+        static sound: ƒ.ComponentAudio;
         constructor();
         hndEvent: (_event: Event) => void;
         hndRotation: (_event: Event) => void;

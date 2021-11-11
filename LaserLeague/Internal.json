@@ -93,6 +93,14 @@
       "type": "Audio"
     }
   },
+  "Audio|2021-11-11T13:10:33.017Z|43575": {
+    "ƒ.Audio": {
+      "url": "Sound\\laser.mp3",
+      "idResource": "Audio|2021-11-11T13:10:33.017Z|43575",
+      "name": "Sound\\laser.mp3",
+      "type": "Audio"
+    }
+  },
   "Graph|2021-10-07T13:17:21.886Z|46296": {
     "ƒ.Graph": {
       "name": "Scene",
@@ -632,14 +640,6 @@
       "children": [],
       "idResource": "Graph|2021-10-30T19:13:24.936Z|20390",
       "type": "Graph"
-    }
-  },
-  "Audio|2021-11-11T13:10:33.017Z|43575": {
-    "ƒ.Audio": {
-      "url": "Sound\\laser.mp3",
-      "idResource": "Audio|2021-11-11T13:10:33.017Z|43575",
-      "name": "Sound\\laser.mp3",
-      "type": "Audio"
     }
   },
   "Audio|2021-11-11T13:10:37.295Z|04028": {

@@ -7,6 +7,8 @@ namespace LaserLeague {
         public message: string = "Laser Script added to ";
 
         private laserRotationSpeed: number = 120;
+        public static sound: ƒ.ComponentAudio;
+
 
         constructor() {
             super();

@@ -28,3 +28,7 @@
 
 09.11.
     - trigger sounds per script (footsteps, laser-collision)
+
+11.11.
+    - get rid of scripts in html, do stuff in code
+    - try broadcasting events when Jirka did some stuff for that
