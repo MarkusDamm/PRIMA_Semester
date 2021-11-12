@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="styles.css" />
 
     <!--Editor settings of this project-->
-    <meta type="settings" autoview="Graph|2021-10-07T13:17:21.886Z|46296" project="{'name':'Laser%20League','includeAutoViewScript':true,'graphAutoView':'Graph|2021-10-07T13:17:21.886Z|46296'}" panels="[{'type':'PanelProject','state':{}},{'type':'PanelGraph','state':{'graph':'Graph|2021-10-07T13:17:21.886Z|46296'}}]" />
+    <meta type="settings" autoview="Graph|2021-10-07T13:17:21.886Z|46296"
+        project="{'name':'Laser%20League','includeAutoViewScript':true,'graphAutoView':'Graph|2021-10-07T13:17:21.886Z|46296'}"
+        panels="[{'type':'PanelProject','state':{}},{'type':'PanelGraph','state':{'graph':'Graph|2021-10-07T13:17:21.886Z|46296'}}]" />
 
     <!--Activate the following line to include the FUDGE-version of Oimo-Physics. You may want to download a local copy to work offline and be independent from future changes!-->
     <!--<script type="text/javascript" src="../../../Physics/OimoPhysics.js"></script>-->
@@ -15,7 +17,8 @@
     <!--Load FUDGE. You may want to download local copies to work offline and be independent from future changes! Developers working on FUDGE itself may want to create symlinks-->
     <script type="text/javascript" src="https://jirkadelloro.github.io/FUDGE/Core/Build/FudgeCore.js"></script>
     <script type="text/javascript" src="https://jirkadelloro.github.io/FUDGE/Aid/Build/FudgeAid.js"></script>
-    <script type="text/javascript" src="https://jirkadelloro.github.io/FUDGE/UserInterface\Build/FudgeUserInterface.js"></script>
+    <script type="text/javascript"
+        src="https://jirkadelloro.github.io/FUDGE/UserInterface\Build/FudgeUserInterface.js"></script>
 
     <!--Link internal resources. The editor only loads the first, but at runtime, multiple files can contribute-->
     <link type="resources" src="Internal.json" />
@@ -69,7 +72,7 @@
                 // setup audio
                 let cmpListener = new ƒ.ComponentAudioListener();
                 cmpCamera.node.addComponent(cmpListener);
-                FudgeCore.AudioManager.default.listenWith(cmpListener);
+                // FudgeCore.AudioManager.default.listenWith(cmpListener);
                 FudgeCore.AudioManager.default.listenTo(graph);
                 FudgeCore.Debug.log("Audio:", FudgeCore.AudioManager.default);
                 // draw viewport once for immediate feedback
@@ -94,4 +97,5 @@
         Health <input type="range" key="health" min="0" max="1" step="0.001" disabled>
     </div>
 </body>
+
 </html>

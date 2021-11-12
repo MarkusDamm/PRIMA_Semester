@@ -12,7 +12,8 @@ namespace LaserLeague {
   let laserSound: ƒ.ComponentAudio;
   let copy: ƒ.GraphInstance;
 
-  let fps: number = 60;
+  let fps: number = 240;
+  let timeouts: number[] = [];
 
   document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
 
@@ -26,8 +27,11 @@ namespace LaserLeague {
     agent = new Agent();
     root.getChildrenByName("Agents")[0].addChild(agent);
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
-    ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps);  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+    ƒ.Loop.start(ƒ.LOOP_MODE.TIME_GAME, fps);  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
 
+    document.addEventListener("keydown", hdlCollision);
+
+    // root.getComponents(ƒ.ComponentAudio)[0].play(true);  // enables background music
     laserSound = root.getComponents(ƒ.ComponentAudio)[1];
     // Adjust Camera Position
     viewport.camera.mtxPivot.translateZ(-30);
@@ -75,6 +79,7 @@ namespace LaserLeague {
       for (let beam of beams) {
         if (LaserScript.collisionCheck(agent, beam)) {
           laserSound.play(true);
+          hdlCollision();
           console.log("hit");
         }
       }
@@ -82,5 +87,21 @@ namespace LaserLeague {
 
     viewport.draw();
     ƒ.AudioManager.default.update();
+  }
+
+  function hdlCollision(_event?: KeyboardEvent): void {
+    if (_event && _event.key != "k") { // for debugging
+      return
+    }
+    ƒ.Time.game.setScale(0.2);
+    timeouts.push(setTimeout(resetTime, 1000));
+  }
+
+  function resetTime(): void {
+    for (let timeout of timeouts) {
+      clearTimeout(timeout);
+    }
+
+    ƒ.Time.game.setScale(1);
   }
 }

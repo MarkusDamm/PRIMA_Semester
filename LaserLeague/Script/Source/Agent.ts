@@ -10,7 +10,7 @@ namespace LaserLeague {
     private ctrForward: ƒ.Control = new ƒ.Control("Forward", this.agentMoveSpeed, ƒ.CONTROL_TYPE.PROPORTIONAL);
     private ctrSideways: ƒ.Control = new ƒ.Control("Sideways", this.agentMoveSpeed, ƒ.CONTROL_TYPE.PROPORTIONAL);
     private ctrRotation: ƒ.Control = new ƒ.Control("Rotation", this.agentRotateSpeed, ƒ.CONTROL_TYPE.PROPORTIONAL);
-    
+
     constructor() {
       super("Agent");
 
@@ -29,13 +29,13 @@ namespace LaserLeague {
 
     private update = () => {
       this.hndAgentMovement();
-      
+
       this.health -= 0.001;
       gameState.health = this.health;
     }
 
     private hndAgentMovement = () => {
-      let deltaTime: number = ƒ.Loop.timeFrameReal / 1000;
+      let deltaTime: number = ƒ.Loop.timeFrameGame / 1000;
 
       let forwardSpeed: number = (
         ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]) +
@@ -43,14 +43,14 @@ namespace LaserLeague {
       );
       this.ctrForward.setInput(forwardSpeed * deltaTime);
       this.mtxLocal.translateY(this.ctrForward.getOutput());
-  
+
       let sidewaysSpeed: number = (
         ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.D]) +
         ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.A])
       );
       this.ctrSideways.setInput(sidewaysSpeed * deltaTime);
       this.mtxLocal.translateX(this.ctrSideways.getOutput());
-  
+
       let rotationSpeed: number = (
         ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.ARROW_LEFT]) +
         ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.ARROW_RIGHT])

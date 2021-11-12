@@ -18,7 +18,7 @@ var LaserLeague;
                 LaserLeague.gameState.health = this.health;
             };
             this.hndAgentMovement = () => {
-                let deltaTime = ƒ.Loop.timeFrameReal / 1000;
+                let deltaTime = ƒ.Loop.timeFrameGame / 1000;
                 let forwardSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]) +
                     ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]));
                 this.ctrForward.setInput(forwardSpeed * deltaTime);
@@ -184,7 +184,7 @@ var LaserLeague;
                 }
             };
             this.hndRotation = (_event) => {
-                let deltaTime = ƒ.Loop.timeFrameReal / 1000;
+                let deltaTime = ƒ.Loop.timeFrameGame / 1000;
                 this.node.getComponent(ƒ.ComponentTransform).mtxLocal.rotateZ(this.laserRotationSpeed * deltaTime);
             };
             // Don't start when running in editor
@@ -222,7 +222,8 @@ var LaserLeague;
     let laserPrefab;
     let laserSound;
     let copy;
-    let fps = 60;
+    let fps = 240;
+    let timeouts = [];
     document.addEventListener("interactiveViewportStarted", start);
     async function start(_event) {
         viewport = _event.detail;
@@ -232,7 +233,9 @@ var LaserLeague;
         agent = new LaserLeague.Agent();
         root.getChildrenByName("Agents")[0].addChild(agent);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
-        ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, fps); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+        ƒ.Loop.start(ƒ.LOOP_MODE.TIME_GAME, fps); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+        document.addEventListener("keydown", hdlCollision);
+        // root.getComponents(ƒ.ComponentAudio)[0].play(true);  // enables background music
         laserSound = root.getComponents(ƒ.ComponentAudio)[1];
         // Adjust Camera Position
         viewport.camera.mtxPivot.translateZ(-30);
@@ -272,12 +275,26 @@ var LaserLeague;
             for (let beam of beams) {
                 if (LaserLeague.LaserScript.collisionCheck(agent, beam)) {
                     laserSound.play(true);
+                    hdlCollision();
                     console.log("hit");
                 }
             }
         }
         viewport.draw();
         ƒ.AudioManager.default.update();
+    }
+    function hdlCollision(_event) {
+        if (_event && _event.key != "k") { // for debugging
+            return;
+        }
+        ƒ.Time.game.setScale(0.2);
+        timeouts.push(setTimeout(resetTime, 1000));
+    }
+    function resetTime() {
+        for (let timeout of timeouts) {
+            clearTimeout(timeout);
+        }
+        ƒ.Time.game.setScale(1);
     }
 })(LaserLeague || (LaserLeague = {}));
 //# sourceMappingURL=Script.js.map
