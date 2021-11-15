@@ -213,6 +213,7 @@ var LaserLeague;
 (function (LaserLeague) {
     // Don't forget to compile: Strg + Shift + B
     var ƒ = FudgeCore; // ALT+159
+    // import ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
     let viewport;
     let root;
@@ -224,21 +225,32 @@ var LaserLeague;
     let copy;
     let fps = 240;
     let timeouts = [];
-    document.addEventListener("interactiveViewportStarted", start);
+    window.addEventListener("load", start);
     async function start(_event) {
-        viewport = _event.detail;
+        await ƒ.Project.loadResourcesFromHTML();
+        let graph = ƒ.Project.resources["Graph|2021-10-07T13:17:21.886Z|46296"];
+        // setup Camera
+        let cmpCamera = new ƒ.ComponentCamera();
+        cmpCamera.mtxPivot.rotateY(180);
+        cmpCamera.mtxPivot.translateZ(-35);
+        graph.addComponent(cmpCamera);
+        let canvas = document.querySelector("canvas");
+        viewport = new ƒ.Viewport();
+        viewport.initialize("Viewport", graph, cmpCamera, canvas);
         root = viewport.getBranch();
+        ƒ.AudioManager.default.listenTo(root);
+        ƒ.AudioManager.default.listenWith(root.getComponent(ƒ.ComponentAudioListener));
         LaserLeague.Hud.start();
         setUpLasers();
         agent = new LaserLeague.Agent();
         root.getChildrenByName("Agents")[0].addChild(agent);
-        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
-        ƒ.Loop.start(ƒ.LOOP_MODE.TIME_GAME, fps); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         document.addEventListener("keydown", hdlCollision);
         // root.getComponents(ƒ.ComponentAudio)[0].play(true);  // enables background music
         laserSound = root.getComponents(ƒ.ComponentAudio)[1];
         // Adjust Camera Position
-        viewport.camera.mtxPivot.translateZ(-30);
+        viewport.draw();
+        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
+        ƒ.Loop.start(ƒ.LOOP_MODE.TIME_GAME, fps); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
     async function setUpLasers() {
         laserformation = root.getChildrenByName("Laserformations")[0].getChildrenByName("Laserformation")[0];

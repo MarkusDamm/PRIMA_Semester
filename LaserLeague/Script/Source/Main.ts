@@ -1,6 +1,7 @@
 namespace LaserLeague {
   // Don't forget to compile: Strg + Shift + B
   import ƒ = FudgeCore; // ALT+159
+  // import ƒAid = FudgeAid;
   ƒ.Debug.info("Main Program Template running!");
 
   let viewport: ƒ.Viewport;
@@ -15,26 +16,40 @@ namespace LaserLeague {
   let fps: number = 240;
   let timeouts: number[] = [];
 
-  document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
+  window.addEventListener("load", start);
 
-  async function start(_event: CustomEvent): Promise<void> {
-    viewport = _event.detail;
+  async function start(_event: Event): Promise<void> {
+    await ƒ.Project.loadResourcesFromHTML();
+    let graph: any = ƒ.Project.resources["Graph|2021-10-07T13:17:21.886Z|46296"];
+    // setup Camera
+    let cmpCamera = new ƒ.ComponentCamera();
+    cmpCamera.mtxPivot.rotateY(180);
+    cmpCamera.mtxPivot.translateZ(-35);
+    graph.addComponent(cmpCamera);
+
+    let canvas = document.querySelector("canvas");
+    viewport = new ƒ.Viewport();
+    viewport.initialize("Viewport", graph, cmpCamera, canvas);
+
     root = viewport.getBranch();
+    ƒ.AudioManager.default.listenTo(root);
+    ƒ.AudioManager.default.listenWith(root.getComponent(ƒ.ComponentAudioListener));
 
     Hud.start();
     setUpLasers();
 
     agent = new Agent();
     root.getChildrenByName("Agents")[0].addChild(agent);
-    ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
-    ƒ.Loop.start(ƒ.LOOP_MODE.TIME_GAME, fps);  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
 
     document.addEventListener("keydown", hdlCollision);
 
     // root.getComponents(ƒ.ComponentAudio)[0].play(true);  // enables background music
     laserSound = root.getComponents(ƒ.ComponentAudio)[1];
     // Adjust Camera Position
-    viewport.camera.mtxPivot.translateZ(-30);
+    viewport.draw();
+
+    ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
+    ƒ.Loop.start(ƒ.LOOP_MODE.TIME_GAME, fps);  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
   }
 
   async function setUpLasers(): Promise<void> {
