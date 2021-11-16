@@ -41,23 +41,23 @@ namespace LaserLeague {
         }
 
         public hndRotation = (_event: Event) => {
-            let deltaTime: number = ƒ.Loop.timeFrameReal / 1000;
+            let deltaTime: number = ƒ.Loop.timeFrameGame / 1000;
             this.node.getComponent(ƒ.ComponentTransform).mtxLocal.rotateZ(this.laserRotationSpeed * deltaTime)
         }
 
         public static collisionCheck(_agent: ƒ.Node, _beam: ƒ.Node): boolean {
             let testPosition: ƒ.Vector3 = ƒ.Vector3.TRANSFORMATION(_agent.mtxWorld.translation, _beam.mtxWorldInverse);
-            
+
             let distance: ƒ.Vector2 = ƒ.Vector2.DIFFERENCE(testPosition.toVector2(), _beam.mtxLocal.translation.toVector2());
             let beamScaling: ƒ.Vector3 = _beam.getComponent(ƒ.ComponentMesh).mtxPivot.scaling;
             let beamLength: number = beamScaling.y;
             let beamWidth: number = beamScaling.x;
             let agentWidth: number = _agent.getComponent(ƒ.ComponentMesh).mtxPivot.scaling.x;
-            
-            if (distance.x < -beamWidth-agentWidth || distance.x > beamWidth+agentWidth || distance.y < -agentWidth || distance.y > agentWidth + beamLength)
-              return false;
+
+            if (distance.x < -beamWidth - agentWidth || distance.x > beamWidth + agentWidth || distance.y < -agentWidth || distance.y > agentWidth + beamLength)
+                return false;
             else
-              return true;
-          }
+                return true;
+        }
     }
 }
