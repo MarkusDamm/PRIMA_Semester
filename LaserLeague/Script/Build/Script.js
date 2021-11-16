@@ -224,14 +224,23 @@ var LaserLeague;
     let copy;
     let fps = 240;
     let timeouts = [];
-    window.addEventListener("load", start);
-    async function start(_event) {
+    window.addEventListener("load", init);
+    function init(_event) {
+        let dialog = document.querySelector("dialog");
+        dialog.querySelector("h1").textContent = document.title;
+        dialog.addEventListener("click", function (_event) {
+            // @ts-ignore until HTMLDialog is implemented by all browsers and available in dom.d.ts
+            dialog.close();
+            start();
+        });
+        //@ts-ignore
+        dialog.showModal();
+    }
+    async function start() {
         await ƒ.Project.loadResourcesFromHTML();
-        let graph = ƒ.Project.resources["Graph|2021-10-07T13:17:21.886Z|46296"];
+        let graph = ƒ.Project.resources[document.head.querySelector("meta[autoView]").getAttribute("autoView")];
         // setup Camera
-        let cmpCamera = new ƒ.ComponentCamera();
-        cmpCamera.mtxPivot.rotateY(180);
-        cmpCamera.mtxPivot.translateZ(-35);
+        let cmpCamera = graph.getComponent(ƒ.ComponentCamera);
         graph.addComponent(cmpCamera);
         let canvas = document.querySelector("canvas");
         viewport = new ƒ.Viewport();

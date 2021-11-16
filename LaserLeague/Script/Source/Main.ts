@@ -15,18 +15,28 @@ namespace LaserLeague {
   let fps: number = 240;
   let timeouts: number[] = [];
 
-  window.addEventListener("load", start);
+  window.addEventListener("load", init);
 
-  async function start(_event: Event): Promise<void> {
+  function init(_event: Event): void {
+    let dialog: HTMLDialogElement = document.querySelector("dialog");
+    dialog.querySelector("h1").textContent = document.title;
+    dialog.addEventListener("click", function (_event: Event) {
+        // @ts-ignore until HTMLDialog is implemented by all browsers and available in dom.d.ts
+        dialog.close();
+        start();
+    });
+    //@ts-ignore
+    dialog.showModal();
+}
+
+  async function start(): Promise<void> {
     await ƒ.Project.loadResourcesFromHTML();
-    let graph: any = ƒ.Project.resources["Graph|2021-10-07T13:17:21.886Z|46296"];
+    let graph: ƒ.Node = ƒ.Project.resources[document.head.querySelector("meta[autoView]").getAttribute("autoView")];
     // setup Camera
-    let cmpCamera = new ƒ.ComponentCamera();
-    cmpCamera.mtxPivot.rotateY(180);
-    cmpCamera.mtxPivot.translateZ(-35);
+    let cmpCamera: ƒ.ComponentCamera = graph.getComponent(ƒ.ComponentCamera);
     graph.addComponent(cmpCamera);
 
-    let canvas = document.querySelector("canvas");
+    let canvas: HTMLCanvasElement = document.querySelector("canvas");
     viewport = new ƒ.Viewport();
     viewport.initialize("Viewport", graph, cmpCamera, canvas);
 
