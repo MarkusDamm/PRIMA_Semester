@@ -32,3 +32,8 @@
 11.11.
     - get rid of scripts in html, do stuff in code
     - try broadcasting events when Jirka did some stuff for that
+
+16.11.
+    - get back on Heroku/ try StudiServer
+    - deploy Heroku with GitHub-Repo
+    - propably update Node

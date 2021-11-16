@@ -13,7 +13,7 @@ namespace LaserLeague {
   let copy: ƒ.GraphInstance;
 
   let fps: number = 240;
-  let timeouts: number[] = [];
+  let timeouts: (number|NodeJS.Timeout)[] = [];
 
   window.addEventListener("load", init);
 
@@ -31,7 +31,7 @@ namespace LaserLeague {
 
   async function start(): Promise<void> {
     await ƒ.Project.loadResourcesFromHTML();
-    let graph: ƒ.Node = ƒ.Project.resources[document.head.querySelector("meta[autoView]").getAttribute("autoView")];
+    let graph: ƒ.Node = <ƒ.Graph>ƒ.Project.resources[document.head.querySelector("meta[autoView]").getAttribute("autoView")];
     // setup Camera
     let cmpCamera: ƒ.ComponentCamera = graph.getComponent(ƒ.ComponentCamera);
     graph.addComponent(cmpCamera);
@@ -125,7 +125,7 @@ namespace LaserLeague {
 
   function resetTime(): void {
     for (let timeout of timeouts) {
-      clearTimeout(timeout);
+      clearTimeout(<number>timeout);
     }
 
     ƒ.Time.game.setScale(1);
