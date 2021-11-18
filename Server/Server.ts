@@ -4,6 +4,7 @@
  * @author Jirka Dell'Oro-Friedl, HFU, 2021
  */
 
+console.log("starting server");
 import { FudgeServer } from "../FudgeNet/Server/FudgeServer.js";
 
 
@@ -19,3 +20,5 @@ if (!port) {
 let server: FudgeServer = new FudgeServer();
 server.startUp(<number>port);
 console.log(server);
+
+console.log("server started");
