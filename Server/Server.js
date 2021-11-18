@@ -14,5 +14,6 @@ if (!port) {
 }
 let server = new FudgeServer();
 server.startUp(port);
+server.broadcast("Do you get this message?");
 console.log(server);
 console.log("server started");

@@ -37,3 +37,8 @@
     - get back on Heroku/ try StudiServer
     - deploy Heroku with GitHub-Repo
     - propably update Node
+
+18.11.
+    - try out some other terrains
+    - look into Moritz's thesis
+    - create own terrain with relief-mesh & hight map

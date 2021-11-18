@@ -6,6 +6,7 @@
 
 console.log("starting server");
 import { FudgeServer } from "../FudgeNet/Server/FudgeServer.js";
+import { FudgeNet } from "../FudgeNet/Server/Message.js";
 
 
 let port: number | string | undefined = process.env.PORT;
@@ -19,6 +20,7 @@ if (!port) {
 
 let server: FudgeServer = new FudgeServer();
 server.startUp(<number>port);
+server.broadcast("Do you get this message?")
 console.log(server);
 
 console.log("server started");
