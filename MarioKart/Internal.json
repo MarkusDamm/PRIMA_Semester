@@ -601,11 +601,11 @@
   },
   "TextureImage|2021-11-23T14:03:05.214Z|85145": {
     "ƒ.TextureImage": {
-      "url": "images\\kartTrack_tiny.png",
+      "url": "Images\\kartTrack_tiny.png",
       "type": "TextureImage",
       "Texture": {
         "idResource": "TextureImage|2021-11-23T14:03:05.214Z|85145",
-        "name": "images\\kartTrack_tiny.png",
+        "name": "Images\\kartTrack_tiny.png",
         "mipmap": "CRISP"
       }
     }
@@ -934,11 +934,11 @@
   },
   "TextureImage|2021-11-23T15:41:03.799Z|90955": {
     "ƒ.TextureImage": {
-      "url": "images\\kartTrack_small.png",
+      "url": "Images\\kartTrack_small.png",
       "type": "TextureImage",
       "Texture": {
         "idResource": "TextureImage|2021-11-23T15:41:03.799Z|90955",
-        "name": "images\\kartTrack_small.png",
+        "name": "Images\\kartTrack_small.png",
         "mipmap": "CRISP"
       }
     }
