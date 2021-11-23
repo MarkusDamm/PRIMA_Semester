@@ -356,7 +356,7 @@
             "ƒ.ComponentMesh": {
               "idMesh": "MeshCube|2021-11-18T12:34:39.362Z|79498",
               "pivot": {
-                "translation": "[0, 0.30000001192092896, 0]",
+                "translation": "[0, 0.8000000715255737, 0]",
                 "rotation": "[0, 0, 0]",
                 "scaling": "[1.8000001907348633, 1, 2.8999993801116943]"
               },
@@ -388,7 +388,7 @@
           {
             "ƒ.ComponentTransform": {
               "local": {
-                "translation": "[0, 0.5, 0]",
+                "translation": "[0, 0, 0]",
                 "rotation": "[0, 0, 0]",
                 "scaling": "[1, 1, 1]"
               },
@@ -409,9 +409,9 @@
                   "ƒ.ComponentMesh": {
                     "idMesh": "MeshTorus|2021-11-18T12:35:16.206Z|36468",
                     "pivot": {
-                      "translation": "[1, 0, -1]",
+                      "translation": "[1, 0.5, -1]",
                       "rotation": "[0, 0, 90]",
-                      "scaling": "[0.6999999284744263, 0.6999999284744263, 0.6999999284744263]"
+                      "scaling": "[0.6999999284744263, 1, 0.6999999284744263]"
                     },
                     "Component": {
                       "active": true
@@ -450,9 +450,9 @@
                   "ƒ.ComponentMesh": {
                     "idMesh": "MeshTorus|2021-11-18T12:35:16.206Z|36468",
                     "pivot": {
-                      "translation": "[1, 0, 1]",
+                      "translation": "[1, 0.5, 1]",
                       "rotation": "[0, 0, 90]",
-                      "scaling": "[0.6999999284744263, 0.6999999284744263, 0.6999999284744263]"
+                      "scaling": "[0.6999999284744263, 1, 0.6999999284744263]"
                     },
                     "Component": {
                       "active": true
@@ -491,9 +491,9 @@
                   "ƒ.ComponentMesh": {
                     "idMesh": "MeshTorus|2021-11-18T12:35:16.206Z|36468",
                     "pivot": {
-                      "translation": "[-1, 0, -1]",
+                      "translation": "[-1, 0.5, -1]",
                       "rotation": "[0, 0, 90]",
-                      "scaling": "[0.6999999284744263, 0.6999999284744263, 0.6999999284744263]"
+                      "scaling": "[0.6999999284744263, 1, 0.6999999284744263]"
                     },
                     "Component": {
                       "active": true
@@ -532,9 +532,9 @@
                   "ƒ.ComponentMesh": {
                     "idMesh": "MeshTorus|2021-11-18T12:35:16.206Z|36468",
                     "pivot": {
-                      "translation": "[-1, 0, 1]",
+                      "translation": "[-1, 0.5, 1]",
                       "rotation": "[0, 0, 90]",
-                      "scaling": "[0.6999999284744263, 0.6999999284744263, 0.6999999284744263]"
+                      "scaling": "[0.6999999284744263, 1, 0.6999999284744263]"
                     },
                     "Component": {
                       "active": true
@@ -599,6 +599,17 @@
       "idTexture": "TextureImage|2021-11-23T14:03:05.214Z|85145"
     }
   },
+  "TextureImage|2021-11-23T14:03:05.214Z|85145": {
+    "ƒ.TextureImage": {
+      "url": "images\\kartTrack_tiny.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2021-11-23T14:03:05.214Z|85145",
+        "name": "images\\kartTrack_tiny.png",
+        "mipmap": "CRISP"
+      }
+    }
+  },
   "Material|2021-11-18T14:36:38.820Z|69760": {
     "ƒ.Material": {
       "name": "NewMaterial",
@@ -616,47 +627,6 @@
       "name": "TerrainTest",
       "components": {},
       "children": [
-        {
-          "ƒ.Node": {
-            "name": "Terrain",
-            "components": {
-              "ComponentMesh": [
-                {
-                  "ƒ.ComponentMesh": {
-                    "idMesh": "MeshTerrain|2021-11-18T14:30:48.428Z|52636",
-                    "pivot": {
-                      "translation": "[0, 0, 0]",
-                      "rotation": "[0, 0, 0]",
-                      "scaling": "[122, 2, 122]"
-                    },
-                    "Component": {
-                      "active": false
-                    }
-                  }
-                }
-              ],
-              "ComponentMaterial": [
-                {
-                  "ƒ.ComponentMaterial": {
-                    "sortForAlpha": false,
-                    "clrPrimary": "[1, 1, 1, 1]",
-                    "clrSecondary": "[1, 1, 1, 1]",
-                    "pivot": {
-                      "translation": "[0, 0]",
-                      "rotation": 0,
-                      "scaling": "[1, 1]"
-                    },
-                    "Component": {
-                      "active": true
-                    },
-                    "idMaterial": "Material|2021-11-18T14:35:48.131Z|86052"
-                  }
-                }
-              ]
-            },
-            "children": []
-          }
-        },
         {
           "ƒ.Node": {
             "name": "Light",
@@ -693,227 +663,6 @@
               ]
             },
             "children": []
-          }
-        },
-        {
-          "ƒ.GraphInstance": {
-            "name": "Kart",
-            "components": {
-              "ComponentMesh": [
-                {
-                  "ƒ.ComponentMesh": {
-                    "idMesh": "MeshCube|2021-11-18T12:34:39.362Z|79498",
-                    "pivot": {
-                      "translation": "[0, 0.30000001192092896, 0]",
-                      "rotation": "[0, 0, 0]",
-                      "scaling": "[1.8000001907348633, 1, 2.8999993801116943]"
-                    },
-                    "Component": {
-                      "active": true
-                    }
-                  }
-                }
-              ],
-              "ComponentMaterial": [
-                {
-                  "ƒ.ComponentMaterial": {
-                    "sortForAlpha": false,
-                    "clrPrimary": "[1, 0, 0, 1]",
-                    "clrSecondary": "[1, 1, 1, 1]",
-                    "pivot": {
-                      "translation": "[0, 0]",
-                      "rotation": 0,
-                      "scaling": "[1, 1]"
-                    },
-                    "Component": {
-                      "active": true
-                    },
-                    "idMaterial": "Material|2021-11-18T12:38:19.374Z|42315"
-                  }
-                }
-              ],
-              "ComponentTransform": [
-                {
-                  "ƒ.ComponentTransform": {
-                    "local": {
-                      "translation": "[-32, 0.49999991059303284, 0]",
-                      "rotation": "[0, 0, 0]",
-                      "scaling": "[1, 1, 1]"
-                    },
-                    "Component": {
-                      "active": true
-                    }
-                  }
-                }
-              ]
-            },
-            "children": [
-              {
-                "ƒ.Node": {
-                  "name": "Tire",
-                  "components": {
-                    "ComponentMesh": [
-                      {
-                        "ƒ.ComponentMesh": {
-                          "idMesh": "MeshTorus|2021-11-18T12:35:16.206Z|36468",
-                          "pivot": {
-                            "translation": "[1, 0, -1]",
-                            "rotation": "[0, 0, 90]",
-                            "scaling": "[0.6999999284744263, 0.6999999284744263, 0.6999999284744263]"
-                          },
-                          "Component": {
-                            "active": true
-                          }
-                        }
-                      }
-                    ],
-                    "ComponentMaterial": [
-                      {
-                        "ƒ.ComponentMaterial": {
-                          "sortForAlpha": false,
-                          "clrPrimary": "[0.32941176470588235, 0.32941176470588235, 0.32941176470588235, 1]",
-                          "clrSecondary": "[1, 1, 1, 1]",
-                          "pivot": {
-                            "translation": "[0, 0]",
-                            "rotation": 0,
-                            "scaling": "[1, 1]"
-                          },
-                          "Component": {
-                            "active": true
-                          },
-                          "idMaterial": "Material|2021-11-18T12:38:19.374Z|42315"
-                        }
-                      }
-                    ]
-                  },
-                  "children": []
-                }
-              },
-              {
-                "ƒ.Node": {
-                  "name": "Tire",
-                  "components": {
-                    "ComponentMesh": [
-                      {
-                        "ƒ.ComponentMesh": {
-                          "idMesh": "MeshTorus|2021-11-18T12:35:16.206Z|36468",
-                          "pivot": {
-                            "translation": "[1, 0, 1]",
-                            "rotation": "[0, 0, 90]",
-                            "scaling": "[0.6999999284744263, 0.6999999284744263, 0.6999999284744263]"
-                          },
-                          "Component": {
-                            "active": true
-                          }
-                        }
-                      }
-                    ],
-                    "ComponentMaterial": [
-                      {
-                        "ƒ.ComponentMaterial": {
-                          "sortForAlpha": false,
-                          "clrPrimary": "[0.32941176470588235, 0.32941176470588235, 0.32941176470588235, 1]",
-                          "clrSecondary": "[1, 1, 1, 1]",
-                          "pivot": {
-                            "translation": "[0, 0]",
-                            "rotation": 0,
-                            "scaling": "[1, 1]"
-                          },
-                          "Component": {
-                            "active": true
-                          },
-                          "idMaterial": "Material|2021-11-18T12:38:19.374Z|42315"
-                        }
-                      }
-                    ]
-                  },
-                  "children": []
-                }
-              },
-              {
-                "ƒ.Node": {
-                  "name": "Tire",
-                  "components": {
-                    "ComponentMesh": [
-                      {
-                        "ƒ.ComponentMesh": {
-                          "idMesh": "MeshTorus|2021-11-18T12:35:16.206Z|36468",
-                          "pivot": {
-                            "translation": "[-1, 0, -1]",
-                            "rotation": "[0, 0, 90]",
-                            "scaling": "[0.6999999284744263, 0.6999999284744263, 0.6999999284744263]"
-                          },
-                          "Component": {
-                            "active": true
-                          }
-                        }
-                      }
-                    ],
-                    "ComponentMaterial": [
-                      {
-                        "ƒ.ComponentMaterial": {
-                          "sortForAlpha": false,
-                          "clrPrimary": "[0.32941176470588235, 0.32941176470588235, 0.32941176470588235, 1]",
-                          "clrSecondary": "[1, 1, 1, 1]",
-                          "pivot": {
-                            "translation": "[0, 0]",
-                            "rotation": 0,
-                            "scaling": "[1, 1]"
-                          },
-                          "Component": {
-                            "active": true
-                          },
-                          "idMaterial": "Material|2021-11-18T12:38:19.374Z|42315"
-                        }
-                      }
-                    ]
-                  },
-                  "children": []
-                }
-              },
-              {
-                "ƒ.Node": {
-                  "name": "Tire",
-                  "components": {
-                    "ComponentMesh": [
-                      {
-                        "ƒ.ComponentMesh": {
-                          "idMesh": "MeshTorus|2021-11-18T12:35:16.206Z|36468",
-                          "pivot": {
-                            "translation": "[-1, 0, 1]",
-                            "rotation": "[0, 0, 90]",
-                            "scaling": "[0.6999999284744263, 0.6999999284744263, 0.6999999284744263]"
-                          },
-                          "Component": {
-                            "active": true
-                          }
-                        }
-                      }
-                    ],
-                    "ComponentMaterial": [
-                      {
-                        "ƒ.ComponentMaterial": {
-                          "sortForAlpha": false,
-                          "clrPrimary": "[0.32941176470588235, 0.32941176470588235, 0.32941176470588235, 1]",
-                          "clrSecondary": "[1, 1, 1, 1]",
-                          "pivot": {
-                            "translation": "[0, 0]",
-                            "rotation": 0,
-                            "scaling": "[1, 1]"
-                          },
-                          "Component": {
-                            "active": true
-                          },
-                          "idMaterial": "Material|2021-11-18T12:38:19.374Z|42315"
-                        }
-                      }
-                    ]
-                  },
-                  "children": []
-                }
-              }
-            ],
-            "idSource": "Graph|2021-11-18T12:47:22.918Z|78691"
           }
         },
         {
@@ -956,19 +705,240 @@
             },
             "children": []
           }
+        },
+        {
+          "ƒ.GraphInstance": {
+            "name": "Kart",
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshCube|2021-11-18T12:34:39.362Z|79498",
+                    "pivot": {
+                      "translation": "[0, 0.8000000715255737, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1.8000001907348633, 1, 2.8999993801116943]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 0, 0, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2021-11-18T12:38:19.374Z|42315"
+                  }
+                }
+              ],
+              "ComponentTransform": [
+                {
+                  "ƒ.ComponentTransform": {
+                    "local": {
+                      "translation": "[-32, 0, 0]",
+                      "rotation": "[0, 180, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ]
+            },
+            "children": [
+              {
+                "ƒ.Node": {
+                  "name": "Tire",
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshTorus|2021-11-18T12:35:16.206Z|36468",
+                          "pivot": {
+                            "translation": "[1, 0.5, -1]",
+                            "rotation": "[0, 0, 90]",
+                            "scaling": "[0.6999999284744263, 1, 0.6999999284744263]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[0.32941176470588235, 0.32941176470588235, 0.32941176470588235, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2021-11-18T12:38:19.374Z|42315"
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              },
+              {
+                "ƒ.Node": {
+                  "name": "Tire",
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshTorus|2021-11-18T12:35:16.206Z|36468",
+                          "pivot": {
+                            "translation": "[1, 0.5, 1]",
+                            "rotation": "[0, 0, 90]",
+                            "scaling": "[0.6999999284744263, 1, 0.6999999284744263]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[0.32941176470588235, 0.32941176470588235, 0.32941176470588235, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2021-11-18T12:38:19.374Z|42315"
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              },
+              {
+                "ƒ.Node": {
+                  "name": "Tire",
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshTorus|2021-11-18T12:35:16.206Z|36468",
+                          "pivot": {
+                            "translation": "[-1, 0.5, -1]",
+                            "rotation": "[0, 0, 90]",
+                            "scaling": "[0.6999999284744263, 1, 0.6999999284744263]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[0.32941176470588235, 0.32941176470588235, 0.32941176470588235, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2021-11-18T12:38:19.374Z|42315"
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              },
+              {
+                "ƒ.Node": {
+                  "name": "Tire",
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshTorus|2021-11-18T12:35:16.206Z|36468",
+                          "pivot": {
+                            "translation": "[-1, 0.5, 1]",
+                            "rotation": "[0, 0, 90]",
+                            "scaling": "[0.6999999284744263, 1, 0.6999999284744263]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[0.32941176470588235, 0.32941176470588235, 0.32941176470588235, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2021-11-18T12:38:19.374Z|42315"
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              }
+            ],
+            "idSource": "Graph|2021-11-18T12:47:22.918Z|78691"
+          }
         }
       ],
       "idResource": "Graph|2021-11-18T14:34:40.375Z|26326",
       "type": "Graph"
     }
   },
-  "TextureImage|2021-11-23T14:03:05.214Z|85145": {
+  "TextureImage|2021-11-23T15:41:03.799Z|90955": {
     "ƒ.TextureImage": {
-      "url": "images\\kartTrack_tiny.png",
+      "url": "images\\kartTrack_small.png",
       "type": "TextureImage",
       "Texture": {
-        "idResource": "TextureImage|2021-11-23T14:03:05.214Z|85145",
-        "name": "images\\kartTrack_tiny.png",
+        "idResource": "TextureImage|2021-11-23T15:41:03.799Z|90955",
+        "name": "images\\kartTrack_small.png",
         "mipmap": "CRISP"
       }
     }

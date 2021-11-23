@@ -37,6 +37,7 @@ var Script;
     var ƒ = FudgeCore;
     ƒ.Debug.info("Main Program Template running!");
     let viewport;
+    let cmpCamera = new ƒ.ComponentCamera();
     let root;
     let kart;
     let ctrForward = new ƒ.Control("Forward", 10, 0 /* PROPORTIONAL */);
@@ -61,37 +62,40 @@ var Script;
     }
     async function start() {
         await ƒ.Project.loadResourcesFromHTML();
-        root = ƒ.Project.resources[document.head.querySelector("meta[autoView]").getAttribute("autoView")];
-        // let cmpCamera: ƒ.ComponentCamera = root.getComponent(ƒ.ComponentCamera);
-        // root.removeComponent(cmpCamera);
-        // cmpCamera = new ƒ.ComponentCamera();
-        let cmpCamera = new ƒ.ComponentCamera();
-        // cmpCamera.mtxPivot.translateZ(60);
-        cmpCamera.mtxPivot.translateY(110);
-        cmpCamera.mtxPivot.rotateY(180);
-        cmpCamera.mtxPivot.rotateX(90);
-        root.addComponent(cmpCamera);
+        setUpViewport();
         // root.getChildrenByName("Relief")[0].getComponent(ƒ.ComponentMesh).mesh.setTexture();
         let cmpMeshRelief = root.getChildrenByName("Relief")[0].getComponent(ƒ.ComponentMesh);
         meshRelief = cmpMeshRelief.mesh;
         mtxRelief = cmpMeshRelief.mtxWorld;
-        let canvas = document.querySelector("canvas");
-        viewport = new ƒ.Viewport();
-        viewport.initialize("Viewport", root, cmpCamera, canvas);
         ƒ.AudioManager.default.listenTo(root);
         ƒ.AudioManager.default.listenWith(root.getComponent(ƒ.ComponentAudioListener));
-        kart = root.getChildrenByName("Kart")[0];
         // kart = <ƒ.Graph>ƒ.Project.resources["Graph|2021-11-18T12:47:22.918Z|78691"];
         // kart.mtxLocal.translateX(5);
         // root.appendChild(kart);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
+    function setUpViewport() {
+        root = ƒ.Project.resources[document.head.querySelector("meta[autoView]").getAttribute("autoView")];
+        kart = root.getChildrenByName("Kart")[0];
+        // let cmpCamera: ƒ.ComponentCamera = root.getComponent(ƒ.ComponentCamera);
+        // root.removeComponent(cmpCamera);
+        // cmpCamera = new ƒ.ComponentCamera();
+        cmpCamera.mtxPivot.translateZ(-6);
+        cmpCamera.mtxPivot.translateY(5);
+        cmpCamera.mtxPivot.lookAt(ƒ.Vector3.SUM(kart.mtxWorld.translation, ƒ.Vector3.Z(5)), ƒ.Vector3.Y());
+        // cmpCamera.mtxPivot.rotateY(0);
+        // cmpCamera.mtxPivot.rotateX(30);
+        kart.addComponent(cmpCamera);
+        let canvas = document.querySelector("canvas");
+        viewport = new ƒ.Viewport();
+        viewport.initialize("Viewport", root, cmpCamera, canvas);
+    }
     function update(_event) {
         // ƒ.Physics.world.simulate();  // if physics is included and used
         let deltaTime = ƒ.Loop.timeFrameReal / 1000;
         controls(deltaTime);
-        let terrainInfo = meshRelief.getTerrainInfo(kart.mtxWorld.translation, mtxRelief);
+        let terrainInfo = meshRelief.getTerrainInfo(kart.mtxLocal.translation, mtxRelief);
         kart.mtxLocal.translation = terrainInfo.position;
         kart.mtxLocal.showTo(ƒ.Vector3.SUM(terrainInfo.position, kart.mtxLocal.getZ()), terrainInfo.normal);
         viewport.draw();
@@ -104,10 +108,12 @@ var Script;
         let velocity = ctrForward.getOutput();
         let turn = ƒ.Keyboard.mapToTrit([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT], [ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT]);
         ctrTurn.setInput(turn * _deltaTime);
-        if (velocity < -0.1 || velocity > 0.1) {
+        if (velocity > 0.1) {
             kart.mtxLocal.rotateY(ctrTurn.getOutput());
         }
-        // console.log(ctrTurn.getOutput());
+        else if (velocity < -0.1) {
+            kart.mtxLocal.rotateY(-ctrTurn.getOutput());
+        }
     }
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map

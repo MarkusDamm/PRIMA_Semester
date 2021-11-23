@@ -1,8 +1,9 @@
 namespace Script {
   import ƒ = FudgeCore;
   ƒ.Debug.info("Main Program Template running!");
-
+  
   let viewport: ƒ.Viewport;
+  let cmpCamera: ƒ.ComponentCamera = new ƒ.ComponentCamera();
   let root: ƒ.Node;
 
   let kart: ƒ.Node;
@@ -10,7 +11,7 @@ namespace Script {
   ctrForward.setDelay(200);
   let ctrTurn: ƒ.Control = new ƒ.Control("Turn", 100, ƒ.CONTROL_TYPE.PROPORTIONAL);
   ctrForward.setDelay(50);
-
+  
   let meshRelief: ƒ.MeshRelief;
   let mtxRelief: ƒ.Matrix4x4;
 
@@ -32,30 +33,16 @@ namespace Script {
 
   async function start(): Promise<void> {
     await ƒ.Project.loadResourcesFromHTML();
-    root = <ƒ.Graph>ƒ.Project.resources[document.head.querySelector("meta[autoView]").getAttribute("autoView")];
-    // let cmpCamera: ƒ.ComponentCamera = root.getComponent(ƒ.ComponentCamera);
-    // root.removeComponent(cmpCamera);
-    // cmpCamera = new ƒ.ComponentCamera();
-    let cmpCamera: ƒ.ComponentCamera = new ƒ.ComponentCamera();
-    // cmpCamera.mtxPivot.translateZ(60);
-    cmpCamera.mtxPivot.translateY(110);
-    cmpCamera.mtxPivot.rotateY(180);
-    cmpCamera.mtxPivot.rotateX(90);
-
-    root.addComponent(cmpCamera);
+    setUpViewport();
+    
     // root.getChildrenByName("Relief")[0].getComponent(ƒ.ComponentMesh).mesh.setTexture();
     let cmpMeshRelief: ƒ.ComponentMesh = root.getChildrenByName("Relief")[0].getComponent(ƒ.ComponentMesh);
     meshRelief = <ƒ.MeshRelief>cmpMeshRelief.mesh;
     mtxRelief = cmpMeshRelief.mtxWorld;
-
-    let canvas: HTMLCanvasElement = document.querySelector("canvas");
-    viewport = new ƒ.Viewport();
-    viewport.initialize("Viewport", root, cmpCamera, canvas);
-
+    
     ƒ.AudioManager.default.listenTo(root);
     ƒ.AudioManager.default.listenWith(root.getComponent(ƒ.ComponentAudioListener));
-
-    kart = root.getChildrenByName("Kart")[0];
+    
     // kart = <ƒ.Graph>ƒ.Project.resources["Graph|2021-11-18T12:47:22.918Z|78691"];
     // kart.mtxLocal.translateX(5);
     // root.appendChild(kart);
@@ -64,11 +51,30 @@ namespace Script {
     ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
   }
 
+  function setUpViewport(): void {
+    root = <ƒ.Graph>ƒ.Project.resources[document.head.querySelector("meta[autoView]").getAttribute("autoView")];
+    kart = root.getChildrenByName("Kart")[0];
+    // let cmpCamera: ƒ.ComponentCamera = root.getComponent(ƒ.ComponentCamera);
+    // root.removeComponent(cmpCamera);
+    // cmpCamera = new ƒ.ComponentCamera();
+    cmpCamera.mtxPivot.translateZ(-6);
+    cmpCamera.mtxPivot.translateY(5);
+    cmpCamera.mtxPivot.lookAt(ƒ.Vector3.SUM(kart.mtxWorld.translation, ƒ.Vector3.Z(5)), ƒ.Vector3.Y());
+    // cmpCamera.mtxPivot.rotateY(0);
+    // cmpCamera.mtxPivot.rotateX(30);
+    kart.addComponent(cmpCamera);
+    
+    let canvas: HTMLCanvasElement = document.querySelector("canvas");
+    viewport = new ƒ.Viewport();
+    viewport.initialize("Viewport", root, cmpCamera, canvas);
+  }
+
   function update(_event: Event): void {
     // ƒ.Physics.world.simulate();  // if physics is included and used
     let deltaTime: number = ƒ.Loop.timeFrameReal / 1000;
     controls(deltaTime);
-    let terrainInfo: ƒ.TerrainInfo = meshRelief.getTerrainInfo(kart.mtxWorld.translation, mtxRelief);
+
+    let terrainInfo: ƒ.TerrainInfo = meshRelief.getTerrainInfo(kart.mtxLocal.translation, mtxRelief);
     kart.mtxLocal.translation = terrainInfo.position;
     kart.mtxLocal.showTo(ƒ.Vector3.SUM(terrainInfo.position, kart.mtxLocal.getZ()), terrainInfo.normal);
 
@@ -84,11 +90,11 @@ namespace Script {
 
     let turn: number = ƒ.Keyboard.mapToTrit([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT], [ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT]);
     ctrTurn.setInput(turn * _deltaTime);
-    if (velocity < -0.1 || velocity > 0.1) {
+    if (velocity > 0.1) {
       kart.mtxLocal.rotateY(ctrTurn.getOutput());
     }
-    // console.log(ctrTurn.getOutput());
-
-
+    else if (velocity < -0.1) {
+      kart.mtxLocal.rotateY(-ctrTurn.getOutput());
+    }
   }
 }
