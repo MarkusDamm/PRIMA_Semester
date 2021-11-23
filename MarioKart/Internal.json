@@ -579,6 +579,38 @@
       "resolution": "[200, 200]"
     }
   },
+  "Material|2021-11-18T14:35:48.131Z|86052": {
+    "ƒ.Material": {
+      "name": "matFlat",
+      "idResource": "Material|2021-11-18T14:35:48.131Z|86052",
+      "shader": "ShaderFlat",
+      "coat": {
+        "ƒ.CoatColored": {
+          "color": "[1, 1, 1, 1]"
+        }
+      }
+    }
+  },
+  "MeshRelief|2021-11-23T13:22:34.401Z|84547": {
+    "ƒ.MeshRelief": {
+      "idResource": "MeshRelief|2021-11-23T13:22:34.401Z|84547",
+      "name": "MeshRelief",
+      "type": "MeshRelief",
+      "idTexture": "TextureImage|2021-11-23T14:03:05.214Z|85145"
+    }
+  },
+  "Material|2021-11-18T14:36:38.820Z|69760": {
+    "ƒ.Material": {
+      "name": "NewMaterial",
+      "idResource": "Material|2021-11-18T14:36:38.820Z|69760",
+      "shader": "ShaderUniColor",
+      "coat": {
+        "ƒ.CoatColored": {
+          "color": "[1, 1, 1, 1]"
+        }
+      }
+    }
+  },
   "Graph|2021-11-18T14:34:40.375Z|26326": {
     "ƒ.Graph": {
       "name": "TerrainTest",
@@ -598,7 +630,7 @@
                       "scaling": "[122, 2, 122]"
                     },
                     "Component": {
-                      "active": true
+                      "active": false
                     }
                   }
                 }
@@ -704,7 +736,7 @@
                 {
                   "ƒ.ComponentTransform": {
                     "local": {
-                      "translation": "[0, 1.9000000953674316, 0]",
+                      "translation": "[-32, 0.49999991059303284, 0]",
                       "rotation": "[0, 0, 0]",
                       "scaling": "[1, 1, 1]"
                     },
@@ -883,33 +915,61 @@
             ],
             "idSource": "Graph|2021-11-18T12:47:22.918Z|78691"
           }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Relief",
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshRelief|2021-11-23T13:22:34.401Z|84547",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[100, 8, 100]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2021-11-18T14:35:48.131Z|86052"
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
         }
       ],
       "idResource": "Graph|2021-11-18T14:34:40.375Z|26326",
       "type": "Graph"
     }
   },
-  "Material|2021-11-18T14:35:48.131Z|86052": {
-    "ƒ.Material": {
-      "name": "matFlat",
-      "idResource": "Material|2021-11-18T14:35:48.131Z|86052",
-      "shader": "ShaderFlat",
-      "coat": {
-        "ƒ.CoatColored": {
-          "color": "[1, 1, 1, 1]"
-        }
-      }
-    }
-  },
-  "Material|2021-11-18T14:36:38.820Z|69760": {
-    "ƒ.Material": {
-      "name": "NewMaterial",
-      "idResource": "Material|2021-11-18T14:36:38.820Z|69760",
-      "shader": "ShaderUniColor",
-      "coat": {
-        "ƒ.CoatColored": {
-          "color": "[1, 1, 1, 1]"
-        }
+  "TextureImage|2021-11-23T14:03:05.214Z|85145": {
+    "ƒ.TextureImage": {
+      "url": "images\\kartTrack_tiny.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2021-11-23T14:03:05.214Z|85145",
+        "name": "images\\kartTrack_tiny.png",
+        "mipmap": "CRISP"
       }
     }
   }

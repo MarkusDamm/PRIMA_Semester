@@ -42,3 +42,6 @@
     - try out some other terrains
     - look into Moritz's thesis
     - create own terrain with relief-mesh & hight map
+
+23.11.
+    - set up third person camera
