@@ -596,16 +596,16 @@
       "idResource": "MeshRelief|2021-11-23T13:22:34.401Z|84547",
       "name": "MeshRelief",
       "type": "MeshRelief",
-      "idTexture": "TextureImage|2021-11-23T14:03:05.214Z|85145"
+      "idTexture": "TextureImage|2021-11-25T12:59:37.562Z|52253"
     }
   },
-  "TextureImage|2021-11-23T14:03:05.214Z|85145": {
+  "TextureImage|2021-11-25T12:59:37.562Z|52253": {
     "ƒ.TextureImage": {
-      "url": "Images\\RaceTrack-HeightMap-small.png",
+      "url": "Images\\kartTrack2-small.png",
       "type": "TextureImage",
       "Texture": {
-        "idResource": "TextureImage|2021-11-23T14:03:05.214Z|85145",
-        "name": "Images\\RaceTrack-HeightMap-small.png",
+        "idResource": "TextureImage|2021-11-25T12:59:37.562Z|52253",
+        "name": "Images\\kartTrack2-small.png",
         "mipmap": "CRISP"
       }
     }
@@ -676,7 +676,7 @@
                     "pivot": {
                       "translation": "[0, 0, 0]",
                       "rotation": "[0, 0, 0]",
-                      "scaling": "[100, 8, 100]"
+                      "scaling": "[100, 22, 100]"
                     },
                     "Component": {
                       "active": true
@@ -747,7 +747,7 @@
                 {
                   "ƒ.ComponentTransform": {
                     "local": {
-                      "translation": "[-32, 0, 0]",
+                      "translation": "[-29, 20, 25]",
                       "rotation": "[0, 180, 0]",
                       "scaling": "[1, 1, 1]"
                     },
@@ -925,6 +925,61 @@
               }
             ],
             "idSource": "Graph|2021-11-18T12:47:22.918Z|78691"
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Bridge",
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshCube|2021-11-18T12:34:39.362Z|79498",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[6, 1, 15]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[0.25882352941176473, 0.25882352941176473, 0.25882352941176473, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2021-11-18T14:35:48.131Z|86052"
+                  }
+                }
+              ],
+              "ComponentTransform": [
+                {
+                  "ƒ.ComponentTransform": {
+                    "local": {
+                      "translation": "[21, 10.800002098083496, 23]",
+                      "rotation": "[-6, 41, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ]
+            },
+            "children": []
           }
         }
       ],

@@ -38,6 +38,8 @@ var Script;
     ƒ.Debug.info("Main Program Template running!");
     let viewport;
     let cmpCamera = new ƒ.ComponentCamera();
+    let cameraNode = new ƒ.Node("Camera");
+    cameraNode.addComponent(cmpCamera);
     let root;
     let kart;
     let ctrForward = new ƒ.Control("Forward", 10, 0 /* PROPORTIONAL */);
@@ -78,15 +80,20 @@ var Script;
     function setUpViewport() {
         root = ƒ.Project.resources[document.head.querySelector("meta[autoView]").getAttribute("autoView")];
         kart = root.getChildrenByName("Kart")[0];
+        root.appendChild(cameraNode);
+        let cmpTransformCamera = new ƒ.ComponentTransform();
+        cameraNode.addComponent(cmpTransformCamera);
         // let cmpCamera: ƒ.ComponentCamera = root.getComponent(ƒ.ComponentCamera);
         // root.removeComponent(cmpCamera);
         // cmpCamera = new ƒ.ComponentCamera();
-        cmpCamera.mtxPivot.translateZ(-6);
+        // kart.addComponent(cmpCamera);
+        cmpCamera.mtxPivot.translateZ(-8);
         cmpCamera.mtxPivot.translateY(5);
-        cmpCamera.mtxPivot.lookAt(ƒ.Vector3.SUM(kart.mtxWorld.translation, ƒ.Vector3.Z(5)), ƒ.Vector3.Y());
+        cmpCamera.mtxPivot.rotateX(20);
+        adjustCamera();
+        // cmpCamera.mtxPivot.lookAt(ƒ.Vector3.SUM(kart.mtxWorld.translation, ƒ.Vector3.Z(5)), ƒ.Vector3.Y());
         // cmpCamera.mtxPivot.rotateY(0);
         // cmpCamera.mtxPivot.rotateX(30);
-        kart.addComponent(cmpCamera);
         let canvas = document.querySelector("canvas");
         viewport = new ƒ.Viewport();
         viewport.initialize("Viewport", root, cmpCamera, canvas);
@@ -98,6 +105,7 @@ var Script;
         let terrainInfo = meshRelief.getTerrainInfo(kart.mtxLocal.translation, mtxRelief);
         kart.mtxLocal.translation = terrainInfo.position;
         kart.mtxLocal.showTo(ƒ.Vector3.SUM(terrainInfo.position, kart.mtxLocal.getZ()), terrainInfo.normal);
+        adjustCamera();
         viewport.draw();
         ƒ.AudioManager.default.update();
     }
@@ -114,6 +122,13 @@ var Script;
         else if (velocity < -0.1) {
             kart.mtxLocal.rotateY(-ctrTurn.getOutput());
         }
+    }
+    function adjustCamera() {
+        let kartPosition = kart.mtxWorld.translation;
+        cameraNode.mtxLocal.translation = kartPosition;
+        cameraNode.mtxLocal.rotation = new ƒ.Vector3(0, kart.mtxLocal.rotation.y, 0);
+        // cmpCamera.mtxPivot.translation = ƒ.Vector3.SUM(kart.mtxWorld.translation, ƒ.Vector3.Y(5), ƒ.Vector3.CROSS(kart.mtxLocal.translation, ƒ.Vector3.Z(-6)));
+        // cmpCamera.mtxPivot.lookAt(ƒ.Vector3.SUM(kart.mtxWorld.translation, ƒ.Vector3.Z(5)), ƒ.Vector3.Y());
     }
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map

@@ -45,3 +45,7 @@
 
 23.11.
     - set up third person camera
+
+25.11.
+    - create new scene for physic tests
+    - play around with physics (https://jirkadelloro.github.io/FUDGE/Documentation/Reference/Core/classes/FudgeCore.ComponentRigidbody.html)
