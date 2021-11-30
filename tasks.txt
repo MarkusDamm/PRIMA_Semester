@@ -49,3 +49,6 @@
 25.11.
     - create new scene for physic tests
     - play around with physics (https://jirkadelloro.github.io/FUDGE/Documentation/Reference/Core/classes/FudgeCore.ComponentRigidbody.html)
+
+30.11.
+    - use applyForceAtPoint (and terrainInfo) to let a kart hover
