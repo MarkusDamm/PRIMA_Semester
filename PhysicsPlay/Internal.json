@@ -1,0 +1,137 @@
+{
+  "MeshCube|2021-11-30T12:51:50.335Z|63302": {
+    "ƒ.MeshCube": {
+      "idResource": "MeshCube|2021-11-30T12:51:50.335Z|63302",
+      "name": "MeshCube",
+      "type": "MeshCube"
+    }
+  },
+  "Graph|2021-11-30T12:51:57.586Z|71190": {
+    "ƒ.Graph": {
+      "name": "Root",
+      "components": {},
+      "children": [
+        {
+          "ƒ.Node": {
+            "name": "Cube",
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshCube|2021-11-30T12:51:50.335Z|63302",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2021-11-30T12:52:37.603Z|27760"
+                  }
+                }
+              ],
+              "ComponentTransform": [
+                {
+                  "ƒ.ComponentTransform": {
+                    "local": {
+                      "translation": "[0, 4, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Plane",
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshTerrain|2021-11-30T12:53:17.733Z|37664",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[31, 1, 31]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[0.1843137254901961, 0.6549019607843137, 0.6, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2021-11-30T12:52:37.603Z|27760"
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        }
+      ],
+      "idResource": "Graph|2021-11-30T12:51:57.586Z|71190",
+      "type": "Graph"
+    }
+  },
+  "Material|2021-11-30T12:52:37.603Z|27760": {
+    "ƒ.Material": {
+      "name": "NewMaterial",
+      "idResource": "Material|2021-11-30T12:52:37.603Z|27760",
+      "shader": "ShaderUniColor",
+      "coat": {
+        "ƒ.CoatColored": {
+          "color": "[1, 1, 1, 1]"
+        }
+      }
+    }
+  },
+  "MeshTerrain|2021-11-30T12:53:17.733Z|37664": {
+    "ƒ.MeshTerrain": {
+      "idResource": "MeshTerrain|2021-11-30T12:53:17.733Z|37664",
+      "name": "MeshTerrain",
+      "type": "MeshTerrain",
+      "seed": 0,
+      "scale": "[1, 1]",
+      "resolution": "[10, 2]"
+    }
+  }
+}
