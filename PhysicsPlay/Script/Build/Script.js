@@ -38,12 +38,15 @@ var Script;
     ƒ.Debug.info("Main Program Template running!");
     let viewport;
     let root;
-    let rbCube = new ƒ.ComponentRigidbody(5, ƒ.BODY_TYPE.DYNAMIC, ƒ.COLLIDER_TYPE.CUBE);
+    let rbCube = new ƒ.ComponentRigidbody(10, ƒ.BODY_TYPE.DYNAMIC, ƒ.COLLIDER_TYPE.CUBE);
     let cube;
     let ctrForward = new ƒ.Control("Forward", 50, 0 /* PROPORTIONAL */);
     ctrForward.setDelay(200);
     let ctrTurn = new ƒ.Control("Turn", 5, 0 /* PROPORTIONAL */);
     ctrForward.setDelay(50);
+    let isHovering = true;
+    let hoverForce = rbCube.mass * rbCube.effectGravity * 9.81 / 4;
+    console.log(hoverForce);
     document.addEventListener("interactiveViewportStarted", start);
     function start(_event) {
         viewport = _event.detail;
@@ -59,22 +62,48 @@ var Script;
         cube = root.getChildrenByName("Cube")[0];
         cube.addComponent(rbCube);
         rbCube.initialization = ƒ.BODY_INIT.TO_MESH;
-        // document.addEventListener("keydown", hdlKeyDown);
+        document.addEventListener("keydown", hdlKeyDown);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
     function update(_event) {
         let deltaTime = ƒ.Loop.timeFrameReal / 1000;
-        controls(deltaTime);
+        // controls(deltaTime);
+        if (isHovering) {
+            hover();
+        }
         ƒ.Physics.world.simulate(deltaTime); // if physics is included and used
         // console.log(rbCube.getVelocity().z);
         viewport.draw();
         ƒ.AudioManager.default.update();
     }
-    // function hdlKeyDown(): void {
-    //   rbCube.applyForce(new ƒ.Vector3(0, 5000, 0));
-    //   console.log("KeyDown");
-    // }
+    function hdlKeyDown(_event) {
+        if (_event.key == "h") {
+            isHovering = !isHovering;
+            console.log("isHovering ", isHovering);
+        }
+        if (_event.key == ƒ.KEYBOARD_CODE.ARROW_UP) {
+            hoverForce += 0.01;
+            console.log(hoverForce);
+        }
+        if (_event.key == ƒ.KEYBOARD_CODE.ARROW_DOWN) {
+            hoverForce -= 0.01;
+            console.log(hoverForce);
+        }
+    }
+    function hover() {
+        let meshSize = cube.getComponent(ƒ.ComponentMesh).mtxPivot.scaling;
+        let point = new ƒ.Vector3(meshSize.x / 2, meshSize.y / -2, meshSize.x / 2);
+        for (let i = 0; i < 4; i++) {
+            if (i == 2) {
+                point.x = -point.x;
+            }
+            else {
+                point.z = -point.z;
+            }
+            rbCube.applyForceAtPoint(ƒ.Vector3.Y(hoverForce), ƒ.Vector3.SUM(cube.mtxWorld.translation, point));
+        }
+    }
     function controls(_deltaTime) {
         let forward = ƒ.Keyboard.mapToTrit([ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP], [ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]);
         ctrForward.setInput(forward);
