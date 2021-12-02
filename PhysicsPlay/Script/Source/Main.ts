@@ -4,16 +4,18 @@ namespace Script {
 
   let viewport: ƒ.Viewport;
   let root: ƒ.Node;
+  let cube: ƒ.Node;
+  let plane: ƒ.Node;
+  // let meshTerrain: ƒ.MeshTerrain;
   let rbCube: ƒ.ComponentRigidbody = new ƒ.ComponentRigidbody(10, ƒ.BODY_TYPE.DYNAMIC, ƒ.COLLIDER_TYPE.CUBE);
 
-  let cube: ƒ.Node;
   let ctrForward: ƒ.Control = new ƒ.Control("Forward", 50, ƒ.CONTROL_TYPE.PROPORTIONAL);
   ctrForward.setDelay(200);
   let ctrTurn: ƒ.Control = new ƒ.Control("Turn", 5, ƒ.CONTROL_TYPE.PROPORTIONAL);
   ctrForward.setDelay(50);
 
   let isHovering: boolean = true;
-  let hoverForce: number = rbCube.mass * rbCube.effectGravity * 9.81 / 4;
+  let hoverForce: number = rbCube.mass * rbCube.effectGravity * ƒ.Physics.world.getGravity().magnitude / 4;
   console.log(hoverForce);
 
 
@@ -24,13 +26,14 @@ namespace Script {
     viewport.camera.mtxPivot.translateZ(-10);
 
     root = viewport.getBranch();
-    let plane: ƒ.Node = root.getChildrenByName("Plane")[0];
+    plane = root.getChildrenByName("Plane")[0];
     plane.addComponent(new ƒ.ComponentTransform());
     let rbPlane: ƒ.ComponentRigidbody = new ƒ.ComponentRigidbody(1, ƒ.BODY_TYPE.STATIC, ƒ.COLLIDER_TYPE.CUBE);
     plane.addComponent(rbPlane);
     rbPlane.initialization = ƒ.BODY_INIT.TO_MESH;
-    console.log(rbPlane.friction);
+    // meshTerrain = <ƒ.MeshTerrain>plane.getComponent(ƒ.ComponentMesh).mesh;
 
+    // console.log(rbPlane.friction);
     rbPlane.friction = 2;
 
     cube = root.getChildrenByName("Cube")[0];
@@ -44,7 +47,7 @@ namespace Script {
 
   function update(_event: Event): void {
     let deltaTime: number = ƒ.Loop.timeFrameReal / 1000;
-    // controls(deltaTime);
+    controls(deltaTime);
     if (isHovering) {
       hover();
     }
@@ -63,20 +66,20 @@ namespace Script {
       isHovering = !isHovering;
       console.log("isHovering ", isHovering);
     }
-    if (_event.key == ƒ.KEYBOARD_CODE.ARROW_UP) {
-      hoverForce += 0.01;
-      console.log(hoverForce);
-    }
-    if (_event.key == ƒ.KEYBOARD_CODE.ARROW_DOWN) {
-      hoverForce -= 0.01;
-      console.log(hoverForce);
-    }
+    // if (_event.key == ƒ.KEYBOARD_CODE.ARROW_UP) {
+    //   hoverForce += 0.01;
+    //   console.log(hoverForce);
+    // }
+    // if (_event.key == ƒ.KEYBOARD_CODE.ARROW_DOWN) {
+    //   hoverForce -= 0.01;
+    //   console.log(hoverForce);
+    // }
   }
 
   function hover(): void {
     let meshSize: ƒ.Vector3 = cube.getComponent(ƒ.ComponentMesh).mtxPivot.scaling;
     let point: ƒ.Vector3 = new ƒ.Vector3(meshSize.x / 2, meshSize.y / -2, meshSize.x / 2);
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) { // should probably use wheel-nodes for the kart
       if (i == 2) {
         point.x = -point.x;
       }

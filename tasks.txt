@@ -52,3 +52,6 @@
 
 30.11.
     - use applyForceAtPoint (and terrainInfo) to let a kart hover
+
+02.12.
+    - create hoverKart with spring-calculation
