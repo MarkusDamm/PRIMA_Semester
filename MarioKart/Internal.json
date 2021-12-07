@@ -747,9 +747,34 @@
                 {
                   "ƒ.ComponentTransform": {
                     "local": {
-                      "translation": "[-29, 20, 25]",
+                      "translation": "[-29, 21, 25]",
                       "rotation": "[0, 180, 0]",
                       "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentRigidbody": [
+                {
+                  "ƒ.ComponentRigidbody": {
+                    "initialization": "TO_MESH",
+                    "friction": 0.2,
+                    "restitution": 0.2,
+                    "mass": 100,
+                    "dampTranslation": 2.3,
+                    "dampRotation": 2.4,
+                    "effectGravity": 1,
+                    "typeBody": "DYNAMIC",
+                    "typeCollider": "CUBE",
+                    "isTrigger": false,
+                    "id": 1,
+                    "pivot": {
+                      "translation": "[0, 0.8000000715255737, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1.8000001907348633, 1, 2.8999993801116943]"
                     },
                     "Component": {
                       "active": true
@@ -971,6 +996,31 @@
                       "translation": "[21, 10, 23]",
                       "rotation": "[-7, 41, 0]",
                       "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentRigidbody": [
+                {
+                  "ƒ.ComponentRigidbody": {
+                    "initialization": "TO_MESH",
+                    "friction": 0.2,
+                    "restitution": 0.2,
+                    "mass": 1,
+                    "dampTranslation": 0.1,
+                    "dampRotation": 0.1,
+                    "effectGravity": 1,
+                    "typeBody": "STATIC",
+                    "typeCollider": "CUBE",
+                    "isTrigger": false,
+                    "id": 0,
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[6, 1, 20]"
                     },
                     "Component": {
                       "active": true

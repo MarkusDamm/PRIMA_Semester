@@ -10,7 +10,7 @@ namespace Script {
 
   let kart: ƒ.Node;
   let rbKart: ƒ.ComponentRigidbody;
-  let ctrForward: ƒ.Control = new ƒ.Control("Forward", 10, ƒ.CONTROL_TYPE.PROPORTIONAL);
+  let ctrForward: ƒ.Control = new ƒ.Control("Forward", 100000, ƒ.CONTROL_TYPE.PROPORTIONAL);
   ctrForward.setDelay(200);
   let ctrTurn: ƒ.Control = new ƒ.Control("Turn", 100, ƒ.CONTROL_TYPE.PROPORTIONAL);
   ctrForward.setDelay(50);
@@ -87,7 +87,7 @@ namespace Script {
     kart.mtxLocal.showTo(ƒ.Vector3.SUM(terrainInfo.position, kart.mtxLocal.getZ()), terrainInfo.normal);
 
     hover();
-    ƒ.Physics.world.simulate();  // if physics is included and used
+    ƒ.Physics.world.simulate(deltaTime);  // if physics is included and used
     adjustCamera();
     viewport.draw();
     ƒ.AudioManager.default.update();
@@ -128,10 +128,20 @@ namespace Script {
     let hoverForce: number = rbKart.mass * rbKart.effectGravity * ƒ.Physics.world.getGravity().magnitude / wheels.length;
 
     for (let wheel of wheels) {
-      let posWheel: ƒ.Vector3 = wheel.mtxWorld.translation;
+      let posWheel: ƒ.Vector3 = ƒ.Vector3.SUM(wheel.getComponent(ƒ.ComponentMesh).mtxWorld.translation, ƒ.Vector3.Y(1));      
       let terrainInfo: ƒ.TerrainInfo = meshRelief.getTerrainInfo(posWheel, mtxRelief);
       let height: number = posWheel.y - terrainInfo.position.y;
-      let multiplier: number = 3 - (height * 10);
+      let multiplier: number = 3 - (height);
+      console.log(height);
+      // console.log(multiplier);
+      
+      if (multiplier < 0) {
+        multiplier = 0;
+      }
+      if (multiplier > 3) {
+        multiplier = 3;
+      }
+      
       rbKart.applyForceAtPoint(ƒ.Vector3.Y(hoverForce * multiplier), wheel.mtxWorld.translation)
     }
   }
