@@ -142,10 +142,10 @@ var Script;
         let wheels = kart.getChildren();
         let hoverForce = rbKart.mass * rbKart.effectGravity * ƒ.Physics.world.getGravity().magnitude / wheels.length;
         for (let wheel of wheels) {
-            let posWheel = ƒ.Vector3.SUM(wheel.getComponent(ƒ.ComponentMesh).mtxWorld.translation, ƒ.Vector3.Y(1));
-            let terrainInfo = meshRelief.getTerrainInfo(posWheel, mtxRelief);
-            let height = posWheel.y - terrainInfo.position.y;
-            let multiplier = 3 - (height);
+            let posForce = ƒ.Vector3.SUM(wheel.getComponent(ƒ.ComponentMesh).mtxWorld.translation, ƒ.Vector3.Y(1));
+            let terrainInfo = meshRelief.getTerrainInfo(posForce, mtxRelief);
+            let height = posForce.y - terrainInfo.position.y;
+            let multiplier = 3 - height;
             console.log(height);
             // console.log(multiplier);
             if (multiplier < 0) {
@@ -154,7 +154,7 @@ var Script;
             if (multiplier > 3) {
                 multiplier = 3;
             }
-            rbKart.applyForceAtPoint(ƒ.Vector3.Y(hoverForce * multiplier), wheel.mtxWorld.translation);
+            rbKart.applyForceAtPoint(ƒ.Vector3.Y(hoverForce * multiplier), posForce);
         }
     }
 })(Script || (Script = {}));

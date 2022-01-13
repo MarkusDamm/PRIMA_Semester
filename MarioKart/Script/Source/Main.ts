@@ -128,10 +128,10 @@ namespace Script {
     let hoverForce: number = rbKart.mass * rbKart.effectGravity * ƒ.Physics.world.getGravity().magnitude / wheels.length;
 
     for (let wheel of wheels) {
-      let posWheel: ƒ.Vector3 = ƒ.Vector3.SUM(wheel.getComponent(ƒ.ComponentMesh).mtxWorld.translation, ƒ.Vector3.Y(1));      
-      let terrainInfo: ƒ.TerrainInfo = meshRelief.getTerrainInfo(posWheel, mtxRelief);
-      let height: number = posWheel.y - terrainInfo.position.y;
-      let multiplier: number = 3 - (height);
+      let posForce: ƒ.Vector3 = ƒ.Vector3.SUM(wheel.getComponent(ƒ.ComponentMesh).mtxWorld.translation, ƒ.Vector3.Y(1));      
+      let terrainInfo: ƒ.TerrainInfo = meshRelief.getTerrainInfo(posForce, mtxRelief);
+      let height: number = posForce.y - terrainInfo.position.y;
+      let multiplier: number = 3 - height;
       console.log(height);
       // console.log(multiplier);
       
@@ -142,7 +142,7 @@ namespace Script {
         multiplier = 3;
       }
       
-      rbKart.applyForceAtPoint(ƒ.Vector3.Y(hoverForce * multiplier), wheel.mtxWorld.translation)
+      rbKart.applyForceAtPoint(ƒ.Vector3.Y(hoverForce * multiplier), posForce)
     }
   }
 
