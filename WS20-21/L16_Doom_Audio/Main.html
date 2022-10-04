@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>L16_Doom_Audio</title>
+  <script src="../FudgeCore/FudgeCore.js"></script>
+  <script src="../FudgeAid/FudgeAid.js"></script>
+  <script src="UI.js"></script>
+  <script src="Avatar.js"></script>
+  <script src="GameObject.js"></script>
+  <script src="Enemy.js"></script>
+  <script src="Wall.js"></script>
+  <script src="Main.js"></script>
+
+  <style>
+    html,
+    body {
+      padding: 0px;
+      margin: 0px;
+      overflow: hidden;
+    }
+
+    canvas {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #UI {
+      position: sticky;
+      bottom: 18vh;
+    }
+
+    #UI>canvas {
+      width: 11%;
+      height: 17vh;
+      position: sticky;
+      bottom: 36.2vh;
+      left: 44.6%;
+      color: aqua;
+    }
+
+    #UI>img {
+      position: sticky;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas></canvas>
+  <div id="UI">
+    <img class="UI" src="../DoomAssets/UI-Bar.png" alt="UI-Bar" srcset="">
+    <canvas class="Doom-Guy"></canvas>
+  </div>
+</body>
+
+</html>
