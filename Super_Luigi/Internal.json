@@ -129,6 +129,54 @@
             "name": "Block",
             "idSource": "Graph|2022-10-06T19:48:16.486Z|25943"
           }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Camera",
+            "active": true,
+            "components": {
+              "ComponentCamera": [
+                {
+                  "ƒ.ComponentCamera": {
+                    "backgroundColor": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    },
+                    "backgroundEnabled": true,
+                    "projection": "central",
+                    "fieldOfView": 45,
+                    "direction": "diagonal",
+                    "aspect": 1,
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentTransform": [
+                {
+                  "ƒ.ComponentTransform": {
+                    "local": {
+                      "translation": "[0, 0, -4]",
+                      "rotation": "[0, -180, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
         }
       ],
       "idResource": "Graph|2022-10-06T19:32:14.346Z|01378",
@@ -247,7 +295,7 @@
           {
             "ƒ.ComponentTransform": {
               "local": {
-                "translation": "[-6, -2.499999523162842, 0]",
+                "translation": "[-6, -2.5, 0]",
                 "rotation": "[0, 0, 0]",
                 "scaling": "[1, 1, 1]"
               },
