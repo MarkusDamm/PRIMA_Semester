@@ -42,13 +42,19 @@ var Script;
     ƒ.Debug.info("Main Program Template running!");
     let viewport;
     document.addEventListener("interactiveViewportStarted", start);
+    let root;
     function start(_event) {
         viewport = _event.detail;
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
-        let root = viewport.getBranch();
-        let luigi = root.getChildren();
+        root = viewport.getBranch();
+        hndAnimation();
+    }
+    async function hndAnimation() {
+        let luigi = root.getChildren()[0];
         console.log(luigi);
+        let imgSpriteSheed = new ƒ.TextureImage();
+        await imgSpriteSheed.load("../Sprites/Luigi_Moves_Sheet.png");
     }
     function update(_event) {
         // ƒ.Physics.simulate();  // if physics is included and used
