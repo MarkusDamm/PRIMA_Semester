@@ -42,24 +42,22 @@ var Script;
     ƒ.Debug.info("Main Program Template running!");
     let viewport;
     document.addEventListener("interactiveViewportStarted", start);
-    let root;
+    let luigiPos;
     function start(_event) {
         viewport = _event.detail;
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
-        // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
-        root = viewport.getBranch();
-        hndAnimation();
-    }
-    async function hndAnimation() {
-        let luigi = root.getChildren()[0];
-        console.log(luigi);
-        let imgSpriteSheed = new ƒ.TextureImage();
-        await imgSpriteSheed.load("../Sprites/Luigi_Moves_Sheet.png");
+        ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+        console.log(viewport);
+        let branch = viewport.getBranch();
+        console.log(branch);
+        luigiPos = branch.getChildrenByName("LuigiPosition")[0];
+        console.log(luigiPos);
     }
     function update(_event) {
         // ƒ.Physics.simulate();  // if physics is included and used
         viewport.draw();
         ƒ.AudioManager.default.update();
+        luigiPos.getComponent(ƒ.ComponentTransform).mtxLocal.translateX(0.01);
     }
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map

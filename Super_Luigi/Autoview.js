@@ -8,7 +8,7 @@
  * The types are annotated as comments here and may become regular Javascript-code as this TC39-Proposal progresses {@link https://github.com/tc39/proposal-type-annotations}
  * 
  * Do not extend this file, but use it as a template to transfer some of its functionality to your own code. 
- * This file will should disappear as you progress...
+ * This file will/should disappear as you progress...
  * 
  * Have fun creating with FUDGE!
  * @author: Jirka Dell'Oro-Friedl, HFU, 2022
