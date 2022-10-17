@@ -504,11 +504,11 @@
   },
   "TextureImage|2022-10-11T14:30:06.228Z|51072": {
     "ƒ.TextureImage": {
-      "url": "Sprites\\ChocolateFortress.PNG",
+      "url": "Sprites\\ChocolateFortress.png",
       "type": "TextureImage",
       "Texture": {
         "idResource": "TextureImage|2022-10-11T14:30:06.228Z|51072",
-        "name": "Sprites\\ChocolateFortress.PNG",
+        "name": "Sprites\\ChocolateFortress.png",
         "mipmap": "CRISP"
       }
     }
