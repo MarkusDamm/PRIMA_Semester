@@ -44,6 +44,12 @@ var Script;
     let viewport;
     document.addEventListener("interactiveViewportStarted", start);
     let luigiPos;
+    let luigiNode;
+    let coat;
+    let animWalk;
+    let animRun;
+    let luigiMoveSpeed = 4;
+    let ctrSideways = new ƒ.Control("Sideways", luigiMoveSpeed, 0 /* PROPORTIONAL */);
     async function start(_event) {
         viewport = _event.detail;
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
@@ -53,7 +59,7 @@ var Script;
         luigiPos = branch.getChildrenByName("LuigiPosition")[0];
         luigiPos.removeAllChildren();
         // create Luigi
-        let luigiNode = new ƒAid.NodeSprite("Luigi");
+        luigiNode = new ƒAid.NodeSprite("Luigi");
         luigiNode.addComponent(new ƒ.ComponentTransform());
         luigiNode.mtxLocal.rotateY(180);
         luigiNode.mtxLocal.translateY(-0.05);
@@ -61,26 +67,64 @@ var Script;
         // texture Luigi
         let texture = new ƒ.TextureImage();
         await texture.load("./Sprites/Luigi_Moves_Sheet2.png");
-        let coat = new ƒ.CoatTextured(ƒ.Color.CSS("white"), texture);
+        coat = new ƒ.CoatTextured(ƒ.Color.CSS("white"), texture);
         // animation
         // Walk
-        let animWalk = new ƒAid.SpriteSheetAnimation("Walk", coat);
+        animWalk = new ƒAid.SpriteSheetAnimation("Walk", coat);
         animWalk.generateByGrid(ƒ.Rectangle.GET(176, 38, 16, 32), 3, 32, ƒ.ORIGIN2D.TOPLEFT, ƒ.Vector2.X(52));
         // Run
-        let animRun = new ƒAid.SpriteSheetAnimation("Run", coat);
+        animRun = new ƒAid.SpriteSheetAnimation("Run", coat);
         animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, 32, ƒ.ORIGIN2D.TOPLEFT, ƒ.Vector2.X(52));
         luigiNode.setAnimation(animWalk);
         luigiNode.setFrameDirection(1);
         luigiNode.framerate = 12;
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
     }
+    let AnimationType;
+    (function (AnimationType) {
+        AnimationType[AnimationType["Walk"] = 0] = "Walk";
+        AnimationType[AnimationType["Run"] = 1] = "Run";
+        AnimationType[AnimationType["Idle"] = 2] = "Idle";
+    })(AnimationType || (AnimationType = {}));
+    function setAnimation(_type) {
+        switch (_type) {
+            case AnimationType.Walk:
+                luigiNode.setAnimation(animWalk);
+                break;
+            case AnimationType.Run:
+                // animRun = new ƒAid.SpriteSheetAnimation("Run", coat);
+                // animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, 32, ƒ.ORIGIN2D.TOPLEFT, ƒ.Vector2.X(52));
+                luigiNode.setAnimation(animRun);
+                break;
+            default:
+                console.log("no Animation yet");
+                break;
+        }
+    }
     function update(_event) {
         // move Luigi
-        let cmpTransL = luigiPos.getComponent(ƒ.ComponentTransform);
-        cmpTransL.mtxLocal.translateX(0.01);
+        // let cmpTransL: ƒ.ComponentTransform = luigiPos.getComponent(ƒ.ComponentTransform);
+        // cmpTransL.mtxLocal.translateX(0.01);
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.D])) {
+            moveLuigi();
+        }
         // ƒ.Physics.simulate();  // if physics is included and used
         viewport.draw();
         ƒ.AudioManager.default.update();
+    }
+    function moveLuigi() {
+        let deltaTime = ƒ.Loop.timeFrameGame / 1000;
+        let sidewaysSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.D]) +
+            ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.A]));
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])) {
+            setAnimation(AnimationType.Run);
+            ctrSideways.setInput(sidewaysSpeed * 1.5 * deltaTime);
+        }
+        else {
+            ctrSideways.setInput(sidewaysSpeed * deltaTime);
+            setAnimation(AnimationType.Walk);
+        }
+        luigiPos.mtxLocal.translateX(ctrSideways.getOutput());
     }
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map
