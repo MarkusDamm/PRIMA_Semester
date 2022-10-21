@@ -44,16 +44,25 @@ var Script;
     let viewport;
     document.addEventListener("interactiveViewportStarted", start);
     let luigiPos;
+    let ySpeed = 0;
+    let fallTime = 0;
+    // global variables for animation
     let luigiNode;
-    let coat;
     let animWalk;
     let animRun;
+    let animIdle;
+    let luigiAnimState;
+    let AnimationType;
+    (function (AnimationType) {
+        AnimationType[AnimationType["Walk"] = 0] = "Walk";
+        AnimationType[AnimationType["Run"] = 1] = "Run";
+        AnimationType[AnimationType["Idle"] = 2] = "Idle";
+    })(AnimationType || (AnimationType = {}));
     let luigiMoveSpeed = 4;
     let ctrSideways = new ƒ.Control("Sideways", luigiMoveSpeed, 0 /* PROPORTIONAL */);
     async function start(_event) {
         viewport = _event.detail;
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
-        console.log(viewport);
         // get Nodes
         let branch = viewport.getBranch();
         luigiPos = branch.getChildrenByName("LuigiPosition")[0];
@@ -61,52 +70,62 @@ var Script;
         // create Luigi
         luigiNode = new ƒAid.NodeSprite("Luigi");
         luigiNode.addComponent(new ƒ.ComponentTransform());
+        // set mesh to 2 y
         luigiNode.mtxLocal.rotateY(180);
         luigiNode.mtxLocal.translateY(-0.05);
         luigiPos.appendChild(luigiNode);
         // texture Luigi
         let texture = new ƒ.TextureImage();
         await texture.load("./Sprites/Luigi_Moves_Sheet2.png");
-        coat = new ƒ.CoatTextured(ƒ.Color.CSS("white"), texture);
+        let coat = new ƒ.CoatTextured(ƒ.Color.CSS("white"), texture);
         // animation
         // Walk
         animWalk = new ƒAid.SpriteSheetAnimation("Walk", coat);
-        animWalk.generateByGrid(ƒ.Rectangle.GET(176, 38, 16, 32), 3, 32, ƒ.ORIGIN2D.TOPLEFT, ƒ.Vector2.X(52));
+        animWalk.generateByGrid(ƒ.Rectangle.GET(176, 38, 16, 32), 3, 32, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
         // Run
         animRun = new ƒAid.SpriteSheetAnimation("Run", coat);
-        animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, 32, ƒ.ORIGIN2D.TOPLEFT, ƒ.Vector2.X(52));
-        luigiNode.setAnimation(animWalk);
+        animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, 32, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+        // Idle
+        animIdle = new ƒAid.SpriteSheetAnimation("Idle", coat);
+        animIdle.generateByGrid(ƒ.Rectangle.GET(20, 38, 16, 32), 1, 32, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+        setAnimation(AnimationType.Idle);
+        luigiAnimState = AnimationType.Idle;
         luigiNode.setFrameDirection(1);
         luigiNode.framerate = 12;
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
     }
-    let AnimationType;
-    (function (AnimationType) {
-        AnimationType[AnimationType["Walk"] = 0] = "Walk";
-        AnimationType[AnimationType["Run"] = 1] = "Run";
-        AnimationType[AnimationType["Idle"] = 2] = "Idle";
-    })(AnimationType || (AnimationType = {}));
     function setAnimation(_type) {
         switch (_type) {
             case AnimationType.Walk:
+                if (luigiAnimState == _type)
+                    break;
                 luigiNode.setAnimation(animWalk);
+                luigiAnimState = AnimationType.Walk;
                 break;
             case AnimationType.Run:
-                // animRun = new ƒAid.SpriteSheetAnimation("Run", coat);
-                // animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, 32, ƒ.ORIGIN2D.TOPLEFT, ƒ.Vector2.X(52));
+                if (luigiAnimState == _type)
+                    break;
                 luigiNode.setAnimation(animRun);
+                luigiAnimState = AnimationType.Run;
                 break;
             default:
-                console.log("no Animation yet");
+                if (luigiAnimState == _type)
+                    break;
+                luigiNode.setAnimation(animIdle);
+                luigiAnimState = AnimationType.Idle;
                 break;
         }
     }
     function update(_event) {
-        // move Luigi
-        // let cmpTransL: ƒ.ComponentTransform = luigiPos.getComponent(ƒ.ComponentTransform);
-        // cmpTransL.mtxLocal.translateX(0.01);
+        // move Luigi when pressing move-keys
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.D])) {
             moveLuigi();
+        }
+        else
+            setAnimation(AnimationType.Idle);
+        fall();
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE])) {
+            jump();
         }
         // ƒ.Physics.simulate();  // if physics is included and used
         viewport.draw();
@@ -116,6 +135,7 @@ var Script;
         let deltaTime = ƒ.Loop.timeFrameGame / 1000;
         let sidewaysSpeed = (ƒ.Keyboard.mapToValue(1, 0, [ƒ.KEYBOARD_CODE.D]) +
             ƒ.Keyboard.mapToValue(-1, 0, [ƒ.KEYBOARD_CODE.A]));
+        // run when shift is pressed
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])) {
             setAnimation(AnimationType.Run);
             ctrSideways.setInput(sidewaysSpeed * 1.5 * deltaTime);
@@ -125,6 +145,27 @@ var Script;
             setAnimation(AnimationType.Walk);
         }
         luigiPos.mtxLocal.translateX(ctrSideways.getOutput());
+        rotateLuigi(ctrSideways.getOutput());
+    }
+    function fall() {
+        let deltaTime = ƒ.Loop.timeFrameGame / 1000;
+        //fall
+        let g = 9.81;
+        ySpeed -= g * deltaTime;
+        let deltaY = ySpeed * deltaTime;
+        if (luigiPos.mtxLocal.translation.y + deltaY > -2) {
+            luigiPos.mtxLocal.translateY(deltaY);
+        }
+    }
+    function jump() {
+        ySpeed = 5;
+    }
+    function rotateLuigi(_move) {
+        if (_move > 0) {
+            luigiNode.mtxLocal.rotation = ƒ.Vector3.Y(180);
+            return;
+        }
+        luigiNode.mtxLocal.rotation = ƒ.Vector3.Y(0);
     }
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map
