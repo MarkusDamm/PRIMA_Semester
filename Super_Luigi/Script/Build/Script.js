@@ -47,6 +47,7 @@ var Script;
             this.spriteSheedPath = "./Sprites/Luigi_Moves_Sheet2.png";
             this.moveSpeed = 4;
             this.jumpForce = 5;
+            this.resolution = 16;
             this.addComponent(new ƒ.ComponentTransform);
             this.pos = this.mtxLocal;
             this.node = new ƒAid.NodeSprite("Luigi");
@@ -60,24 +61,25 @@ var Script;
             // let texture: ƒ.TextureImage = new ƒ.TextureImage();
             // texture.load(this.spriteSheedPath);
             let coat = new ƒ.CoatTextured(ƒ.Color.CSS("white"), texture);
-            this.ctrSideways = new ƒ.Control("Sideways", this.moveSpeed, 0 /* PROPORTIONAL */);
+            this.ctrSideways = new ƒ.Control("Sideways", this.moveSpeed, 0 /* PROPORTIONAL */, 15);
             // animation
             // Walk
             this.animWalk = new ƒAid.SpriteSheetAnimation("Walk", coat);
-            this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 38, 16, 32), 3, 16, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+            this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 38, 16, 32), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
             // Run
             this.animRun = new ƒAid.SpriteSheetAnimation("Run", coat);
-            this.animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, 16, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+            this.animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
             // Idle
             this.animIdle = new ƒAid.SpriteSheetAnimation("Idle", coat);
-            this.animIdle.generateByGrid(ƒ.Rectangle.GET(20, 38, 16, 32), 1, 16, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+            this.animIdle.generateByGrid(ƒ.Rectangle.GET(20, 38, 16, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
             this.node.setAnimation(this.animIdle);
             this.animState = Script.Animation.Idle;
             this.node.setFrameDirection(1);
             this.node.framerate = 12;
+            this.isOnGround = false;
         }
         /**
-         * setAnimation
+         * setAnimation to given animationtype
          */
         setAnimation(_type) {
             switch (_type) {
@@ -120,7 +122,9 @@ var Script;
             else if (this.ctrSideways.getOutput() < 0) {
                 this.node.mtxLocal.rotation = ƒ.Vector3.Y(0);
             }
+            // if (!this.checkGrounded()) {
             this.fall(deltaTime);
+            // }
         }
         /**
          * move
@@ -156,9 +160,45 @@ var Script;
             let g = 9.81;
             this.ySpeed -= g * _deltaTime;
             let deltaY = this.ySpeed * _deltaTime;
-            if (this.mtxLocal.translation.y + deltaY > -2) {
+            this.checkGrounded();
+            if (!this.isOnGround) {
                 this.mtxLocal.translateY(deltaY);
             }
+            // this.mtxLocal.translation.y = groundHight;
+            // this.isOnGround = true;
+        }
+        /**
+        * check if Luigi is on the Ground
+        */
+        checkGrounded() {
+            let floorTiles = Script.branch.getChildrenByName("Floors")[0].getChildren();
+            let blockSize = 1;
+            // let blockSize: ƒ.Vector3;
+            let lTrans = this.mtxLocal.translation;
+            // let floorTile: ƒ.Node;
+            // floorTiles.forEach(block => {
+            for (let block of floorTiles) {
+                let blockTrans = block.mtxLocal.translation;
+                // blockSize = block.mtxLocal.scaling;
+                if (Math.abs(lTrans.x - blockTrans.x) < blockSize) {
+                    if (lTrans.y < blockTrans.y + blockSize && lTrans.x > blockTrans.x + (blockSize - 0.2)) {
+                        // groundHight = blockTrans.y + blockSize;
+                        lTrans.y = blockTrans.y + blockSize;
+                        this.mtxLocal.translation = lTrans;
+                        this.isOnGround = true;
+                        this.ySpeed = 0;
+                        return;
+                        // return this.isOnGround;
+                    }
+                }
+            }
+            this.isOnGround = false;
+            // );
+            // console.log("not on ground");
+            // if (this.mtxLocal.translation.y <= groundHight) {
+            //   this.isOnGround = true;
+            // }
+            // return this.isOnGround;
         }
     }
     Script.Luigi = Luigi;
@@ -170,8 +210,9 @@ var Script;
     ƒ.Debug.info("Main Program Template running!");
     let viewport;
     document.addEventListener("interactiveViewportStarted", start);
-    // global variables for animation
+    // global variables
     let luigi;
+    // export let groundHight: number = -3;
     let Animation;
     (function (Animation) {
         Animation[Animation["Idle"] = 0] = "Idle";
@@ -182,11 +223,11 @@ var Script;
         viewport = _event.detail;
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         // get Nodes
-        let branch = viewport.getBranch();
+        Script.branch = viewport.getBranch();
         let texture = new ƒ.TextureImage();
         await texture.load("./Sprites/Luigi_Moves_Sheet2.png");
         luigi = new Script.Luigi(texture);
-        branch.appendChild(luigi);
+        Script.branch.appendChild(luigi);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
     }
     function update(_event) {

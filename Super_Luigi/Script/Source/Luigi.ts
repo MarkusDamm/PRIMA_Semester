@@ -15,9 +15,12 @@ namespace Script {
 
     private moveSpeed: number = 4;
     private jumpForce: number = 5;
+    private resolution: number = 16;
     private animWalk: ƒAid.SpriteSheetAnimation;
     private animRun: ƒAid.SpriteSheetAnimation;
     private animIdle: ƒAid.SpriteSheetAnimation;
+
+    private isOnGround: boolean;
 
     constructor(_texture: ƒ.TextureImage) {
       super("LuigiPosition");
@@ -40,27 +43,29 @@ namespace Script {
       // texture.load(this.spriteSheedPath);
       let coat: ƒ.CoatTextured = new ƒ.CoatTextured(ƒ.Color.CSS("white"), texture);
 
-      this.ctrSideways = new ƒ.Control("Sideways", this.moveSpeed, ƒ.CONTROL_TYPE.PROPORTIONAL);
+      this.ctrSideways = new ƒ.Control("Sideways", this.moveSpeed, ƒ.CONTROL_TYPE.PROPORTIONAL, 15);
 
       // animation
       // Walk
       this.animWalk = new ƒAid.SpriteSheetAnimation("Walk", coat);
-      this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 38, 16, 32), 3, 16, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+      this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 38, 16, 32), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
       // Run
       this.animRun = new ƒAid.SpriteSheetAnimation("Run", coat);
-      this.animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, 16, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+      this.animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
       // Idle
       this.animIdle = new ƒAid.SpriteSheetAnimation("Idle", coat);
-      this.animIdle.generateByGrid(ƒ.Rectangle.GET(20, 38, 16, 32), 1, 16, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+      this.animIdle.generateByGrid(ƒ.Rectangle.GET(20, 38, 16, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
 
       this.node.setAnimation(this.animIdle);
       this.animState = Animation.Idle;
       this.node.setFrameDirection(1);
       this.node.framerate = 12;
+
+      this.isOnGround = false;
     }
 
     /**
-     * setAnimation 
+     * setAnimation to given animationtype
      */
     public setAnimation(_type: Animation): void {
       switch (_type) {
@@ -110,7 +115,9 @@ namespace Script {
         this.node.mtxLocal.rotation = ƒ.Vector3.Y(0);
       }
 
+      // if (!this.checkGrounded()) {
       this.fall(deltaTime);
+      // }
     }
 
     /**
@@ -154,10 +161,49 @@ namespace Script {
       let g: number = 9.81;
       this.ySpeed -= g * _deltaTime;
       let deltaY: number = this.ySpeed * _deltaTime;
-      if (this.mtxLocal.translation.y + deltaY > -2) {
+      this.checkGrounded();
+      if (!this.isOnGround) {
         this.mtxLocal.translateY(deltaY);
       }
+      // this.mtxLocal.translation.y = groundHight;
+      // this.isOnGround = true;
+
     }
 
+    /**
+    * check if Luigi is on the Ground
+    */
+    private checkGrounded(): void {
+      let floorTiles: ƒ.Node[] = branch.getChildrenByName("Floors")[0].getChildren();
+      let blockSize: number = 1;
+      // let blockSize: ƒ.Vector3;
+      let lTrans: ƒ.Vector3 = this.mtxLocal.translation;
+      // let floorTile: ƒ.Node;
+      // floorTiles.forEach(block => {
+      for (let block of floorTiles) {
+        let blockTrans: ƒ.Vector3 = block.mtxLocal.translation;
+        // blockSize = block.mtxLocal.scaling;
+        if (Math.abs(lTrans.x - blockTrans.x) < blockSize) {
+          if (lTrans.y < blockTrans.y + blockSize && lTrans.x > blockTrans.x + (blockSize - 0.2)) {
+            // groundHight = blockTrans.y + blockSize;
+            lTrans.y = blockTrans.y + blockSize;
+            this.mtxLocal.translation = lTrans;
+            this.isOnGround = true;
+            this.ySpeed = 0;
+            return;
+            // return this.isOnGround;
+          }
+        }
+      }
+      this.isOnGround = false;
+      // );
+      // console.log("not on ground");
+
+      // if (this.mtxLocal.translation.y <= groundHight) {
+      //   this.isOnGround = true;
+      // }
+
+      // return this.isOnGround;
+    }
   }
 }

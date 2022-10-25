@@ -7,8 +7,10 @@ namespace Script {
   let viewport: ƒ.Viewport;
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
 
-  // global variables for animation
+  // global variables
   let luigi: Luigi;
+  export let branch: ƒ.Node;
+  // export let groundHight: number = -3;
 
   export enum Animation {
     Idle, Walk, Run
@@ -19,7 +21,7 @@ namespace Script {
     ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
 
     // get Nodes
-    let branch: ƒ.Node = viewport.getBranch();
+    branch = viewport.getBranch();
     let texture: ƒ.TextureImage = new ƒ.TextureImage();
     await texture.load("./Sprites/Luigi_Moves_Sheet2.png");
     luigi = new Luigi(texture);

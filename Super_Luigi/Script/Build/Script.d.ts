@@ -19,12 +19,14 @@ declare namespace Script {
         spriteSheedPath: string;
         private moveSpeed;
         private jumpForce;
+        private resolution;
         private animWalk;
         private animRun;
         private animIdle;
+        private isOnGround;
         constructor(_texture: ƒ.TextureImage);
         /**
-         * setAnimation
+         * setAnimation to given animationtype
          */
         setAnimation(_type: Animation): void;
         /**
@@ -43,9 +45,15 @@ declare namespace Script {
          * fall
          */
         fall(_deltaTime: number): void;
+        /**
+        * check if Luigi is on the Ground
+        */
+        private checkGrounded;
     }
 }
 declare namespace Script {
+    import ƒ = FudgeCore;
+    let branch: ƒ.Node;
     enum Animation {
         Idle = 0,
         Walk = 1,
