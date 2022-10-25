@@ -23,7 +23,7 @@ namespace Script {
     let texture: ƒ.TextureImage = new ƒ.TextureImage();
     await texture.load("./Sprites/Luigi_Moves_Sheet2.png");
     luigi = new Luigi(texture);
-    branch.appendChild(luigi.pos);
+    branch.appendChild(luigi);
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
   }

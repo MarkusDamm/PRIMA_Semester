@@ -2,8 +2,8 @@ namespace Script {
   import ƒ = FudgeCore;
   import ƒAid = FudgeAid;
 
-  export class Luigi {
-    public pos: ƒ.Node;
+  export class Luigi extends ƒ.Node {
+    public pos: ƒ.Matrix4x4;
     public node: ƒAid.NodeSprite;
 
     public ySpeed: number = 0;
@@ -20,18 +20,20 @@ namespace Script {
     private animIdle: ƒAid.SpriteSheetAnimation;
 
     constructor(_texture: ƒ.TextureImage) {
-      this.pos = new ƒ.Node("LuigiPosition");
-      this.pos.addComponent(new ƒ.ComponentTransform);
+      super("LuigiPosition");
+
+      this.addComponent(new ƒ.ComponentTransform);
+      this.pos = this.mtxLocal;
 
       this.node = new ƒAid.NodeSprite("Luigi");
       this.node.addComponent(new ƒ.ComponentTransform);
 
       // scaling doesn't work as expected
-      this.node.getComponent(ƒ.ComponentMesh).mtxPivot.scaleY(2);
+      // this.node.getComponent(ƒ.ComponentMesh).mtxPivot.scaleY(2);
 
       this.node.mtxLocal.rotation = ƒ.Vector3.Y(180);
       this.node.mtxLocal.translateY(-0.05);
-      this.pos.appendChild(this.node);
+      this.appendChild(this.node);
 
       let texture: ƒ.TextureImage = _texture;
       // let texture: ƒ.TextureImage = new ƒ.TextureImage();
@@ -43,13 +45,13 @@ namespace Script {
       // animation
       // Walk
       this.animWalk = new ƒAid.SpriteSheetAnimation("Walk", coat);
-      this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 38, 16, 32), 3, 32, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+      this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 38, 16, 32), 3, 16, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
       // Run
       this.animRun = new ƒAid.SpriteSheetAnimation("Run", coat);
-      this.animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, 32, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+      this.animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, 16, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
       // Idle
       this.animIdle = new ƒAid.SpriteSheetAnimation("Idle", coat);
-      this.animIdle.generateByGrid(ƒ.Rectangle.GET(20, 38, 16, 32), 1, 32, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+      this.animIdle.generateByGrid(ƒ.Rectangle.GET(20, 38, 16, 32), 1, 16, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
 
       this.node.setAnimation(this.animIdle);
       this.animState = Animation.Idle;
@@ -134,7 +136,7 @@ namespace Script {
         this.setAnimation(Animation.Idle);
       }
 
-      this.pos.mtxLocal.translateX(this.ctrSideways.getOutput());
+      this.mtxLocal.translateX(this.ctrSideways.getOutput());
       // rotateLuigi(ctrSideways.getOutput());
     }
 
@@ -152,8 +154,8 @@ namespace Script {
       let g: number = 9.81;
       this.ySpeed -= g * _deltaTime;
       let deltaY: number = this.ySpeed * _deltaTime;
-      if (this.pos.mtxLocal.translation.y + deltaY > -2) {
-        this.pos.mtxLocal.translateY(deltaY);
+      if (this.mtxLocal.translation.y + deltaY > -2) {
+        this.mtxLocal.translateY(deltaY);
       }
     }
 

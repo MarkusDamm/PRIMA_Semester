@@ -40,21 +40,22 @@ var Script;
 (function (Script) {
     var ƒ = FudgeCore;
     var ƒAid = FudgeAid;
-    class Luigi {
+    class Luigi extends ƒ.Node {
         constructor(_texture) {
+            super("LuigiPosition");
             this.ySpeed = 0;
             this.spriteSheedPath = "./Sprites/Luigi_Moves_Sheet2.png";
             this.moveSpeed = 4;
             this.jumpForce = 5;
-            this.pos = new ƒ.Node("LuigiPosition");
-            this.pos.addComponent(new ƒ.ComponentTransform);
+            this.addComponent(new ƒ.ComponentTransform);
+            this.pos = this.mtxLocal;
             this.node = new ƒAid.NodeSprite("Luigi");
             this.node.addComponent(new ƒ.ComponentTransform);
             // scaling doesn't work as expected
-            this.node.getComponent(ƒ.ComponentMesh).mtxPivot.scaleY(2);
+            // this.node.getComponent(ƒ.ComponentMesh).mtxPivot.scaleY(2);
             this.node.mtxLocal.rotation = ƒ.Vector3.Y(180);
             this.node.mtxLocal.translateY(-0.05);
-            this.pos.appendChild(this.node);
+            this.appendChild(this.node);
             let texture = _texture;
             // let texture: ƒ.TextureImage = new ƒ.TextureImage();
             // texture.load(this.spriteSheedPath);
@@ -63,13 +64,13 @@ var Script;
             // animation
             // Walk
             this.animWalk = new ƒAid.SpriteSheetAnimation("Walk", coat);
-            this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 38, 16, 32), 3, 32, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+            this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 38, 16, 32), 3, 16, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
             // Run
             this.animRun = new ƒAid.SpriteSheetAnimation("Run", coat);
-            this.animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, 32, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+            this.animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, 16, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
             // Idle
             this.animIdle = new ƒAid.SpriteSheetAnimation("Idle", coat);
-            this.animIdle.generateByGrid(ƒ.Rectangle.GET(20, 38, 16, 32), 1, 32, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+            this.animIdle.generateByGrid(ƒ.Rectangle.GET(20, 38, 16, 32), 1, 16, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
             this.node.setAnimation(this.animIdle);
             this.animState = Script.Animation.Idle;
             this.node.setFrameDirection(1);
@@ -139,7 +140,7 @@ var Script;
             if (this.ctrSideways.getOutput() == 0) {
                 this.setAnimation(Script.Animation.Idle);
             }
-            this.pos.mtxLocal.translateX(this.ctrSideways.getOutput());
+            this.mtxLocal.translateX(this.ctrSideways.getOutput());
             // rotateLuigi(ctrSideways.getOutput());
         }
         /**
@@ -155,8 +156,8 @@ var Script;
             let g = 9.81;
             this.ySpeed -= g * _deltaTime;
             let deltaY = this.ySpeed * _deltaTime;
-            if (this.pos.mtxLocal.translation.y + deltaY > -2) {
-                this.pos.mtxLocal.translateY(deltaY);
+            if (this.mtxLocal.translation.y + deltaY > -2) {
+                this.mtxLocal.translateY(deltaY);
             }
         }
     }
@@ -185,7 +186,7 @@ var Script;
         let texture = new ƒ.TextureImage();
         await texture.load("./Sprites/Luigi_Moves_Sheet2.png");
         luigi = new Script.Luigi(texture);
-        branch.appendChild(luigi.pos);
+        branch.appendChild(luigi);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
     }
     function update(_event) {

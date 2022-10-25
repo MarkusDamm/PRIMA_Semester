@@ -10,8 +10,8 @@ declare namespace Script {
 declare namespace Script {
     import ƒ = FudgeCore;
     import ƒAid = FudgeAid;
-    class Luigi {
-        pos: ƒ.Node;
+    class Luigi extends ƒ.Node {
+        pos: ƒ.Matrix4x4;
         node: ƒAid.NodeSprite;
         ySpeed: number;
         ctrSideways: ƒ.Control;
