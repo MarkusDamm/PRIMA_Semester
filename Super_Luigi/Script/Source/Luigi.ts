@@ -14,11 +14,17 @@ namespace Script {
     public spriteSheedPath: string = "./Sprites/Luigi_Moves_Sheet2.png";
 
     private moveSpeed: number = 4;
-    private jumpForce: number = 5;
+    private jumpForce: number = 10;
     private resolution: number = 16;
+    private animIdle: ƒAid.SpriteSheetAnimation;
+    private animLookUp: ƒAid.SpriteSheetAnimation;
+    private animDuck: ƒAid.SpriteSheetAnimation;
     private animWalk: ƒAid.SpriteSheetAnimation;
     private animRun: ƒAid.SpriteSheetAnimation;
-    private animIdle: ƒAid.SpriteSheetAnimation;
+    private animJump: ƒAid.SpriteSheetAnimation;
+    private animFall: ƒAid.SpriteSheetAnimation;
+    private animRunJump: ƒAid.SpriteSheetAnimation;
+
 
     private isOnGround: boolean;
 
@@ -46,15 +52,32 @@ namespace Script {
       this.ctrSideways = new ƒ.Control("Sideways", this.moveSpeed, ƒ.CONTROL_TYPE.PROPORTIONAL, 15);
 
       // animation
+      // Idle
+      this.animIdle = new ƒAid.SpriteSheetAnimation("Idle", coat);
+      this.animIdle.generateByGrid(ƒ.Rectangle.GET(21, 39, 15, 30), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+      // LookUp
+      this.animLookUp = new ƒAid.SpriteSheetAnimation("LookUp", coat);
+      this.animLookUp.generateByGrid(ƒ.Rectangle.GET(72, 40, 15, 29), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+      // Duck
+      this.animDuck = new ƒAid.SpriteSheetAnimation("Duck", coat);
+      this.animDuck.generateByGrid(ƒ.Rectangle.GET(124, 54, 16, 15), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
       // Walk
       this.animWalk = new ƒAid.SpriteSheetAnimation("Walk", coat);
-      this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 38, 16, 32), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+      this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 39, 15, 32), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
       // Run
       this.animRun = new ƒAid.SpriteSheetAnimation("Run", coat);
       this.animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
-      // Idle
-      this.animIdle = new ƒAid.SpriteSheetAnimation("Idle", coat);
-      this.animIdle.generateByGrid(ƒ.Rectangle.GET(20, 38, 16, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+      // Jump
+      this.animJump = new ƒAid.SpriteSheetAnimation("Jump", coat);
+      this.animJump.generateByGrid(ƒ.Rectangle.GET(72, 109, 16, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+      // Fall
+      this.animFall = new ƒAid.SpriteSheetAnimation("Fall", coat);
+      this.animFall.generateByGrid(ƒ.Rectangle.GET(124, 109, 16, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+      // RunJump
+      this.animRunJump = new ƒAid.SpriteSheetAnimation("RunJump", coat);
+      this.animRunJump.generateByGrid(ƒ.Rectangle.GET(176, 109, 24, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+
+
 
       this.node.setAnimation(this.animIdle);
       this.animState = Animation.Idle;
@@ -90,6 +113,41 @@ namespace Script {
           this.animState = Animation.Run;
           break;
 
+        case Animation.LookUp:
+          if (this.animState == _type) break;
+
+          this.node.setAnimation(this.animLookUp);
+          this.animState = Animation.LookUp;
+          break;
+
+        case Animation.Duck:
+          if (this.animState == _type) break;
+
+          this.node.setAnimation(this.animDuck);
+          this.animState = Animation.Duck;
+          break;
+
+        case Animation.Jump:
+          if (this.animState == _type) break;
+
+          this.node.setAnimation(this.animJump);
+          this.animState = Animation.Jump;
+          break;
+
+        case Animation.Fall:
+          if (this.animState == _type) break;
+
+          this.node.setAnimation(this.animFall);
+          this.animState = Animation.Fall;
+          break;
+
+        case Animation.RunJump:
+          if (this.animState == _type) break;
+
+          this.node.setAnimation(this.animRunJump);
+          this.animState = Animation.RunJump;
+          break;
+
         default:
           console.log("No valid parameter");
           break;
@@ -102,7 +160,28 @@ namespace Script {
     public update(): void {
       let deltaTime: number = ƒ.Loop.timeFrameGame / 1000;
 
+      this.fall(deltaTime);
+      this.checkGrounded();
       this.move(deltaTime);
+
+      if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W])) {
+        this.setAnimation(Animation.LookUp);
+      }
+
+      if (this.ySpeed > 0) {
+        this.setAnimation(Animation.Jump);
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])) {
+          this.setAnimation(Animation.RunJump);
+        }
+      }
+      if (this.ySpeed < 0) {
+        this.setAnimation(Animation.Fall);
+      }
+
+      if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.S])) {
+        this.setAnimation(Animation.Duck);
+      }
+
       if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE])) {
         this.jump();
       }
@@ -114,10 +193,6 @@ namespace Script {
       else if (this.ctrSideways.getOutput() < 0) {
         this.node.mtxLocal.rotation = ƒ.Vector3.Y(0);
       }
-
-      // if (!this.checkGrounded()) {
-      this.fall(deltaTime);
-      // }
     }
 
     /**
@@ -144,66 +219,49 @@ namespace Script {
       }
 
       this.mtxLocal.translateX(this.ctrSideways.getOutput());
-      // rotateLuigi(ctrSideways.getOutput());
     }
 
     /**
      * jump
      */
     public jump(): void {
-      this.ySpeed = this.jumpForce;
+      if (this.isOnGround) {
+        this.ySpeed = this.jumpForce;
+      }
     }
 
     /**
      * fall
      */
     public fall(_deltaTime: number): void {
-      let g: number = 9.81;
-      this.ySpeed -= g * _deltaTime;
+      this.ySpeed -= gravity * _deltaTime;
       let deltaY: number = this.ySpeed * _deltaTime;
-      this.checkGrounded();
-      if (!this.isOnGround) {
-        this.mtxLocal.translateY(deltaY);
-      }
-      // this.mtxLocal.translation.y = groundHight;
-      // this.isOnGround = true;
-
+      this.mtxLocal.translateY(deltaY);
     }
 
     /**
     * check if Luigi is on the Ground
     */
     private checkGrounded(): void {
-      let floorTiles: ƒ.Node[] = branch.getChildrenByName("Floors")[0].getChildren();
-      let blockSize: number = 1;
-      // let blockSize: ƒ.Vector3;
+      let floorTiles: ƒ.Node[] = viewport.getBranch().getChildrenByName("Floors")[0].getChildren();
+      let blockSize: ƒ.Vector3;
       let lTrans: ƒ.Vector3 = this.mtxLocal.translation;
-      // let floorTile: ƒ.Node;
-      // floorTiles.forEach(block => {
-      for (let block of floorTiles) {
-        let blockTrans: ƒ.Vector3 = block.mtxLocal.translation;
-        // blockSize = block.mtxLocal.scaling;
-        if (Math.abs(lTrans.x - blockTrans.x) < blockSize) {
-          if (lTrans.y < blockTrans.y + blockSize && lTrans.x > blockTrans.x + (blockSize - 0.2)) {
-            // groundHight = blockTrans.y + blockSize;
-            lTrans.y = blockTrans.y + blockSize;
+
+      for (let blockPos of floorTiles) {
+        let blockPosTrans: ƒ.Vector3 = blockPos.mtxLocal.translation;
+        blockSize = blockPos.getChild(0).mtxLocal.scaling;
+
+        if (Math.abs(lTrans.x - blockPosTrans.x) <= blockSize.x / 2) {
+          if (lTrans.y < blockPosTrans.y + (blockSize.y / 2) && lTrans.y > blockPosTrans.y + ((blockSize.y / 2) - 0.2)) {
+            lTrans.y = blockPosTrans.y + (blockSize.y / 2);
             this.mtxLocal.translation = lTrans;
             this.isOnGround = true;
             this.ySpeed = 0;
             return;
-            // return this.isOnGround;
           }
         }
       }
       this.isOnGround = false;
-      // );
-      // console.log("not on ground");
-
-      // if (this.mtxLocal.translation.y <= groundHight) {
-      //   this.isOnGround = true;
-      // }
-
-      // return this.isOnGround;
     }
   }
 }

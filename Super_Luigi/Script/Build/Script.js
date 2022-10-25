@@ -46,7 +46,7 @@ var Script;
             this.ySpeed = 0;
             this.spriteSheedPath = "./Sprites/Luigi_Moves_Sheet2.png";
             this.moveSpeed = 4;
-            this.jumpForce = 5;
+            this.jumpForce = 10;
             this.resolution = 16;
             this.addComponent(new ƒ.ComponentTransform);
             this.pos = this.mtxLocal;
@@ -63,15 +63,30 @@ var Script;
             let coat = new ƒ.CoatTextured(ƒ.Color.CSS("white"), texture);
             this.ctrSideways = new ƒ.Control("Sideways", this.moveSpeed, 0 /* PROPORTIONAL */, 15);
             // animation
+            // Idle
+            this.animIdle = new ƒAid.SpriteSheetAnimation("Idle", coat);
+            this.animIdle.generateByGrid(ƒ.Rectangle.GET(21, 39, 15, 30), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+            // LookUp
+            this.animLookUp = new ƒAid.SpriteSheetAnimation("LookUp", coat);
+            this.animLookUp.generateByGrid(ƒ.Rectangle.GET(72, 40, 15, 29), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+            // Duck
+            this.animDuck = new ƒAid.SpriteSheetAnimation("Duck", coat);
+            this.animDuck.generateByGrid(ƒ.Rectangle.GET(124, 54, 16, 15), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
             // Walk
             this.animWalk = new ƒAid.SpriteSheetAnimation("Walk", coat);
-            this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 38, 16, 32), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+            this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 39, 15, 32), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
             // Run
             this.animRun = new ƒAid.SpriteSheetAnimation("Run", coat);
             this.animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
-            // Idle
-            this.animIdle = new ƒAid.SpriteSheetAnimation("Idle", coat);
-            this.animIdle.generateByGrid(ƒ.Rectangle.GET(20, 38, 16, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+            // Jump
+            this.animJump = new ƒAid.SpriteSheetAnimation("Jump", coat);
+            this.animJump.generateByGrid(ƒ.Rectangle.GET(72, 109, 16, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+            // Fall
+            this.animFall = new ƒAid.SpriteSheetAnimation("Fall", coat);
+            this.animFall.generateByGrid(ƒ.Rectangle.GET(124, 109, 16, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+            // RunJump
+            this.animRunJump = new ƒAid.SpriteSheetAnimation("RunJump", coat);
+            this.animRunJump.generateByGrid(ƒ.Rectangle.GET(176, 109, 24, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
             this.node.setAnimation(this.animIdle);
             this.animState = Script.Animation.Idle;
             this.node.setFrameDirection(1);
@@ -101,6 +116,36 @@ var Script;
                     this.node.setAnimation(this.animRun);
                     this.animState = Script.Animation.Run;
                     break;
+                case Script.Animation.LookUp:
+                    if (this.animState == _type)
+                        break;
+                    this.node.setAnimation(this.animLookUp);
+                    this.animState = Script.Animation.LookUp;
+                    break;
+                case Script.Animation.Duck:
+                    if (this.animState == _type)
+                        break;
+                    this.node.setAnimation(this.animDuck);
+                    this.animState = Script.Animation.Duck;
+                    break;
+                case Script.Animation.Jump:
+                    if (this.animState == _type)
+                        break;
+                    this.node.setAnimation(this.animJump);
+                    this.animState = Script.Animation.Jump;
+                    break;
+                case Script.Animation.Fall:
+                    if (this.animState == _type)
+                        break;
+                    this.node.setAnimation(this.animFall);
+                    this.animState = Script.Animation.Fall;
+                    break;
+                case Script.Animation.RunJump:
+                    if (this.animState == _type)
+                        break;
+                    this.node.setAnimation(this.animRunJump);
+                    this.animState = Script.Animation.RunJump;
+                    break;
                 default:
                     console.log("No valid parameter");
                     break;
@@ -111,7 +156,24 @@ var Script;
          */
         update() {
             let deltaTime = ƒ.Loop.timeFrameGame / 1000;
+            this.fall(deltaTime);
+            this.checkGrounded();
             this.move(deltaTime);
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W])) {
+                this.setAnimation(Script.Animation.LookUp);
+            }
+            if (this.ySpeed > 0) {
+                this.setAnimation(Script.Animation.Jump);
+                if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])) {
+                    this.setAnimation(Script.Animation.RunJump);
+                }
+            }
+            if (this.ySpeed < 0) {
+                this.setAnimation(Script.Animation.Fall);
+            }
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.S])) {
+                this.setAnimation(Script.Animation.Duck);
+            }
             if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE])) {
                 this.jump();
             }
@@ -122,9 +184,6 @@ var Script;
             else if (this.ctrSideways.getOutput() < 0) {
                 this.node.mtxLocal.rotation = ƒ.Vector3.Y(0);
             }
-            // if (!this.checkGrounded()) {
-            this.fall(deltaTime);
-            // }
         }
         /**
          * move
@@ -145,60 +204,44 @@ var Script;
                 this.setAnimation(Script.Animation.Idle);
             }
             this.mtxLocal.translateX(this.ctrSideways.getOutput());
-            // rotateLuigi(ctrSideways.getOutput());
         }
         /**
          * jump
          */
         jump() {
-            this.ySpeed = this.jumpForce;
+            if (this.isOnGround) {
+                this.ySpeed = this.jumpForce;
+            }
         }
         /**
          * fall
          */
         fall(_deltaTime) {
-            let g = 9.81;
-            this.ySpeed -= g * _deltaTime;
+            this.ySpeed -= Script.gravity * _deltaTime;
             let deltaY = this.ySpeed * _deltaTime;
-            this.checkGrounded();
-            if (!this.isOnGround) {
-                this.mtxLocal.translateY(deltaY);
-            }
-            // this.mtxLocal.translation.y = groundHight;
-            // this.isOnGround = true;
+            this.mtxLocal.translateY(deltaY);
         }
         /**
         * check if Luigi is on the Ground
         */
         checkGrounded() {
-            let floorTiles = Script.branch.getChildrenByName("Floors")[0].getChildren();
-            let blockSize = 1;
-            // let blockSize: ƒ.Vector3;
+            let floorTiles = Script.viewport.getBranch().getChildrenByName("Floors")[0].getChildren();
+            let blockSize;
             let lTrans = this.mtxLocal.translation;
-            // let floorTile: ƒ.Node;
-            // floorTiles.forEach(block => {
-            for (let block of floorTiles) {
-                let blockTrans = block.mtxLocal.translation;
-                // blockSize = block.mtxLocal.scaling;
-                if (Math.abs(lTrans.x - blockTrans.x) < blockSize) {
-                    if (lTrans.y < blockTrans.y + blockSize && lTrans.x > blockTrans.x + (blockSize - 0.2)) {
-                        // groundHight = blockTrans.y + blockSize;
-                        lTrans.y = blockTrans.y + blockSize;
+            for (let blockPos of floorTiles) {
+                let blockPosTrans = blockPos.mtxLocal.translation;
+                blockSize = blockPos.getChild(0).mtxLocal.scaling;
+                if (Math.abs(lTrans.x - blockPosTrans.x) <= blockSize.x / 2) {
+                    if (lTrans.y < blockPosTrans.y + (blockSize.y / 2) && lTrans.y > blockPosTrans.y + ((blockSize.y / 2) - 0.2)) {
+                        lTrans.y = blockPosTrans.y + (blockSize.y / 2);
                         this.mtxLocal.translation = lTrans;
                         this.isOnGround = true;
                         this.ySpeed = 0;
                         return;
-                        // return this.isOnGround;
                     }
                 }
             }
             this.isOnGround = false;
-            // );
-            // console.log("not on ground");
-            // if (this.mtxLocal.translation.y <= groundHight) {
-            //   this.isOnGround = true;
-            // }
-            // return this.isOnGround;
         }
     }
     Script.Luigi = Luigi;
@@ -208,32 +251,36 @@ var Script;
     var ƒ = FudgeCore;
     // import ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
-    let viewport;
     document.addEventListener("interactiveViewportStarted", start);
     // global variables
     let luigi;
-    // export let groundHight: number = -3;
+    Script.gravity = 9.81;
     let Animation;
     (function (Animation) {
         Animation[Animation["Idle"] = 0] = "Idle";
-        Animation[Animation["Walk"] = 1] = "Walk";
-        Animation[Animation["Run"] = 2] = "Run";
+        Animation[Animation["LookUp"] = 1] = "LookUp";
+        Animation[Animation["Duck"] = 2] = "Duck";
+        Animation[Animation["Walk"] = 3] = "Walk";
+        Animation[Animation["Run"] = 4] = "Run";
+        Animation[Animation["Jump"] = 5] = "Jump";
+        Animation[Animation["Fall"] = 6] = "Fall";
+        Animation[Animation["RunJump"] = 7] = "RunJump";
     })(Animation = Script.Animation || (Script.Animation = {}));
     async function start(_event) {
-        viewport = _event.detail;
+        Script.viewport = _event.detail;
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         // get Nodes
-        Script.branch = viewport.getBranch();
+        let branch = Script.viewport.getBranch();
         let texture = new ƒ.TextureImage();
         await texture.load("./Sprites/Luigi_Moves_Sheet2.png");
         luigi = new Script.Luigi(texture);
-        Script.branch.appendChild(luigi);
+        branch.appendChild(luigi);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
     }
     function update(_event) {
         luigi.update();
         // ƒ.Physics.simulate();  // if physics is included and used
-        viewport.draw();
+        Script.viewport.draw();
         ƒ.AudioManager.default.update();
     }
 })(Script || (Script = {}));

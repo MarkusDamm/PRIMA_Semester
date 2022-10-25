@@ -4,16 +4,15 @@ namespace Script {
 
   ƒ.Debug.info("Main Program Template running!");
 
-  let viewport: ƒ.Viewport;
-  document.addEventListener("interactiveViewportStarted", <EventListener>start);
+  export let viewport: ƒ.Viewport;
+  document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
 
   // global variables
   let luigi: Luigi;
-  export let branch: ƒ.Node;
-  // export let groundHight: number = -3;
+  export let gravity: number = 9.81;
 
   export enum Animation {
-    Idle, Walk, Run
+    Idle, LookUp, Duck, Walk, Run, Jump, Fall, RunJump
   }
 
   async function start(_event: CustomEvent): Promise<void> {
@@ -21,7 +20,7 @@ namespace Script {
     ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
 
     // get Nodes
-    branch = viewport.getBranch();
+    let branch: ƒ.Node = viewport.getBranch();
     let texture: ƒ.TextureImage = new ƒ.TextureImage();
     await texture.load("./Sprites/Luigi_Moves_Sheet2.png");
     luigi = new Luigi(texture);

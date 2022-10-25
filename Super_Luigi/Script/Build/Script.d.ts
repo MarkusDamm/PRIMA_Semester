@@ -20,9 +20,14 @@ declare namespace Script {
         private moveSpeed;
         private jumpForce;
         private resolution;
+        private animIdle;
+        private animLookUp;
+        private animDuck;
         private animWalk;
         private animRun;
-        private animIdle;
+        private animJump;
+        private animFall;
+        private animRunJump;
         private isOnGround;
         constructor(_texture: ƒ.TextureImage);
         /**
@@ -53,10 +58,16 @@ declare namespace Script {
 }
 declare namespace Script {
     import ƒ = FudgeCore;
-    let branch: ƒ.Node;
+    let viewport: ƒ.Viewport;
+    let gravity: number;
     enum Animation {
         Idle = 0,
-        Walk = 1,
-        Run = 2
+        LookUp = 1,
+        Duck = 2,
+        Walk = 3,
+        Run = 4,
+        Jump = 5,
+        Fall = 6,
+        RunJump = 7
     }
 }

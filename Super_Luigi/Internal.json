@@ -428,37 +428,6 @@
               }
             ]
           }
-        },
-        {
-          "ƒ.Node": {
-            "name": "LuigiPosition",
-            "active": true,
-            "components": {
-              "ComponentTransform": [
-                {
-                  "ƒ.ComponentTransform": {
-                    "local": {
-                      "translation": "[-6, -2, 0]",
-                      "rotation": "[0, 0, 0]",
-                      "scaling": "[1, 1, 1]"
-                    },
-                    "Component": {
-                      "active": true
-                    }
-                  }
-                }
-              ]
-            },
-            "children": [
-              {
-                "ƒ.GraphInstance": {
-                  "deserializeFromSource": true,
-                  "name": "Luigi",
-                  "idSource": "Graph|2022-10-06T19:46:34.875Z|85363"
-                }
-              }
-            ]
-          }
         }
       ],
       "idResource": "Graph|2022-10-06T19:32:14.346Z|01378",
