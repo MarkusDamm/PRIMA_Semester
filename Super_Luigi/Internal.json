@@ -96,11 +96,21 @@
       "type": "MeshSprite"
     }
   },
+  "Audio|2022-10-27T12:33:14.492Z|19973": {
+    "ƒ.Audio": {
+      "url": "Audio\\Overworld.mp3",
+      "idResource": "Audio|2022-10-27T12:33:14.492Z|19973",
+      "name": "Audio\\Overworld.mp3",
+      "type": "Audio"
+    }
+  },
   "Graph|2022-10-06T19:32:14.346Z|01378": {
     "ƒ.Graph": {
       "name": "Level",
       "active": true,
-      "components": {},
+      "components": {
+        "ComponentAudio": []
+      },
       "children": [
         {
           "ƒ.Node": {

@@ -1,6 +1,9 @@
 namespace Script {
   import ƒ = FudgeCore;
-  // import ƒAid = FudgeAid;
+
+  // für erste Novemberwoche:
+  // Mutation und Serelization genauer betrachten
+  //
 
   ƒ.Debug.info("Main Program Template running!");
 
@@ -25,6 +28,15 @@ namespace Script {
     await texture.load("./Sprites/Luigi_Moves_Sheet2.png");
     luigi = new Luigi(texture);
     branch.appendChild(luigi);
+
+    // Audio
+    let cmpAudio: ƒ.ComponentAudio = branch.getComponent(ƒ.ComponentAudio);
+    console.log(cmpAudio);
+    
+    let downSound: ƒ.Audio = new ƒ.Audio();
+    await downSound.load("./Audio/PlayerDown.mp3");
+    cmpAudio = new ƒ.ComponentAudio(downSound, true, true);
+    branch.addComponent(cmpAudio);
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
   }

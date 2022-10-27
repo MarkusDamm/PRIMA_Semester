@@ -20,14 +20,9 @@ declare namespace Script {
         private moveSpeed;
         private jumpForce;
         private resolution;
-        private animIdle;
-        private animLookUp;
-        private animDuck;
         private animWalk;
         private animRun;
-        private animJump;
-        private animFall;
-        private animRunJump;
+        private animIdle;
         private isOnGround;
         constructor(_texture: ƒ.TextureImage);
         /**
