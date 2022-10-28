@@ -12,7 +12,7 @@ namespace Script {
 
   // global variables
   let luigi: Luigi;
-  export let gravity: number = 9.81;
+  export let gravity: number = 20;
 
   export enum Animation {
     Idle, LookUp, Duck, Walk, Run, Jump, Fall, RunJump

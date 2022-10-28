@@ -8,10 +8,7 @@ declare namespace Script {
     }
 }
 declare namespace Script {
-    import ƒ = FudgeCore;
-    import ƒAid = FudgeAid;
     class Luigi extends ƒ.Node {
-        pos: ƒ.Matrix4x4;
         node: ƒAid.NodeSprite;
         ySpeed: number;
         ctrSideways: ƒ.Control;
@@ -20,9 +17,14 @@ declare namespace Script {
         private moveSpeed;
         private jumpForce;
         private resolution;
+        private animIdle;
+        private animLookUp;
+        private animDuck;
         private animWalk;
         private animRun;
-        private animIdle;
+        private animJump;
+        private animFall;
+        private animRunJump;
         private isOnGround;
         constructor(_texture: ƒ.TextureImage);
         /**
