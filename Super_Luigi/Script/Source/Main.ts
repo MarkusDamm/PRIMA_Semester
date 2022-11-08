@@ -1,9 +1,7 @@
 namespace Script {
   import ƒ = FudgeCore;
 
-  // für erste Novemberwoche:
   // Mutation und Serelization genauer betrachten
-  //
 
   ƒ.Debug.info("Main Program Template running!");
 
@@ -26,7 +24,8 @@ namespace Script {
     let branch: ƒ.Node = viewport.getBranch();
     let texture: ƒ.TextureImage = new ƒ.TextureImage();
     await texture.load("./Sprites/Luigi_Moves_Sheet2.png");
-    luigi = new Luigi(texture);
+    luigi = new Luigi();
+    luigi.initalizeAnimations(texture);
     branch.appendChild(luigi);
 
     // Audio

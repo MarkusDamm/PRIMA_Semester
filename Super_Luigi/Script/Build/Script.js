@@ -39,7 +39,7 @@ var Script;
 var Script;
 (function (Script) {
     class Luigi extends ƒ.Node {
-        constructor(_texture) {
+        constructor() {
             super("LuigiPosition");
             this.ySpeed = 0;
             this.spriteSheedPath = "./Sprites/Luigi_Moves_Sheet2.png";
@@ -52,8 +52,14 @@ var Script;
             this.node.mtxLocal.rotation = ƒ.Vector3.Y(180);
             this.node.mtxLocal.translateY(-0.05);
             this.appendChild(this.node);
-            let coat = new ƒ.CoatTextured(ƒ.Color.CSS("white"), _texture);
             this.ctrSideways = new ƒ.Control("Sideways", this.moveSpeed, 0 /* PROPORTIONAL */, 15);
+            this.isOnGround = false;
+        }
+        /**
+         * initialises all animations from the given TextureImage
+         */
+        initalizeAnimations(_texture) {
+            let coat = new ƒ.CoatTextured(ƒ.Color.CSS("white"), _texture);
             // Set animations
             // Idle
             this.animIdle = new ƒAid.SpriteSheetAnimation("Idle", coat);
@@ -66,16 +72,16 @@ var Script;
             this.animDuck.generateByGrid(ƒ.Rectangle.GET(124, 54, 16, 15), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
             // Walk
             this.animWalk = new ƒAid.SpriteSheetAnimation("Walk", coat);
-            this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 39, 15, 32), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+            this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 39, 15, 30), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
             // Run
             this.animRun = new ƒAid.SpriteSheetAnimation("Run", coat);
             this.animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
             // Jump
             this.animJump = new ƒAid.SpriteSheetAnimation("Jump", coat);
-            this.animJump.generateByGrid(ƒ.Rectangle.GET(72, 109, 16, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+            this.animJump.generateByGrid(ƒ.Rectangle.GET(72, 110, 16, 30), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
             // Fall
             this.animFall = new ƒAid.SpriteSheetAnimation("Fall", coat);
-            this.animFall.generateByGrid(ƒ.Rectangle.GET(124, 109, 16, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+            this.animFall.generateByGrid(ƒ.Rectangle.GET(124, 109, 16, 30), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
             // RunJump
             this.animRunJump = new ƒAid.SpriteSheetAnimation("RunJump", coat);
             this.animRunJump.generateByGrid(ƒ.Rectangle.GET(176, 109, 24, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
@@ -83,7 +89,6 @@ var Script;
             this.animState = Script.Animation.Idle;
             this.node.setFrameDirection(1);
             this.node.framerate = 12;
-            this.isOnGround = false;
         }
         /**
          * setAnimation to given animationtype
@@ -242,9 +247,7 @@ var Script;
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
-    // für erste Novemberwoche:
     // Mutation und Serelization genauer betrachten
-    //
     ƒ.Debug.info("Main Program Template running!");
     document.addEventListener("interactiveViewportStarted", start);
     // global variables
@@ -268,7 +271,8 @@ var Script;
         let branch = Script.viewport.getBranch();
         let texture = new ƒ.TextureImage();
         await texture.load("./Sprites/Luigi_Moves_Sheet2.png");
-        luigi = new Script.Luigi(texture);
+        luigi = new Script.Luigi();
+        luigi.initalizeAnimations(texture);
         branch.appendChild(luigi);
         // Audio
         let cmpAudio = branch.getComponent(ƒ.ComponentAudio);

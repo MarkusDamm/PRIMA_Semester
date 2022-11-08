@@ -26,7 +26,11 @@ declare namespace Script {
         private animFall;
         private animRunJump;
         private isOnGround;
-        constructor(_texture: ƒ.TextureImage);
+        constructor();
+        /**
+         * initialises all animations from the given TextureImage
+         */
+        initalizeAnimations(_texture: ƒ.TextureImage): void;
         /**
          * setAnimation to given animationtype
          */

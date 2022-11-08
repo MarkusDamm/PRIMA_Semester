@@ -23,7 +23,7 @@ namespace Script {
 
     private isOnGround: boolean;
 
-    constructor(_texture: ƒ.TextureImage) {
+    constructor() {
       super("LuigiPosition");
 
       this.addComponent(new ƒ.ComponentTransform);
@@ -35,9 +35,16 @@ namespace Script {
       this.node.mtxLocal.translateY(-0.05);
       this.appendChild(this.node);
 
-      let coat: ƒ.CoatTextured = new ƒ.CoatTextured(ƒ.Color.CSS("white"), _texture);
-
       this.ctrSideways = new ƒ.Control("Sideways", this.moveSpeed, ƒ.CONTROL_TYPE.PROPORTIONAL, 15);
+
+      this.isOnGround = false;
+    }
+
+    /**
+     * initialises all animations from the given TextureImage
+     */
+    public initalizeAnimations(_texture: ƒ.TextureImage): void {
+      let coat: ƒ.CoatTextured = new ƒ.CoatTextured(ƒ.Color.CSS("white"), _texture);
 
       // Set animations
       // Idle
@@ -51,16 +58,16 @@ namespace Script {
       this.animDuck.generateByGrid(ƒ.Rectangle.GET(124, 54, 16, 15), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
       // Walk
       this.animWalk = new ƒAid.SpriteSheetAnimation("Walk", coat);
-      this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 39, 15, 32), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+      this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 39, 15, 30), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
       // Run
       this.animRun = new ƒAid.SpriteSheetAnimation("Run", coat);
       this.animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
       // Jump
       this.animJump = new ƒAid.SpriteSheetAnimation("Jump", coat);
-      this.animJump.generateByGrid(ƒ.Rectangle.GET(72, 109, 16, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+      this.animJump.generateByGrid(ƒ.Rectangle.GET(72, 110, 16, 30), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
       // Fall
       this.animFall = new ƒAid.SpriteSheetAnimation("Fall", coat);
-      this.animFall.generateByGrid(ƒ.Rectangle.GET(124, 109, 16, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
+      this.animFall.generateByGrid(ƒ.Rectangle.GET(124, 109, 16, 30), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
       // RunJump
       this.animRunJump = new ƒAid.SpriteSheetAnimation("RunJump", coat);
       this.animRunJump.generateByGrid(ƒ.Rectangle.GET(176, 109, 24, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
@@ -69,8 +76,6 @@ namespace Script {
       this.animState = Animation.Idle;
       this.node.setFrameDirection(1);
       this.node.framerate = 12;
-
-      this.isOnGround = false;
     }
 
     /**
@@ -250,6 +255,7 @@ namespace Script {
       }
       this.isOnGround = false;
     }
+
 
   }
 }
