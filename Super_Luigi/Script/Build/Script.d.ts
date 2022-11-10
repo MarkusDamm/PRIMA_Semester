@@ -14,27 +14,16 @@ declare namespace Script {
         ctrSideways: ƒ.Control;
         animState: Animation;
         spriteSheedPath: string;
-        private moveSpeed;
-        private jumpForce;
-        private resolution;
-        private animIdle;
-        private animLookUp;
-        private animDuck;
-        private animWalk;
-        private animRun;
-        private animJump;
-        private animFall;
-        private animRunJump;
+        private readonly moveSpeed;
+        private readonly jumpForce;
+        private readonly resolution;
+        private animations;
         private isOnGround;
         constructor();
         /**
-         * initialises all animations from the given TextureImage
+         * initializes all animations from the given TextureImage
          */
-        initalizeAnimations(_texture: ƒ.TextureImage): void;
-        /**
-         * setAnimation to given animationtype
-         */
-        setAnimation(_type: Animation): void;
+        initializeAnimations(_texture: ƒ.TextureImage): void;
         /**
          * update
          */
@@ -42,15 +31,23 @@ declare namespace Script {
         /**
          * move
          */
-        move(_deltaTime: number): void;
+        private move;
         /**
          * jump
          */
-        jump(): void;
+        private jump;
         /**
          * fall
          */
-        fall(_deltaTime: number): void;
+        private fall;
+        /**
+         * initializes multiple animation with the same amount of frames
+         */
+        private initializeAnimationsByFrames;
+        /**
+         * set current animation to given animationtype
+         */
+        private setAnimation;
         /**
         * check if Luigi is on the Ground
         */

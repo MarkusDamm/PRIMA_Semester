@@ -25,7 +25,7 @@ namespace Script {
     let texture: ƒ.TextureImage = new ƒ.TextureImage();
     await texture.load("./Sprites/Luigi_Moves_Sheet2.png");
     luigi = new Luigi();
-    luigi.initalizeAnimations(texture);
+    luigi.initializeAnimations(texture);
     branch.appendChild(luigi);
 
     // Audio

@@ -46,6 +46,7 @@ var Script;
             this.moveSpeed = 7;
             this.jumpForce = 15;
             this.resolution = 16;
+            this.animations = {};
             this.addComponent(new ƒ.ComponentTransform);
             this.node = new ƒAid.NodeSprite("Luigi");
             this.node.addComponent(new ƒ.ComponentTransform);
@@ -56,97 +57,25 @@ var Script;
             this.isOnGround = false;
         }
         /**
-         * initialises all animations from the given TextureImage
+         * initializes all animations from the given TextureImage
          */
-        initalizeAnimations(_texture) {
+        initializeAnimations(_texture) {
             let coat = new ƒ.CoatTextured(ƒ.Color.CSS("white"), _texture);
-            // Set animations
-            // Idle
-            this.animIdle = new ƒAid.SpriteSheetAnimation("Idle", coat);
-            this.animIdle.generateByGrid(ƒ.Rectangle.GET(21, 39, 15, 30), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
-            // LookUp
-            this.animLookUp = new ƒAid.SpriteSheetAnimation("LookUp", coat);
-            this.animLookUp.generateByGrid(ƒ.Rectangle.GET(72, 40, 15, 29), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
-            // Duck
-            this.animDuck = new ƒAid.SpriteSheetAnimation("Duck", coat);
-            this.animDuck.generateByGrid(ƒ.Rectangle.GET(124, 54, 16, 15), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
-            // Walk
-            this.animWalk = new ƒAid.SpriteSheetAnimation("Walk", coat);
-            this.animWalk.generateByGrid(ƒ.Rectangle.GET(176, 39, 15, 30), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
-            // Run
-            this.animRun = new ƒAid.SpriteSheetAnimation("Run", coat);
-            this.animRun.generateByGrid(ƒ.Rectangle.GET(332, 38, 18, 32), 3, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
-            // Jump
-            this.animJump = new ƒAid.SpriteSheetAnimation("Jump", coat);
-            this.animJump.generateByGrid(ƒ.Rectangle.GET(72, 110, 16, 30), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
-            // Fall
-            this.animFall = new ƒAid.SpriteSheetAnimation("Fall", coat);
-            this.animFall.generateByGrid(ƒ.Rectangle.GET(124, 109, 16, 30), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
-            // RunJump
-            this.animRunJump = new ƒAid.SpriteSheetAnimation("RunJump", coat);
-            this.animRunJump.generateByGrid(ƒ.Rectangle.GET(176, 109, 24, 32), 1, this.resolution, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(52));
-            this.node.setAnimation(this.animIdle);
+            // let animationFrames: number = 1;
+            let origin = ƒ.ORIGIN2D.BOTTOMCENTER;
+            let offsetNext = ƒ.Vector2.X(52);
+            /// WIP
+            let rectangles = {
+                "idle": [21, 39, 15, 30], "lookUp": [72, 40, 15, 29], "duck": [124, 54, 16, 15],
+                "jump": [72, 110, 16, 30], "fall": [124, 109, 16, 30], "runJump": [176, 109, 24, 32]
+            };
+            let threeFrameRecs = { "walk": [176, 39, 15, 30], "run": [332, 38, 18, 32] };
+            this.initializeAnimationsByFrames(coat, rectangles, 1, origin, offsetNext);
+            this.initializeAnimationsByFrames(coat, threeFrameRecs, 3, origin, offsetNext);
+            this.node.setAnimation(this.animations.idle);
             this.animState = Script.Animation.Idle;
             this.node.setFrameDirection(1);
             this.node.framerate = 12;
-        }
-        /**
-         * setAnimation to given animationtype
-         */
-        setAnimation(_type) {
-            switch (_type) {
-                case Script.Animation.Idle:
-                    if (this.animState == _type)
-                        break;
-                    this.node.setAnimation(this.animIdle);
-                    this.animState = Script.Animation.Idle;
-                    break;
-                case Script.Animation.Walk:
-                    if (this.animState == _type)
-                        break;
-                    this.node.setAnimation(this.animWalk);
-                    this.animState = Script.Animation.Walk;
-                    break;
-                case Script.Animation.Run:
-                    if (this.animState == _type)
-                        break;
-                    this.node.setAnimation(this.animRun);
-                    this.animState = Script.Animation.Run;
-                    break;
-                case Script.Animation.LookUp:
-                    if (this.animState == _type)
-                        break;
-                    this.node.setAnimation(this.animLookUp);
-                    this.animState = Script.Animation.LookUp;
-                    break;
-                case Script.Animation.Duck:
-                    if (this.animState == _type)
-                        break;
-                    this.node.setAnimation(this.animDuck);
-                    this.animState = Script.Animation.Duck;
-                    break;
-                case Script.Animation.Jump:
-                    if (this.animState == _type)
-                        break;
-                    this.node.setAnimation(this.animJump);
-                    this.animState = Script.Animation.Jump;
-                    break;
-                case Script.Animation.Fall:
-                    if (this.animState == _type)
-                        break;
-                    this.node.setAnimation(this.animFall);
-                    this.animState = Script.Animation.Fall;
-                    break;
-                case Script.Animation.RunJump:
-                    if (this.animState == _type)
-                        break;
-                    this.node.setAnimation(this.animRunJump);
-                    this.animState = Script.Animation.RunJump;
-                    break;
-                default:
-                    console.log("No valid parameter");
-                    break;
-            }
         }
         /**
          * update
@@ -201,7 +130,6 @@ var Script;
                 this.setAnimation(Script.Animation.Idle);
             }
             this.mtxLocal.translateX(this.ctrSideways.getOutput());
-            // rotateLuigi(ctrSideways.getOutput());
         }
         /**
          * jump
@@ -218,6 +146,77 @@ var Script;
             this.ySpeed -= Script.gravity * _deltaTime;
             let deltaY = this.ySpeed * _deltaTime;
             this.mtxLocal.translateY(deltaY);
+        }
+        /**
+         * initializes multiple animation with the same amount of frames
+         */
+        initializeAnimationsByFrames(_coat, _rectangles, _frames, _orig, _offsetNext) {
+            for (let key in _rectangles) {
+                const rec = _rectangles[key];
+                let anim = new ƒAid.SpriteSheetAnimation(key, _coat);
+                let fRec = ƒ.Rectangle.GET(rec[0], rec[1], rec[2], rec[3]);
+                anim.generateByGrid(fRec, _frames, this.resolution, _orig, _offsetNext);
+                console.log(key);
+                this.animations[key] = anim;
+            }
+        }
+        /**
+         * set current animation to given animationtype
+         */
+        setAnimation(_type) {
+            switch (_type) {
+                case Script.Animation.Idle:
+                    if (this.animState == _type)
+                        break;
+                    this.node.setAnimation(this.animations.idle);
+                    this.animState = Script.Animation.Idle;
+                    break;
+                case Script.Animation.Walk:
+                    if (this.animState == _type)
+                        break;
+                    this.node.setAnimation(this.animations.walk);
+                    this.animState = Script.Animation.Walk;
+                    break;
+                case Script.Animation.Run:
+                    if (this.animState == _type)
+                        break;
+                    this.node.setAnimation(this.animations.run);
+                    this.animState = Script.Animation.Run;
+                    break;
+                case Script.Animation.LookUp:
+                    if (this.animState == _type)
+                        break;
+                    this.node.setAnimation(this.animations.lookUp);
+                    this.animState = Script.Animation.LookUp;
+                    break;
+                case Script.Animation.Duck:
+                    if (this.animState == _type)
+                        break;
+                    this.node.setAnimation(this.animations.duck);
+                    this.animState = Script.Animation.Duck;
+                    break;
+                case Script.Animation.Jump:
+                    if (this.animState == _type)
+                        break;
+                    this.node.setAnimation(this.animations.jump);
+                    this.animState = Script.Animation.Jump;
+                    break;
+                case Script.Animation.Fall:
+                    if (this.animState == _type)
+                        break;
+                    this.node.setAnimation(this.animations.fall);
+                    this.animState = Script.Animation.Fall;
+                    break;
+                case Script.Animation.RunJump:
+                    if (this.animState == _type)
+                        break;
+                    this.node.setAnimation(this.animations.runJump);
+                    this.animState = Script.Animation.RunJump;
+                    break;
+                default:
+                    console.log("No valid parameter");
+                    break;
+            }
         }
         /**
         * check if Luigi is on the Ground
@@ -272,7 +271,7 @@ var Script;
         let texture = new ƒ.TextureImage();
         await texture.load("./Sprites/Luigi_Moves_Sheet2.png");
         luigi = new Script.Luigi();
-        luigi.initalizeAnimations(texture);
+        luigi.initializeAnimations(texture);
         branch.appendChild(luigi);
         // Audio
         let cmpAudio = branch.getComponent(ƒ.ComponentAudio);
