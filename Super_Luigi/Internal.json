@@ -43,7 +43,7 @@
               "pivot": {
                 "translation": "[0, 0, 0]",
                 "rotation": "[0, 0, 0]",
-                "scaling": "[20, 10, 1]"
+                "scaling": "[40, 13, 1]"
               },
               "Component": {
                 "active": true
@@ -73,7 +73,7 @@
           {
             "ƒ.ComponentTransform": {
               "local": {
-                "translation": "[0, 0, -0.0060000005178153515]",
+                "translation": "[0, 0, 0]",
                 "rotation": "[0, 0, 0]",
                 "scaling": "[1, 1, 1]"
               },
@@ -108,9 +108,7 @@
     "ƒ.Graph": {
       "name": "Level",
       "active": true,
-      "components": {
-        "ComponentAudio": []
-      },
+      "components": {},
       "children": [
         {
           "ƒ.Node": {
@@ -199,6 +197,70 @@
                   "deserializeFromSource": true,
                   "name": "Block",
                   "idSource": "Graph|2022-10-06T19:48:16.486Z|25943"
+                }
+              },
+              {
+                "ƒ.Node": {
+                  "name": "Coin",
+                  "active": true,
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshTorus|2022-11-10T13:32:49.889Z|46631",
+                          "pivot": {
+                            "translation": "[0, 0, 0]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[1, 1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2022-11-10T13:36:23.735Z|99541"
+                        }
+                      }
+                    ],
+                    "ComponentTransform": [
+                      {
+                        "ƒ.ComponentTransform": {
+                          "local": {
+                            "translation": "[-4, 0, 0]",
+                            "rotation": "[90, 0, 0]",
+                            "scaling": "[1, 1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ScriptRotator": [
+                      {
+                        "Script.ScriptRotator": {
+                          "active": true,
+                          "message": "ScriptRotator added to "
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
                 }
               }
             ]
@@ -414,7 +476,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[0, 0, 0]",
+                            "translation": "[0, 0, -1]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -674,6 +736,40 @@
         "idResource": "TextureImage|2022-10-11T14:48:41.812Z|84857",
         "name": "Sprites\\Luigi_big_Sheet.png",
         "mipmap": "CRISP"
+      }
+    }
+  },
+  "MeshTorus|2022-11-10T13:32:49.889Z|46631": {
+    "ƒ.MeshTorus": {
+      "idResource": "MeshTorus|2022-11-10T13:32:49.889Z|46631",
+      "name": "MeshTorus",
+      "type": "MeshTorus",
+      "shape": {
+        "ƒ.Vector2": [
+          "[0.25, 0]",
+          "[0.30647653341293335, 0.11727472394704819]",
+          "[0.4333781599998474, 0.14623919129371643]",
+          "[0.5351453423500061, 0.06508255749940872]",
+          "[0.5351453423500061, -0.06508255749940872]",
+          "[0.4333781599998474, -0.14623919129371643]",
+          "[0.30647653341293335, -0.11727472394704819]",
+          "[0.25, -3.6739405577555036e-17]"
+        ]
+      },
+      "longitudes": 8,
+      "latitudes": 7,
+      "size": 0.2999999999999998
+    }
+  },
+  "Material|2022-11-10T13:36:23.735Z|99541": {
+    "ƒ.Material": {
+      "name": "ShaderLit",
+      "idResource": "Material|2022-11-10T13:36:23.735Z|99541",
+      "shader": "ShaderLit",
+      "coat": {
+        "ƒ.CoatColored": {
+          "color": "[1, 0.9333333333333333, 0, 1]"
+        }
       }
     }
   }

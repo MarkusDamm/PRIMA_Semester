@@ -1,13 +1,4 @@
 declare namespace Script {
-    import ƒ = FudgeCore;
-    class CustomComponentScript extends ƒ.ComponentScript {
-        static readonly iSubclass: number;
-        message: string;
-        constructor();
-        hndEvent: (_event: Event) => void;
-    }
-}
-declare namespace Script {
     class Luigi extends ƒ.Node {
         node: ƒAid.NodeSprite;
         ySpeed: number;
@@ -67,5 +58,15 @@ declare namespace Script {
         Jump = 5,
         Fall = 6,
         RunJump = 7
+    }
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    class ScriptRotator extends ƒ.ComponentScript {
+        static readonly iSubclass: number;
+        message: string;
+        constructor();
+        hndEvent: (_event: Event) => void;
+        private test;
     }
 }
