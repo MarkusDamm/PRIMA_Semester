@@ -37,11 +37,19 @@
       "shader": "ShaderFlat",
       "coat": {
         "ƒ.CoatRemissive": {
-          "color": "[0.5882352941176471, 0.5882352941176471, 0.5882352941176471, 1]",
+          "color": "[1, 1, 1, 1]",
           "diffuse": 1,
           "specular": 0
         }
       }
+    }
+  },
+  "MeshObj|2022-11-14T11:50:34.197Z|53048": {
+    "ƒ.MeshObj": {
+      "idResource": "MeshObj|2022-11-14T11:50:34.197Z|53048",
+      "name": "Modell\\StarFox.obj",
+      "type": "MeshObj",
+      "url": "Modell\\StarFox.obj"
     }
   },
   "Graph|2022-11-14T11:08:29.628Z|51197": {
@@ -61,16 +69,80 @@
                     "pivot": {
                       "translation": "[0, 0, 0]",
                       "rotation": "[0, 0, 0]",
-                      "scaling": "[1, 1, 1]"
+                      "scaling": "[200, 200, 200]"
                     },
                     "light": {
-                      "ƒ.LightAmbient": {
-                        "color": "[1, 1, 1, 1]"
+                      "ƒ.LightPoint": {
+                        "color": "[1, 0.8509803921568627, 0.7411764705882353, 1]"
                       }
                     },
                     "Component": {
                       "active": true
                     }
+                  }
+                },
+                {
+                  "ƒ.ComponentLight": {
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "light": {
+                      "ƒ.LightDirectional": {
+                        "color": "[0.11764705882352941, 0.24313725490196078, 0.1450980392156863, 1]"
+                      }
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentTransform": [
+                {
+                  "ƒ.ComponentTransform": {
+                    "local": {
+                      "translation": "[0, 3, -2]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[0.2999999225139618, 0.2999999225139618, 0.2999999523162842]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSphere|2022-11-17T13:50:56.664Z|16571",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2022-11-17T13:51:04.240Z|01124"
                   }
                 }
               ]
@@ -133,7 +205,7 @@
                           "Component": {
                             "active": true
                           },
-                          "idMaterial": "Material|2022-11-14T11:09:55.537Z|77996"
+                          "idMaterial": "Material|2022-11-17T13:52:35.273Z|86106"
                         }
                       }
                     ]
@@ -156,12 +228,39 @@
       "type": "MeshCube"
     }
   },
-  "MeshObj|2022-11-14T11:50:34.197Z|53048": {
-    "ƒ.MeshObj": {
-      "idResource": "MeshObj|2022-11-14T11:50:34.197Z|53048",
-      "name": "Modell\\StarFox.obj",
-      "type": "MeshObj",
-      "url": "Modell\\StarFox.obj"
+  "MeshSphere|2022-11-17T13:50:56.664Z|16571": {
+    "ƒ.MeshSphere": {
+      "idResource": "MeshSphere|2022-11-17T13:50:56.664Z|16571",
+      "name": "MeshSphere",
+      "type": "MeshSphere",
+      "longitudes": 8,
+      "latitudes": 8
+    }
+  },
+  "Material|2022-11-17T13:51:04.240Z|01124": {
+    "ƒ.Material": {
+      "name": "ShaderLit",
+      "idResource": "Material|2022-11-17T13:51:04.240Z|01124",
+      "shader": "ShaderLit",
+      "coat": {
+        "ƒ.CoatColored": {
+          "color": "[1, 1, 1, 1]"
+        }
+      }
+    }
+  },
+  "Material|2022-11-17T13:52:35.273Z|86106": {
+    "ƒ.Material": {
+      "name": "ShaderGouraud",
+      "idResource": "Material|2022-11-17T13:52:35.273Z|86106",
+      "shader": "ShaderGouraud",
+      "coat": {
+        "ƒ.CoatRemissive": {
+          "color": "[1, 1, 1, 1]",
+          "diffuse": 1,
+          "specular": 0
+        }
+      }
     }
   }
 }
