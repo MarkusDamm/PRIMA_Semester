@@ -38,7 +38,7 @@
       "coat": {
         "ƒ.CoatRemissive": {
           "color": "[1, 1, 1, 1]",
-          "diffuse": 1,
+          "diffuse": 0.9999999999999996,
           "specular": 0
         }
       }
@@ -47,9 +47,44 @@
   "MeshObj|2022-11-14T11:50:34.197Z|53048": {
     "ƒ.MeshObj": {
       "idResource": "MeshObj|2022-11-14T11:50:34.197Z|53048",
-      "name": "Modell\\StarFox.obj",
+      "name": "Model\\StarFox.obj",
       "type": "MeshObj",
-      "url": "Modell\\StarFox.obj"
+      "url": "Model\\StarFox.obj"
+    }
+  },
+  "MeshSphere|2022-11-17T13:50:56.664Z|16571": {
+    "ƒ.MeshSphere": {
+      "idResource": "MeshSphere|2022-11-17T13:50:56.664Z|16571",
+      "name": "MeshSphere",
+      "type": "MeshSphere",
+      "longitudes": 8,
+      "latitudes": 8
+    }
+  },
+  "Material|2022-11-17T13:51:04.240Z|01124": {
+    "ƒ.Material": {
+      "name": "ShaderLit",
+      "idResource": "Material|2022-11-17T13:51:04.240Z|01124",
+      "shader": "ShaderLit",
+      "coat": {
+        "ƒ.CoatColored": {
+          "color": "[1, 1, 1, 1]"
+        }
+      }
+    }
+  },
+  "Material|2022-11-17T13:52:35.273Z|86106": {
+    "ƒ.Material": {
+      "name": "ShaderGouraud",
+      "idResource": "Material|2022-11-17T13:52:35.273Z|86106",
+      "shader": "ShaderGouraud",
+      "coat": {
+        "ƒ.CoatRemissive": {
+          "color": "[1, 1, 1, 1]",
+          "diffuse": 1,
+          "specular": 0
+        }
+      }
     }
   },
   "Graph|2022-11-14T11:08:29.628Z|51197": {
@@ -60,7 +95,7 @@
       "children": [
         {
           "ƒ.Node": {
-            "name": "Light",
+            "name": "Lights",
             "active": true,
             "components": {
               "ComponentLight": [
@@ -73,7 +108,7 @@
                     },
                     "light": {
                       "ƒ.LightPoint": {
-                        "color": "[1, 0.8509803921568627, 0.7411764705882353, 1]"
+                        "color": "[1, 0.8117647058823529, 0.6784313725490196, 1]"
                       }
                     },
                     "Component": {
@@ -90,7 +125,24 @@
                     },
                     "light": {
                       "ƒ.LightDirectional": {
-                        "color": "[0.11764705882352941, 0.24313725490196078, 0.1450980392156863, 1]"
+                        "color": "[0.34509803921568627, 0.11372549019607843, 0.11372549019607843, 1]"
+                      }
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                },
+                {
+                  "ƒ.ComponentLight": {
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "light": {
+                      "ƒ.LightAmbient": {
+                        "color": "[0.09411764705882353, 0.043137254901960784, 0.00392156862745098, 1]"
                       }
                     },
                     "Component": {
@@ -205,7 +257,7 @@
                           "Component": {
                             "active": true
                           },
-                          "idMaterial": "Material|2022-11-17T13:52:35.273Z|86106"
+                          "idMaterial": "Material|2022-11-14T11:09:55.537Z|77996"
                         }
                       }
                     ]
@@ -226,41 +278,6 @@
       "idResource": "MeshCube|2022-11-14T11:08:55.274Z|82302",
       "name": "MeshCube",
       "type": "MeshCube"
-    }
-  },
-  "MeshSphere|2022-11-17T13:50:56.664Z|16571": {
-    "ƒ.MeshSphere": {
-      "idResource": "MeshSphere|2022-11-17T13:50:56.664Z|16571",
-      "name": "MeshSphere",
-      "type": "MeshSphere",
-      "longitudes": 8,
-      "latitudes": 8
-    }
-  },
-  "Material|2022-11-17T13:51:04.240Z|01124": {
-    "ƒ.Material": {
-      "name": "ShaderLit",
-      "idResource": "Material|2022-11-17T13:51:04.240Z|01124",
-      "shader": "ShaderLit",
-      "coat": {
-        "ƒ.CoatColored": {
-          "color": "[1, 1, 1, 1]"
-        }
-      }
-    }
-  },
-  "Material|2022-11-17T13:52:35.273Z|86106": {
-    "ƒ.Material": {
-      "name": "ShaderGouraud",
-      "idResource": "Material|2022-11-17T13:52:35.273Z|86106",
-      "shader": "ShaderGouraud",
-      "coat": {
-        "ƒ.CoatRemissive": {
-          "color": "[1, 1, 1, 1]",
-          "diffuse": 1,
-          "specular": 0
-        }
-      }
     }
   }
 }
