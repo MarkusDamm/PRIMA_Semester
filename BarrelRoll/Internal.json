@@ -6,24 +6,24 @@
       "type": "MeshExtrusion",
       "shape": {
         "ƒ.Vector2": [
-          "[-1, -1]",
-          "[1, -1]",
-          "[1, 1]",
-          "[0, 1.5]",
-          "[-1, 1]"
+          "[-0.6499998569488525, -0.699999988079071]",
+          "[0.6499999761581421, -0.6999999284744263]",
+          "[1.2000000476837158, 0.5999999046325684]",
+          "[0, 1.399999976158142]",
+          "[-1.2000000476837158, 0.5999999046325684]"
         ]
       },
       "fitTexture": true,
       "transforms": {
         "ƒ.Matrix4x4": [
           {
-            "translation": "[0, 0, 0.5]",
-            "rotation": "[0, 0, 0]",
+            "translation": "[0, 0, 0]",
+            "rotation": "[90, 0, 0]",
             "scaling": "[1, 1, 1]"
           },
           {
-            "translation": "[0, 0, -0.5]",
-            "rotation": "[0, 0, 0]",
+            "translation": "[0, 20, 0]",
+            "rotation": "[90, 0, 0]",
             "scaling": "[1, 1, 1]"
           }
         ]
@@ -38,7 +38,7 @@
       "coat": {
         "ƒ.CoatRemissive": {
           "color": "[1, 1, 1, 1]",
-          "diffuse": 0.9999999999999996,
+          "diffuse": 1,
           "specular": 0
         }
       }
@@ -80,7 +80,7 @@
       "shader": "ShaderGouraud",
       "coat": {
         "ƒ.CoatRemissive": {
-          "color": "[0.9647058823529412, 0.6745098039215687, 0.17254901960784313, 1]",
+          "color": "[0.96, 0.67, 0.17, 1]",
           "diffuse": 1,
           "specular": 0
         }
@@ -95,6 +95,32 @@
       "seed": 9,
       "scale": "[0.9999998807907104, 1]",
       "resolution": "[30, 30]"
+    }
+  },
+  "Material|2022-11-17T14:24:45.549Z|96947": {
+    "ƒ.Material": {
+      "name": "ShaderGouraudTextured",
+      "idResource": "Material|2022-11-17T14:24:45.549Z|96947",
+      "shader": "ShaderGouraudTextured",
+      "coat": {
+        "ƒ.CoatRemissiveTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2022-11-17T14:25:04.132Z|03207",
+          "diffuse": 1,
+          "specular": 0
+        }
+      }
+    }
+  },
+  "TextureImage|2022-11-17T14:25:04.132Z|03207": {
+    "ƒ.TextureImage": {
+      "url": "Img\\sand-texture.jpg",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2022-11-17T14:25:04.132Z|03207",
+        "name": "Img\\sand-texture.jpg",
+        "mipmap": "CRISP"
+      }
     }
   },
   "Graph|2022-11-14T11:08:29.628Z|51197": {
@@ -167,7 +193,7 @@
                     "local": {
                       "translation": "[0, 20, -2]",
                       "rotation": "[0, 0, 0]",
-                      "scaling": "[0.2999999225139618, 0.2999999225139618, 0.2999999523162842]"
+                      "scaling": "[0.30000001192092896, 0.30000001192092896, 0.30000001192092896]"
                     },
                     "Component": {
                       "active": true
@@ -270,6 +296,45 @@
                           "idMaterial": "Material|2022-11-14T11:09:55.537Z|77996"
                         }
                       }
+                    ],
+                    "ComponentTransform": [
+                      {
+                        "ƒ.ComponentTransform": {
+                          "local": {
+                            "translation": "[0, 0, 0]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[1, 1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentRigidbody": [
+                      {
+                        "ƒ.ComponentRigidbody": {
+                          "initialization": "TO_PIVOT",
+                          "friction": 0.2,
+                          "restitution": 0.2,
+                          "mass": 4000.0000000000005,
+                          "dampTranslation": 0.2,
+                          "dampRotation": 0.2,
+                          "effectGravity": 0,
+                          "typeBody": "DYNAMIC",
+                          "typeCollider": "PYRAMID",
+                          "isTrigger": false,
+                          "id": 0,
+                          "pivot": {
+                            "translation": "[0, 0.4000000059604645, -1.2000000476837158]",
+                            "rotation": "[90, 0, 0]",
+                            "scaling": "[4.299999237060547, 2.499999761581421, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
                     ]
                   },
                   "children": []
@@ -363,32 +428,6 @@
       "idResource": "MeshCube|2022-11-14T11:08:55.274Z|82302",
       "name": "MeshCube",
       "type": "MeshCube"
-    }
-  },
-  "Material|2022-11-17T14:24:45.549Z|96947": {
-    "ƒ.Material": {
-      "name": "ShaderGouraudTextured",
-      "idResource": "Material|2022-11-17T14:24:45.549Z|96947",
-      "shader": "ShaderGouraudTextured",
-      "coat": {
-        "ƒ.CoatRemissiveTextured": {
-          "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2022-11-17T14:25:04.132Z|03207",
-          "diffuse": 1,
-          "specular": 0
-        }
-      }
-    }
-  },
-  "TextureImage|2022-11-17T14:25:04.132Z|03207": {
-    "ƒ.TextureImage": {
-      "url": "Img\\sand-texture.jpg",
-      "type": "TextureImage",
-      "Texture": {
-        "idResource": "TextureImage|2022-11-17T14:25:04.132Z|03207",
-        "name": "Img\\sand-texture.jpg",
-        "mipmap": "CRISP"
-      }
     }
   }
 }
