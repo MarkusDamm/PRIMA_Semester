@@ -1,6 +1,6 @@
 namespace Script {
   import ƒ = FudgeCore;
-  // Steuerung einbauen
+  // Random Objekte einbauen
 
   let viewport: ƒ.Viewport;
   document.addEventListener("interactiveViewportStarted", <EventListener>start);

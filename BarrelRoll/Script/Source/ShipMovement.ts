@@ -88,7 +88,6 @@ namespace Script {
 
       this.xAxis = 2 * (mousePositionX / this.width) - 1;
       this.yAxis = 2 * (mousePositionY / this.height) - 1;
-
     }
 
     setRelativeAxes(): void {
@@ -97,7 +96,6 @@ namespace Script {
 
       this.relativeX = ƒ.Vector3.X(3);
       this.relativeX.transform(this.node.mtxWorld, false);
-
     }
 
     /**

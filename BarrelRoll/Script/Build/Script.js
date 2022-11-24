@@ -39,7 +39,7 @@ var Script;
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
-    // Steuerung einbauen
+    // Random Objekte einbauen
     let viewport;
     document.addEventListener("interactiveViewportStarted", start);
     let rbShip;
