@@ -318,21 +318,35 @@
                           "friction": 0.2,
                           "restitution": 0.2,
                           "mass": 4000.0000000000005,
-                          "dampTranslation": 0.2,
-                          "dampRotation": 0.2,
+                          "dampTranslation": 0.7999999999999999,
+                          "dampRotation": 5.000000000000001,
                           "effectGravity": 0,
                           "typeBody": "DYNAMIC",
                           "typeCollider": "PYRAMID",
                           "isTrigger": false,
                           "id": 0,
                           "pivot": {
-                            "translation": "[0, 0.4000000059604645, -1.2000000476837158]",
-                            "rotation": "[90, 0, 0]",
-                            "scaling": "[4.299999237060547, 2.499999761581421, 1]"
+                            "translation": "[0, 0.5599998831748962, -1.4600001573562622]",
+                            "rotation": "[101.79997253417969, 0, 0]",
+                            "scaling": "[4.299999237060547, 2.6999995708465576, 1]"
                           },
                           "Component": {
                             "active": true
                           }
+                        }
+                      }
+                    ],
+                    "SpaceShipMovement": [
+                      {
+                        "Script.SpaceShipMovement": {
+                          "active": true,
+                          "message": "SpaceShipMovement added to ",
+                          "strafeThrust": 2000,
+                          "forwardthrust": 5000,
+                          "width": 0,
+                          "height": 0,
+                          "xAxis": 0,
+                          "yAxis": 0
                         }
                       }
                     ]

@@ -1,14 +1,19 @@
 namespace Script {
   import ƒ = FudgeCore;
   // Steuerung einbauen
-  
+
   let viewport: ƒ.Viewport;
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
 
   let rbShip: ƒ.ComponentRigidbody;
+  let cmpCamera: ƒ.ComponentCamera;
 
   function start(_event: CustomEvent): void {
     viewport = _event.detail;
+
+    cmpCamera = viewport.camera;
+    cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 2, -15));
+
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
@@ -25,6 +30,6 @@ namespace Script {
     viewport.draw();
     ƒ.AudioManager.default.update();
 
-    rbShip.applyForce(ƒ.Vector3.Z(rbShip.mass * 5));
+    // rbShip.applyForce(ƒ.Vector3.Z(rbShip.mass * 5));
   }
 }
