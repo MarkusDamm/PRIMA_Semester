@@ -13,6 +13,14 @@ declare namespace Script {
 }
 declare namespace Script {
     import ƒ = FudgeCore;
+    class ScriptSensor extends ƒ.ComponentScript {
+        static readonly iSubclass: number;
+        message: string;
+        constructor();
+    }
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
     class SpaceShipMovement extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         message: string;

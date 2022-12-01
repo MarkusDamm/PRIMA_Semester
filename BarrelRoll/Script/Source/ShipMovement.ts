@@ -8,11 +8,13 @@ namespace Script {
     // Properties may be mutated by users in the editor via the automatically created user interface
     public message: string = "SpaceShipMovement added to ";
 
+    // werden im Editor überschrieben
     public strafeThrust: number = 20;
-    public forwardthrust: number = 10000000000;
+    public forwardthrust: number = 10e+4;
 
+    
     private rgdBodySpaceship: ƒ.ComponentRigidbody;
-
+    
     private relativeX: ƒ.Vector3;
     // private relativeY: ƒ.Vector3;
     private relativeZ: ƒ.Vector3;
@@ -87,7 +89,15 @@ namespace Script {
       let mousePositionX: number = e.clientX;
 
       this.xAxis = 2 * (mousePositionX / this.width) - 1;
+      if (this.xAxis < 0.15 && this.xAxis > -0.15) {
+        this.xAxis = 0;
+      }
+      
       this.yAxis = 2 * (mousePositionY / this.height) - 1;
+      if (this.yAxis < 0.15 && this.yAxis > -0.15) {
+        this.yAxis = 0;
+      }
+      // console.log(this.yAxis);
     }
 
     setRelativeAxes(): void {

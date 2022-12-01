@@ -42,8 +42,11 @@ var Script;
     // Random Objekte einbauen
     let viewport;
     document.addEventListener("interactiveViewportStarted", start);
+    let ship;
     let rbShip;
     let cmpCamera;
+    let meshTerrain;
+    let towerResource = "Graph|2022-11-29T16:03:19.230Z|03819";
     function start(_event) {
         viewport = _event.detail;
         cmpCamera = viewport.camera;
@@ -51,16 +54,57 @@ var Script;
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         let graph = viewport.getBranch();
-        let ship = graph.getChildrenByName("Fox")[0].getChild(0);
+        ship = graph.getChildrenByName("Fox")[0].getChild(0);
         console.log(ship);
         rbShip = ship.getComponent(ƒ.ComponentRigidbody);
+        let terrainNode = viewport.getBranch().getChildrenByName("Terrain")[0];
+        meshTerrain = terrainNode.getComponent(ƒ.ComponentMesh);
+        // console.log(ƒ.Project.resources["Graph|2022-11-29T16:03:19.230Z|03819"]);
+        placeTowers(graph, 30);
+    }
+    function checkTerrainHeight(_pos) {
+        let terrain = meshTerrain.mesh;
+        let terrainInfo = terrain.getTerrainInfo(_pos, meshTerrain.mtxWorld);
+        let height = terrainInfo.position.y;
+        return height;
+    }
+    function placeTowers(_graph, _amount) {
+        let staticObjGraph = _graph.getChildrenByName("Objects")[0].getChildrenByName("Static")[0];
+        let towerGraph = ƒ.Project.resources[towerResource];
+        for (let i = 0; i < _amount; i++) {
+            let newTower = new ƒ.GraphInstance();
+            newTower.set(towerGraph);
+            let tip = new ƒ.GraphInstance();
+            tip.set(towerGraph.getChild(0));
+            newTower.addChild(tip);
+            let randomPos = new ƒ.Vector3(Math.random() * 2 - 1, 0, Math.random() * 2 - 1);
+            randomPos.scale(400);
+            randomPos.add(ƒ.Vector3.Y(checkTerrainHeight(randomPos)));
+            newTower.addComponent(new ƒ.ComponentTransform());
+            newTower.mtxLocal.translation = randomPos;
+            staticObjGraph.appendChild(newTower);
+        }
     }
     function update(_event) {
         ƒ.Physics.simulate(); // if physics is included and used
         viewport.draw();
         ƒ.AudioManager.default.update();
-        // rbShip.applyForce(ƒ.Vector3.Z(rbShip.mass * 5));
     }
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
+    class ScriptSensor extends ƒ.ComponentScript {
+        constructor() {
+            super();
+            // Properties may be mutated by users in the editor via the automatically created user interface
+            this.message = "ScriptSensor added to ";
+        }
+    }
+    // Register the script as component for use in the editor via drag&drop
+    ScriptSensor.iSubclass = ƒ.Component.registerSubclass(ScriptSensor);
+    Script.ScriptSensor = ScriptSensor;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
@@ -71,8 +115,9 @@ var Script;
             super();
             // Properties may be mutated by users in the editor via the automatically created user interface
             this.message = "SpaceShipMovement added to ";
+            // werden im Editor überschrieben
             this.strafeThrust = 20;
-            this.forwardthrust = 10000000000;
+            this.forwardthrust = 10e+4;
             this.width = 0;
             this.height = 0;
             this.xAxis = 0;
@@ -119,7 +164,14 @@ var Script;
                 let mousePositionY = e.clientY;
                 let mousePositionX = e.clientX;
                 this.xAxis = 2 * (mousePositionX / this.width) - 1;
+                if (this.xAxis < 0.15 && this.xAxis > -0.15) {
+                    this.xAxis = 0;
+                }
                 this.yAxis = 2 * (mousePositionY / this.height) - 1;
+                if (this.yAxis < 0.15 && this.yAxis > -0.15) {
+                    this.yAxis = 0;
+                }
+                // console.log(this.yAxis);
             };
             // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
