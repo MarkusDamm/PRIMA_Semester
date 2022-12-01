@@ -19,20 +19,18 @@ namespace Script {
     cmpCamera = viewport.camera;
     cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 2, -15));
 
-    ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
-    ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
-
     let graph: ƒ.Node = viewport.getBranch();
     ship = graph.getChildrenByName("Fox")[0].getChild(0);
     console.log(ship);
     rbShip = ship.getComponent(ƒ.ComponentRigidbody);
-
+    
     let terrainNode: ƒ.Node = viewport.getBranch().getChildrenByName("Terrain")[0];
     meshTerrain = terrainNode.getComponent(ƒ.ComponentMesh);
-
-    // console.log(ƒ.Project.resources["Graph|2022-11-29T16:03:19.230Z|03819"]);
-
+    
     placeTowers(graph, 30);
+
+    ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
+    ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
   }
 
   function checkTerrainHeight(_pos: ƒ.Vector3): number {
@@ -47,25 +45,20 @@ namespace Script {
     let staticObjGraph: ƒ.Node = _graph.getChildrenByName("Objects")[0].getChildrenByName("Static")[0];
     let towerGraph: ƒ.Graph = <ƒ.Graph>ƒ.Project.resources[towerResource];
 
-
     for (let i: number = 0; i < _amount; i++) {
 
-      let newTower: ƒ.GraphInstance = new ƒ.GraphInstance();
-      newTower.set(towerGraph);
-      let tip: ƒ.GraphInstance = new ƒ.GraphInstance();
-      tip.set(<ƒ.Graph>towerGraph.getChild(0));
-      newTower.addChild(tip);
+      let newTower: ƒ.GraphInstance = new ƒ.GraphInstance(towerGraph);
+      newTower.reset();
 
       let randomPos: ƒ.Vector3 = new ƒ.Vector3(Math.random() * 2 - 1, 0, Math.random() * 2 - 1);
       randomPos.scale(400);
-      randomPos.add(ƒ.Vector3.Y(checkTerrainHeight(randomPos)));
+      randomPos.add(ƒ.Vector3.Y(checkTerrainHeight(randomPos) - 0.5));
 
       newTower.addComponent(new ƒ.ComponentTransform());
       newTower.mtxLocal.translation = randomPos;
 
       staticObjGraph.appendChild(newTower);
     }
-
   }
 
   function update(_event: Event): void {

@@ -48,3 +48,11 @@ declare namespace Script {
         roll(_clockwise?: number): void;
     }
 }
+declare namespace Script {
+    import ƒ = FudgeCore;
+    class TargetScript extends ƒ.ComponentScript {
+        static readonly iSubclass: number;
+        message: string;
+        constructor();
+    }
+}

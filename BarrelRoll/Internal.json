@@ -481,8 +481,7 @@
               "idMaterial": "Material|2022-11-14T11:09:55.537Z|77996"
             }
           }
-        ],
-        "ComponentTransform": []
+        ]
       },
       "children": [
         {
@@ -534,6 +533,39 @@
                     "Component": {
                       "active": true
                     }
+                  }
+                }
+              ],
+              "ComponentRigidbody": [
+                {
+                  "ƒ.ComponentRigidbody": {
+                    "initialization": "TO_PIVOT",
+                    "friction": 0.2,
+                    "restitution": 0.2,
+                    "mass": 1,
+                    "dampTranslation": 0.1,
+                    "dampRotation": 0.1,
+                    "effectGravity": 1,
+                    "typeBody": "STATIC",
+                    "typeCollider": "SPHERE",
+                    "isTrigger": false,
+                    "id": 0,
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "TargetScript": [
+                {
+                  "Script.TargetScript": {
+                    "active": true,
+                    "message": "TargetScript added to "
                   }
                 }
               ]

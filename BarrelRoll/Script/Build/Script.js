@@ -51,16 +51,15 @@ var Script;
         viewport = _event.detail;
         cmpCamera = viewport.camera;
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 2, -15));
-        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
-        ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         let graph = viewport.getBranch();
         ship = graph.getChildrenByName("Fox")[0].getChild(0);
         console.log(ship);
         rbShip = ship.getComponent(ƒ.ComponentRigidbody);
         let terrainNode = viewport.getBranch().getChildrenByName("Terrain")[0];
         meshTerrain = terrainNode.getComponent(ƒ.ComponentMesh);
-        // console.log(ƒ.Project.resources["Graph|2022-11-29T16:03:19.230Z|03819"]);
         placeTowers(graph, 30);
+        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
+        ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
     function checkTerrainHeight(_pos) {
         let terrain = meshTerrain.mesh;
@@ -72,14 +71,11 @@ var Script;
         let staticObjGraph = _graph.getChildrenByName("Objects")[0].getChildrenByName("Static")[0];
         let towerGraph = ƒ.Project.resources[towerResource];
         for (let i = 0; i < _amount; i++) {
-            let newTower = new ƒ.GraphInstance();
-            newTower.set(towerGraph);
-            let tip = new ƒ.GraphInstance();
-            tip.set(towerGraph.getChild(0));
-            newTower.addChild(tip);
+            let newTower = new ƒ.GraphInstance(towerGraph);
+            newTower.reset();
             let randomPos = new ƒ.Vector3(Math.random() * 2 - 1, 0, Math.random() * 2 - 1);
             randomPos.scale(400);
-            randomPos.add(ƒ.Vector3.Y(checkTerrainHeight(randomPos)));
+            randomPos.add(ƒ.Vector3.Y(checkTerrainHeight(randomPos) - 0.5));
             newTower.addComponent(new ƒ.ComponentTransform());
             newTower.mtxLocal.translation = randomPos;
             staticObjGraph.appendChild(newTower);
@@ -210,5 +206,20 @@ var Script;
     // Register the script as component for use in the editor via drag&drop
     SpaceShipMovement.iSubclass = ƒ.Component.registerSubclass(SpaceShipMovement);
     Script.SpaceShipMovement = SpaceShipMovement;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
+    class TargetScript extends ƒ.ComponentScript {
+        constructor() {
+            super();
+            // Properties may be mutated by users in the editor via the automatically created user interface
+            this.message = "TargetScript added to ";
+        }
+    }
+    // Register the script as component for use in the editor via drag&drop
+    TargetScript.iSubclass = ƒ.Component.registerSubclass(TargetScript);
+    Script.TargetScript = TargetScript;
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map
