@@ -216,6 +216,33 @@ var Script;
             super();
             // Properties may be mutated by users in the editor via the automatically created user interface
             this.message = "TargetScript added to ";
+            this.hndEvent = (_event) => {
+                switch (_event.type) {
+                    case "componentAdd" /* COMPONENT_ADD */:
+                        // ƒ.Debug.log(this.message, this.node);
+                        this.rb = this.node.getComponent(ƒ.ComponentRigidbody);
+                        break;
+                    case "componentRemove" /* COMPONENT_REMOVE */:
+                        this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                        this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                        break;
+                    case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                        // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                        // console.log("TargetScript is deserialized");
+                        this.rb.addEventListener("ColliderEnteredCollision" /* COLLISION_ENTER */, this.hndCollision);
+                        // console.log("TargetScript got Collision EL");
+                        break;
+                }
+            };
+            this.hndCollision = (_event) => {
+                this.node.activate(false);
+                // console.log(_event.target);
+                // console.log("bumm");
+            };
+            // Listen to this component being added to or removed from a node
+            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
         }
     }
     // Register the script as component for use in the editor via drag&drop
