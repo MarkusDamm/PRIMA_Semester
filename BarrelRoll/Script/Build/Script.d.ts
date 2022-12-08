@@ -10,6 +10,24 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    import ƒ = FudgeCore;
+    import ƒui = FudgeUserInterface;
+    class GameState extends ƒ.Mutable {
+        height: number;
+        velocity: number;
+        controller: ƒui.Controller;
+        constructor();
+        /**
+         * setHeight
+         */
+        setHeight(_height: number): void;
+        protected reduceMutator(_mutator: ƒ.Mutator): void;
+    }
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    let state: GameState;
+    function checkTerrainHeight(_pos: ƒ.Vector3): number;
 }
 declare namespace Script {
     import ƒ = FudgeCore;
@@ -29,13 +47,18 @@ declare namespace Script {
         private rgdBodySpaceship;
         private relativeX;
         private relativeZ;
-        private width;
-        private height;
+        private windowWidth;
+        private windowHeight;
         private xAxis;
         private yAxis;
+        private height;
         constructor();
         hndEvent: (_event: Event) => void;
         update: () => void;
+        /**
+         * checkHeight
+         */
+        checkHeight: () => void;
         handleMouse: (e: MouseEvent) => void;
         setRelativeAxes(): void;
         /**
@@ -53,6 +76,9 @@ declare namespace Script {
     class TargetScript extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         message: string;
+        private rb;
         constructor();
+        hndEvent: (_event: Event) => void;
+        private hndCollision;
     }
 }

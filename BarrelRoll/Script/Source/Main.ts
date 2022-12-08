@@ -6,12 +6,14 @@ namespace Script {
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
 
   let ship: ƒ.Node;
-  let rbShip: ƒ.ComponentRigidbody;
+  // let rbShip: ƒ.ComponentRigidbody;
   let cmpCamera: ƒ.ComponentCamera;
 
   let meshTerrain: ƒ.ComponentMesh;
 
   let towerResource: string = "Graph|2022-11-29T16:03:19.230Z|03819";
+
+  export let state: GameState;
 
   function start(_event: CustomEvent): void {
     viewport = _event.detail;
@@ -22,22 +24,35 @@ namespace Script {
     let graph: ƒ.Node = viewport.getBranch();
     ship = graph.getChildrenByName("Fox")[0].getChild(0);
     console.log(ship);
-    rbShip = ship.getComponent(ƒ.ComponentRigidbody);
-    
-    let terrainNode: ƒ.Node = viewport.getBranch().getChildrenByName("Terrain")[0];
-    meshTerrain = terrainNode.getComponent(ƒ.ComponentMesh);
-    
+    // rbShip = ship.getComponent(ƒ.ComponentRigidbody);
+
+    setTerrainMesh();
+
     placeTowers(graph, 30);
+
+    state = new GameState();
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
   }
 
-  function checkTerrainHeight(_pos: ƒ.Vector3): number {
+  function setTerrainMesh(): void {
+    if (!viewport) {
+      return;
+    }
+    let terrainNode: ƒ.Node = viewport.getBranch().getChildrenByName("Terrain")[0];
+    meshTerrain = terrainNode.getComponent(ƒ.ComponentMesh);
+  }
+
+  export function checkTerrainHeight(_pos: ƒ.Vector3): number {
+    if (!meshTerrain) {
+      setTerrainMesh();
+      return -666;
+    }
     let terrain: ƒ.MeshTerrain = <ƒ.MeshTerrain>meshTerrain.mesh;
     let terrainInfo: ƒ.TerrainInfo = terrain.getTerrainInfo(_pos, meshTerrain.mtxWorld);
     let height: number = terrainInfo.position.y;
-
+    
     return height;
   }
 

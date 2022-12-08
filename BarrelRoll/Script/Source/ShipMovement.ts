@@ -12,17 +12,19 @@ namespace Script {
     public strafeThrust: number = 20;
     public forwardthrust: number = 10e+4;
 
-    
+
     private rgdBodySpaceship: ƒ.ComponentRigidbody;
-    
+
     private relativeX: ƒ.Vector3;
     // private relativeY: ƒ.Vector3;
     private relativeZ: ƒ.Vector3;
 
-    private width: number = 0;
-    private height: number = 0;
+    private windowWidth: number = 0;
+    private windowHeight: number = 0;
     private xAxis: number = 0;
     private yAxis: number = 0;
+
+    private height: number = 0;
 
     constructor() {
       super();
@@ -55,6 +57,8 @@ namespace Script {
           break;
         case ƒ.EVENT.NODE_DESERIALIZED:
           // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+
+          this.node.addEventListener(ƒ.EVENT.RENDER_PREPARE, this.checkHeight);
           break;
       }
     }
@@ -82,18 +86,27 @@ namespace Script {
       this.rgdBodySpaceship.applyTorque(ƒ.Vector3.SCALE(this.relativeX, this.yAxis));
     }
 
+    /**
+     * checkHeight
+     */
+    checkHeight = (): void => {
+      if (!state) { return; }
+      this.height = checkTerrainHeight(this.node.getParent().mtxLocal.translation);
+      state.setHeight(this.height);
+    }
+
     handleMouse = (e: MouseEvent): void => {
-      this.width = window.innerWidth;
-      this.height = window.innerHeight;
+      this.windowWidth = window.innerWidth;
+      this.windowHeight = window.innerHeight;
       let mousePositionY: number = e.clientY;
       let mousePositionX: number = e.clientX;
 
-      this.xAxis = 2 * (mousePositionX / this.width) - 1;
+      this.xAxis = 2 * (mousePositionX / this.windowWidth) - 1;
       if (this.xAxis < 0.15 && this.xAxis > -0.15) {
         this.xAxis = 0;
       }
-      
-      this.yAxis = 2 * (mousePositionY / this.height) - 1;
+
+      this.yAxis = 2 * (mousePositionY / this.windowHeight) - 1;
       if (this.yAxis < 0.15 && this.yAxis > -0.15) {
         this.yAxis = 0;
       }

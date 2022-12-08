@@ -39,11 +39,32 @@ var Script;
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
+    var ƒui = FudgeUserInterface;
+    class GameState extends ƒ.Mutable {
+        constructor() {
+            super();
+            this.controller = new ƒui.Controller(this, document.querySelector("#vui"));
+            console.log(this.controller);
+        }
+        /**
+         * setHeight
+         */
+        setHeight(_height) {
+            console.log("set height to " + _height);
+            this.height = _height;
+        }
+        reduceMutator(_mutator) { }
+    }
+    Script.GameState = GameState;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
     // Random Objekte einbauen
     let viewport;
     document.addEventListener("interactiveViewportStarted", start);
     let ship;
-    let rbShip;
+    // let rbShip: ƒ.ComponentRigidbody;
     let cmpCamera;
     let meshTerrain;
     let towerResource = "Graph|2022-11-29T16:03:19.230Z|03819";
@@ -54,19 +75,31 @@ var Script;
         let graph = viewport.getBranch();
         ship = graph.getChildrenByName("Fox")[0].getChild(0);
         console.log(ship);
-        rbShip = ship.getComponent(ƒ.ComponentRigidbody);
-        let terrainNode = viewport.getBranch().getChildrenByName("Terrain")[0];
-        meshTerrain = terrainNode.getComponent(ƒ.ComponentMesh);
+        // rbShip = ship.getComponent(ƒ.ComponentRigidbody);
+        setTerrainMesh();
         placeTowers(graph, 30);
+        Script.state = new Script.GameState();
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
+    function setTerrainMesh() {
+        if (!viewport) {
+            return;
+        }
+        let terrainNode = viewport.getBranch().getChildrenByName("Terrain")[0];
+        meshTerrain = terrainNode.getComponent(ƒ.ComponentMesh);
+    }
     function checkTerrainHeight(_pos) {
+        if (!meshTerrain) {
+            setTerrainMesh();
+            return -666;
+        }
         let terrain = meshTerrain.mesh;
         let terrainInfo = terrain.getTerrainInfo(_pos, meshTerrain.mtxWorld);
         let height = terrainInfo.position.y;
         return height;
     }
+    Script.checkTerrainHeight = checkTerrainHeight;
     function placeTowers(_graph, _amount) {
         let staticObjGraph = _graph.getChildrenByName("Objects")[0].getChildrenByName("Static")[0];
         let towerGraph = ƒ.Project.resources[towerResource];
@@ -114,10 +147,11 @@ var Script;
             // werden im Editor überschrieben
             this.strafeThrust = 20;
             this.forwardthrust = 10e+4;
-            this.width = 0;
-            this.height = 0;
+            this.windowWidth = 0;
+            this.windowHeight = 0;
             this.xAxis = 0;
             this.yAxis = 0;
+            this.height = 0;
             // Activate the functions of this component as response to events
             this.hndEvent = (_event) => {
                 switch (_event.type) {
@@ -134,6 +168,7 @@ var Script;
                         break;
                     case "nodeDeserialized" /* NODE_DESERIALIZED */:
                         // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                        this.node.addEventListener("renderPrepare" /* RENDER_PREPARE */, this.checkHeight);
                         break;
                 }
             };
@@ -154,16 +189,26 @@ var Script;
                 this.rgdBodySpaceship.applyTorque(new ƒ.Vector3(0, this.xAxis * -3, 0));
                 this.rgdBodySpaceship.applyTorque(ƒ.Vector3.SCALE(this.relativeX, this.yAxis));
             };
+            /**
+             * checkHeight
+             */
+            this.checkHeight = () => {
+                if (!Script.state) {
+                    return;
+                }
+                this.height = Script.checkTerrainHeight(this.node.getParent().mtxLocal.translation);
+                Script.state.setHeight(this.height);
+            };
             this.handleMouse = (e) => {
-                this.width = window.innerWidth;
-                this.height = window.innerHeight;
+                this.windowWidth = window.innerWidth;
+                this.windowHeight = window.innerHeight;
                 let mousePositionY = e.clientY;
                 let mousePositionX = e.clientX;
-                this.xAxis = 2 * (mousePositionX / this.width) - 1;
+                this.xAxis = 2 * (mousePositionX / this.windowWidth) - 1;
                 if (this.xAxis < 0.15 && this.xAxis > -0.15) {
                     this.xAxis = 0;
                 }
-                this.yAxis = 2 * (mousePositionY / this.height) - 1;
+                this.yAxis = 2 * (mousePositionY / this.windowHeight) - 1;
                 if (this.yAxis < 0.15 && this.yAxis > -0.15) {
                     this.yAxis = 0;
                 }
