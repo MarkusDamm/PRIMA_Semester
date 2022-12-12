@@ -18,7 +18,7 @@ namespace Script {
        * setHeight
        */
       public setHeight(_height: number): void {
-        console.log("set height to " + _height);
+        // console.log("set height to " + _height);
         
         this.height = _height;
       }

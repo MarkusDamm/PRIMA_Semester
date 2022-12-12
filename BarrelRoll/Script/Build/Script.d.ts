@@ -1,4 +1,17 @@
 declare namespace Script {
+    import ƒ = FudgeCore;
+    class Bullet extends ƒ.Node {
+        static bulletResource: string;
+        private static speed;
+        private static livetime;
+        constructor(_transl: ƒ.Matrix4x4);
+        /**
+         * update
+         */
+        update: () => void;
+        private move;
+        private delete;
+    }
 }
 declare namespace Script {
     import ƒ = FudgeCore;
@@ -55,6 +68,10 @@ declare namespace Script {
         constructor();
         hndEvent: (_event: Event) => void;
         update: () => void;
+        /**
+         * applyTorque
+         */
+        applyTorque(): void;
         /**
          * checkHeight
          */

@@ -47,7 +47,7 @@ namespace Script {
           ƒ.Debug.log(this.message, this.node);
           this.rgdBodySpaceship = this.node.getComponent(ƒ.ComponentRigidbody);
 
-          ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
+          // ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
           console.log(this.node);
           window.addEventListener("mousemove", this.handleMouse);
           break;
@@ -64,7 +64,7 @@ namespace Script {
     }
 
     update = (): void => {
-      this.setRelativeAxes();
+      // this.setRelativeAxes();
 
       if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W])) {
         this.thrust();
@@ -82,8 +82,16 @@ namespace Script {
         this.roll();
       }
 
+      this.applyTorque();
+    }
+
+    /**
+     * applyTorque
+     */
+    public applyTorque(): void {
       this.rgdBodySpaceship.applyTorque(new ƒ.Vector3(0, this.xAxis * -3, 0));
       this.rgdBodySpaceship.applyTorque(ƒ.Vector3.SCALE(this.relativeX, this.yAxis));
+
     }
 
     /**

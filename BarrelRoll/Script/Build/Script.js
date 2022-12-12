@@ -2,6 +2,43 @@
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
+    class Bullet extends ƒ.Node {
+        constructor(_transl) {
+            super("Bullet");
+            /**
+             * update
+             */
+            this.update = () => {
+                this.move();
+            };
+            this.delete = () => {
+                this.getParent().removeChild(this);
+            };
+            let bulletGraph = ƒ.Project.resources[Bullet.bulletResource];
+            let newBullet = new ƒ.GraphInstance(bulletGraph);
+            newBullet.reset();
+            let mtx = new ƒ.Matrix4x4();
+            mtx.translation = _transl.translation;
+            mtx.rotation = _transl.rotation;
+            this.addComponent(new ƒ.ComponentTransform(mtx));
+            this.mtxLocal.translateZ(5);
+            this.mtxLocal.rotateX(90, false);
+            this.appendChild(newBullet);
+            this.addEventListener("renderPrepare" /* RENDER_PREPARE */, this.update);
+            setTimeout(this.delete, Bullet.livetime);
+        }
+        move() {
+            this.mtxLocal.translateY(Bullet.speed);
+        }
+    }
+    Bullet.bulletResource = "Graph|2022-12-12T15:53:18.076Z|03469";
+    Bullet.speed = 1.5;
+    Bullet.livetime = 3000;
+    Script.Bullet = Bullet;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
     class CustomComponentScript extends ƒ.ComponentScript {
         constructor() {
@@ -50,7 +87,7 @@ var Script;
          * setHeight
          */
         setHeight(_height) {
-            console.log("set height to " + _height);
+            // console.log("set height to " + _height);
             this.height = _height;
         }
         reduceMutator(_mutator) { }
@@ -63,9 +100,11 @@ var Script;
     // Random Objekte einbauen
     let viewport;
     document.addEventListener("interactiveViewportStarted", start);
+    let fox;
     let ship;
-    // let rbShip: ƒ.ComponentRigidbody;
+    let shipMovement;
     let cmpCamera;
+    // export let bullets: Bullet[] = [];
     let meshTerrain;
     let towerResource = "Graph|2022-11-29T16:03:19.230Z|03819";
     function start(_event) {
@@ -73,12 +112,14 @@ var Script;
         cmpCamera = viewport.camera;
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 2, -15));
         let graph = viewport.getBranch();
-        ship = graph.getChildrenByName("Fox")[0].getChild(0);
-        console.log(ship);
-        // rbShip = ship.getComponent(ƒ.ComponentRigidbody);
+        fox = graph.getChildrenByName("Fox")[0];
+        ship = fox.getChild(0);
+        shipMovement = ship.getComponent(Script.SpaceShipMovement);
+        console.log(fox);
         setTerrainMesh();
         placeTowers(graph, 30);
         Script.state = new Script.GameState();
+        document.addEventListener("keydown", shoot);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
@@ -100,8 +141,8 @@ var Script;
         return height;
     }
     Script.checkTerrainHeight = checkTerrainHeight;
-    function placeTowers(_graph, _amount) {
-        let staticObjGraph = _graph.getChildrenByName("Objects")[0].getChildrenByName("Static")[0];
+    function placeTowers(_mainGraph, _amount) {
+        let staticObjGraph = _mainGraph.getChildrenByName("Objects")[0].getChildrenByName("Static")[0];
         let towerGraph = ƒ.Project.resources[towerResource];
         for (let i = 0; i < _amount; i++) {
             let newTower = new ƒ.GraphInstance(towerGraph);
@@ -114,10 +155,39 @@ var Script;
             staticObjGraph.appendChild(newTower);
         }
     }
+    function shoot(_event) {
+        if (_event.key == "e") {
+            console.log("bumm");
+            let bullet = new Script.Bullet(ship.mtxLocal);
+            let objGraph = viewport.getBranch().getChildrenByName("Objects")[0].getChildrenByName("Temp")[0];
+            objGraph.appendChild(bullet);
+            // bullets.push(bullet);
+        }
+    }
     function update(_event) {
+        shipMovement.setRelativeAxes();
+        handleShipMovement();
+        // for (let bullet of bullets) {
+        //   bullet.update();      
+        // }
         ƒ.Physics.simulate(); // if physics is included and used
         viewport.draw();
         ƒ.AudioManager.default.update();
+    }
+    function handleShipMovement() {
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W])) {
+            shipMovement.thrust();
+        }
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.S])) {
+            shipMovement.thrust(-1);
+        }
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A])) {
+            shipMovement.roll(-1);
+        }
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
+            shipMovement.roll();
+        }
+        shipMovement.applyTorque();
     }
 })(Script || (Script = {}));
 var Script;
@@ -158,7 +228,7 @@ var Script;
                     case "componentAdd" /* COMPONENT_ADD */:
                         ƒ.Debug.log(this.message, this.node);
                         this.rgdBodySpaceship = this.node.getComponent(ƒ.ComponentRigidbody);
-                        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
+                        // ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
                         console.log(this.node);
                         window.addEventListener("mousemove", this.handleMouse);
                         break;
@@ -173,7 +243,7 @@ var Script;
                 }
             };
             this.update = () => {
-                this.setRelativeAxes();
+                // this.setRelativeAxes();
                 if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W])) {
                     this.thrust();
                 }
@@ -186,8 +256,7 @@ var Script;
                 if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
                     this.roll();
                 }
-                this.rgdBodySpaceship.applyTorque(new ƒ.Vector3(0, this.xAxis * -3, 0));
-                this.rgdBodySpaceship.applyTorque(ƒ.Vector3.SCALE(this.relativeX, this.yAxis));
+                this.applyTorque();
             };
             /**
              * checkHeight
@@ -221,6 +290,13 @@ var Script;
             this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
             this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
+        }
+        /**
+         * applyTorque
+         */
+        applyTorque() {
+            this.rgdBodySpaceship.applyTorque(new ƒ.Vector3(0, this.xAxis * -3, 0));
+            this.rgdBodySpaceship.applyTorque(ƒ.Vector3.SCALE(this.relativeX, this.yAxis));
         }
         setRelativeAxes() {
             this.relativeZ = ƒ.Vector3.Z(3);

@@ -247,7 +247,7 @@
                 {
                   "ƒ.ComponentTransform": {
                     "local": {
-                      "translation": "[0, 6, 0]",
+                      "translation": "[0, 0, 0]",
                       "rotation": "[0, 0, 0]",
                       "scaling": "[1, 1, 1]"
                     },
@@ -301,7 +301,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[0, 0, 0]",
+                            "translation": "[0, 6, 0]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -343,10 +343,11 @@
                           "message": "SpaceShipMovement added to ",
                           "strafeThrust": 10000,
                           "forwardthrust": 300000,
-                          "width": 0,
-                          "height": 0,
+                          "windowWidth": 0,
+                          "windowHeight": 0,
                           "xAxis": 0,
-                          "yAxis": 0
+                          "yAxis": 0,
+                          "height": 0
                         }
                       }
                     ]
@@ -416,6 +417,14 @@
               {
                 "ƒ.Node": {
                   "name": "Static",
+                  "active": true,
+                  "components": {},
+                  "children": []
+                }
+              },
+              {
+                "ƒ.Node": {
+                  "name": "Temp",
                   "active": true,
                   "components": {},
                   "children": []
@@ -540,15 +549,15 @@
                 {
                   "ƒ.ComponentRigidbody": {
                     "initialization": "TO_PIVOT",
-                    "friction": 0.2,
-                    "restitution": 0.2,
-                    "mass": 1,
-                    "dampTranslation": 0.1,
-                    "dampRotation": 0.1,
-                    "effectGravity": 1,
+                    "friction": 0,
+                    "restitution": 0,
+                    "mass": 0,
+                    "dampTranslation": 0,
+                    "dampRotation": 0,
+                    "effectGravity": 0,
                     "typeBody": "STATIC",
                     "typeCollider": "SPHERE",
-                    "isTrigger": false,
+                    "isTrigger": true,
                     "id": 0,
                     "pivot": {
                       "translation": "[0, 0, 0]",
@@ -565,7 +574,37 @@
                 {
                   "Script.TargetScript": {
                     "active": true,
-                    "message": "TargetScript added to "
+                    "message": "TargetScript added to ",
+                    "rb": {
+                      "active": true,
+                      "mtxPivot": {
+                        "translation": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "rotation": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "scaling": {
+                          "x": 1,
+                          "y": 1,
+                          "z": 1
+                        }
+                      },
+                      "initialization": 2,
+                      "friction": 0,
+                      "restitution": 0,
+                      "mass": 0,
+                      "dampTranslation": 0,
+                      "dampRotation": 0,
+                      "effectGravity": 0,
+                      "typeBody": 1,
+                      "typeCollider": 1,
+                      "isTrigger": true
+                    }
                   }
                 }
               ]
@@ -627,6 +666,89 @@
       },
       "children": [],
       "idResource": "Graph|2022-12-01T13:28:09.854Z|29338",
+      "type": "Graph"
+    }
+  },
+  "Graph|2022-12-12T15:53:18.076Z|03469": {
+    "ƒ.Graph": {
+      "name": "Bullet",
+      "active": true,
+      "components": {
+        "ComponentMesh": [
+          {
+            "ƒ.ComponentMesh": {
+              "idMesh": "MeshExtrusion|2022-11-14T11:11:34.896Z|12460",
+              "pivot": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[0.09999992698431015, 0.030000003054738045, 0.10000000149011612]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ComponentMaterial": [
+          {
+            "ƒ.ComponentMaterial": {
+              "sortForAlpha": false,
+              "clrPrimary": "[1, 1, 1, 1]",
+              "clrSecondary": "[1, 1, 1, 1]",
+              "pivot": {
+                "translation": "[0, 0]",
+                "rotation": 0,
+                "scaling": "[1, 1]"
+              },
+              "Component": {
+                "active": true
+              },
+              "idMaterial": "Material|2022-11-17T13:51:04.240Z|01124"
+            }
+          }
+        ],
+        "ComponentTransform": [
+          {
+            "ƒ.ComponentTransform": {
+              "local": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ComponentRigidbody": [
+          {
+            "ƒ.ComponentRigidbody": {
+              "initialization": "TO_PIVOT",
+              "friction": 0,
+              "restitution": 0,
+              "mass": 0,
+              "dampTranslation": 0,
+              "dampRotation": 0,
+              "effectGravity": 0,
+              "typeBody": "KINEMATIC",
+              "typeCollider": "CYLINDER",
+              "isTrigger": false,
+              "id": 0,
+              "pivot": {
+                "translation": "[0, 0.30000001192092896, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[0.2999999225139618, 0.5999999046325684, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ]
+      },
+      "children": [],
+      "idResource": "Graph|2022-12-12T15:53:18.076Z|03469",
       "type": "Graph"
     }
   }
