@@ -22,13 +22,13 @@ var Script;
             mtx.rotation = _transl.rotation;
             this.addComponent(new ƒ.ComponentTransform(mtx));
             this.mtxLocal.translateZ(5);
-            this.mtxLocal.rotateX(90, false);
+            // this.mtxLocal.rotateX(90, false);
             this.appendChild(newBullet);
             this.addEventListener("renderPrepare" /* RENDER_PREPARE */, this.update);
             setTimeout(this.delete, Bullet.livetime);
         }
         move() {
-            this.mtxLocal.translateY(Bullet.speed);
+            this.mtxLocal.translateZ(Bullet.speed);
         }
     }
     Bullet.bulletResource = "Graph|2022-12-12T15:53:18.076Z|03469";
@@ -107,6 +107,7 @@ var Script;
     // export let bullets: Bullet[] = [];
     let meshTerrain;
     let towerResource = "Graph|2022-11-29T16:03:19.230Z|03819";
+    let turretResource = "Graph|2022-12-15T13:38:21.686Z|43512";
     function start(_event) {
         viewport = _event.detail;
         cmpCamera = viewport.camera;
@@ -117,7 +118,9 @@ var Script;
         shipMovement = ship.getComponent(Script.SpaceShipMovement);
         console.log(fox);
         setTerrainMesh();
-        placeTowers(graph, 30);
+        placeInstances(graph, 30, towerResource);
+        placeInstances(graph, 5, turretResource);
+        console.log("placed tower and turret instances");
         Script.state = new Script.GameState();
         document.addEventListener("keydown", shoot);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
@@ -141,18 +144,18 @@ var Script;
         return height;
     }
     Script.checkTerrainHeight = checkTerrainHeight;
-    function placeTowers(_mainGraph, _amount) {
+    function placeInstances(_mainGraph, _amount, _resource) {
         let staticObjGraph = _mainGraph.getChildrenByName("Objects")[0].getChildrenByName("Static")[0];
-        let towerGraph = ƒ.Project.resources[towerResource];
+        let sourceGraph = ƒ.Project.resources[_resource];
         for (let i = 0; i < _amount; i++) {
-            let newTower = new ƒ.GraphInstance(towerGraph);
-            newTower.reset();
+            let graphInstance = new ƒ.GraphInstance(sourceGraph);
+            graphInstance.reset();
             let randomPos = new ƒ.Vector3(Math.random() * 2 - 1, 0, Math.random() * 2 - 1);
             randomPos.scale(400);
             randomPos.add(ƒ.Vector3.Y(checkTerrainHeight(randomPos) - 0.5));
-            newTower.addComponent(new ƒ.ComponentTransform());
-            newTower.mtxLocal.translation = randomPos;
-            staticObjGraph.appendChild(newTower);
+            graphInstance.addComponent(new ƒ.ComponentTransform());
+            graphInstance.mtxLocal.translation = randomPos;
+            staticObjGraph.appendChild(graphInstance);
         }
     }
     function shoot(_event) {
@@ -369,5 +372,79 @@ var Script;
     // Register the script as component for use in the editor via drag&drop
     TargetScript.iSubclass = ƒ.Component.registerSubclass(TargetScript);
     Script.TargetScript = TargetScript;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    var ƒAid = FudgeAid;
+    ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
+    let JOB;
+    (function (JOB) {
+        JOB[JOB["IDLE"] = 0] = "IDLE";
+        JOB[JOB["ATTACK"] = 1] = "ATTACK";
+    })(JOB || (JOB = {}));
+    class TurretStateMachine extends ƒAid.ComponentStateMachine {
+        constructor() {
+            super();
+            // Activate the functions of this component as response to events
+            this.hndEvent = (_event) => {
+                switch (_event.type) {
+                    case "componentAdd" /* COMPONENT_ADD */:
+                        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
+                        this.transit(JOB.IDLE);
+                        break;
+                    case "componentRemove" /* COMPONENT_REMOVE */:
+                        this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                        this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                        ƒ.Loop.removeEventListener("loopFrame" /* LOOP_FRAME */, this.update);
+                        break;
+                    case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                        this.cannon = this.node.getChildrenByName("Cannon")[0];
+                        break;
+                }
+            };
+            this.update = (_event) => {
+                this.act();
+            };
+            this.instructions = TurretStateMachine.instructions; // setup instructions with the static set
+            // Don't start when running in editor
+            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
+                return;
+            // Listen to this component being added to or removed from a node
+            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
+        }
+        static get() {
+            let setup = new ƒAid.StateMachineInstructions();
+            setup.transitDefault = TurretStateMachine.transitDefault;
+            setup.actDefault = TurretStateMachine.actDefault;
+            setup.setAction(JOB.IDLE, this.actIdle);
+            setup.setTransition(JOB.IDLE, JOB.ATTACK, this.startAttack);
+            return setup;
+        }
+        static transitDefault(_machine) {
+            console.log("Transit to", _machine.stateNext);
+        }
+        static async actDefault(_machine) {
+            // console.log("Default");
+        }
+        static async actIdle(_machine) {
+            // console.log("Idle");
+            if (_machine.cannon) {
+                _machine.cannon.mtxLocal.rotateY(1);
+            }
+            else
+                console.log("no Cannon found");
+        }
+        static startAttack(_machine) {
+            // Rotate Cannon towards Spaceship
+            // Play Sound
+            console.log("Start Attack");
+        }
+    }
+    TurretStateMachine.iSubclass = ƒ.Component.registerSubclass(TurretStateMachine);
+    TurretStateMachine.instructions = TurretStateMachine.get();
+    Script.TurretStateMachine = TurretStateMachine;
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map

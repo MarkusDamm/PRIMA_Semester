@@ -15,6 +15,7 @@ namespace Script {
   let meshTerrain: ƒ.ComponentMesh;
 
   let towerResource: string = "Graph|2022-11-29T16:03:19.230Z|03819";
+  let turretResource: string = "Graph|2022-12-15T13:38:21.686Z|43512";
 
   export let state: GameState;
 
@@ -32,8 +33,10 @@ namespace Script {
 
     setTerrainMesh();
 
-    placeTowers(graph, 30);
-
+    placeInstances(graph, 30, towerResource);
+    placeInstances(graph, 5, turretResource);
+    console.log("placed tower and turret instances");
+    
     state = new GameState();
 
     document.addEventListener("keydown", shoot);
@@ -62,23 +65,23 @@ namespace Script {
     return height;
   }
 
-  function placeTowers(_mainGraph: ƒ.Node, _amount: number): void {
+  function placeInstances(_mainGraph: ƒ.Node, _amount: number, _resource: string): void {
     let staticObjGraph: ƒ.Node = _mainGraph.getChildrenByName("Objects")[0].getChildrenByName("Static")[0];
-    let towerGraph: ƒ.Graph = <ƒ.Graph>ƒ.Project.resources[towerResource];
+    let sourceGraph: ƒ.Graph = <ƒ.Graph>ƒ.Project.resources[_resource];
 
     for (let i: number = 0; i < _amount; i++) {
 
-      let newTower: ƒ.GraphInstance = new ƒ.GraphInstance(towerGraph);
-      newTower.reset();
+      let graphInstance: ƒ.GraphInstance = new ƒ.GraphInstance(sourceGraph);
+      graphInstance.reset();
 
       let randomPos: ƒ.Vector3 = new ƒ.Vector3(Math.random() * 2 - 1, 0, Math.random() * 2 - 1);
       randomPos.scale(400);
       randomPos.add(ƒ.Vector3.Y(checkTerrainHeight(randomPos) - 0.5));
 
-      newTower.addComponent(new ƒ.ComponentTransform());
-      newTower.mtxLocal.translation = randomPos;
+      graphInstance.addComponent(new ƒ.ComponentTransform());
+      graphInstance.mtxLocal.translation = randomPos;
 
-      staticObjGraph.appendChild(newTower);
+      staticObjGraph.appendChild(graphInstance);
     }
   }
 

@@ -17,7 +17,7 @@ namespace Script {
       mtx.rotation = _transl.rotation;
       this.addComponent(new ƒ.ComponentTransform(mtx));
       this.mtxLocal.translateZ(5);
-      this.mtxLocal.rotateX(90, false);
+      // this.mtxLocal.rotateX(90, false);
 
       this.appendChild(newBullet);
       this.addEventListener(ƒ.EVENT.RENDER_PREPARE, this.update);
@@ -33,7 +33,7 @@ namespace Script {
     }
 
     private move(): void {
-      this.mtxLocal.translateY(Bullet.speed);
+      this.mtxLocal.translateZ(Bullet.speed);
     }
 
     private delete = (): void => {

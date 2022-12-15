@@ -490,7 +490,8 @@
               "idMaterial": "Material|2022-11-14T11:09:55.537Z|77996"
             }
           }
-        ]
+        ],
+        "ComponentTransform": []
       },
       "children": [
         {
@@ -680,8 +681,8 @@
               "idMesh": "MeshExtrusion|2022-11-14T11:11:34.896Z|12460",
               "pivot": {
                 "translation": "[0, 0, 0]",
-                "rotation": "[0, 0, 0]",
-                "scaling": "[0.09999992698431015, 0.030000003054738045, 0.10000000149011612]"
+                "rotation": "[90, 0, 0]",
+                "scaling": "[0.10000000149011612, 0.029999999329447746, 0.10000000149011612]"
               },
               "Component": {
                 "active": true
@@ -736,9 +737,9 @@
               "isTrigger": false,
               "id": 0,
               "pivot": {
-                "translation": "[0, 0.30000001192092896, 0]",
-                "rotation": "[0, 0, 0]",
-                "scaling": "[0.2999999225139618, 0.5999999046325684, 1]"
+                "translation": "[0, -0.019999999552965164, 0]",
+                "rotation": "[90, 0, 0]",
+                "scaling": "[0.30000001192092896, 0.6000000238418579, 1]"
               },
               "Component": {
                 "active": true
@@ -749,6 +750,178 @@
       },
       "children": [],
       "idResource": "Graph|2022-12-12T15:53:18.076Z|03469",
+      "type": "Graph"
+    }
+  },
+  "MeshPyramid|2022-12-15T13:46:16.130Z|30217": {
+    "ƒ.MeshPyramid": {
+      "idResource": "MeshPyramid|2022-12-15T13:46:16.130Z|30217",
+      "name": "MeshPyramid",
+      "type": "MeshPyramid"
+    }
+  },
+  "Graph|2022-12-15T13:38:21.686Z|43512": {
+    "ƒ.Graph": {
+      "name": "Turret",
+      "active": true,
+      "components": {
+        "ComponentTransform": [],
+        "ComponentMaterial": [
+          {
+            "ƒ.ComponentMaterial": {
+              "sortForAlpha": false,
+              "clrPrimary": "[0.23137254901960785, 0.11764705882352941, 0.027450980392156862, 1]",
+              "clrSecondary": "[1, 1, 1, 1]",
+              "pivot": {
+                "translation": "[0, 0]",
+                "rotation": 0,
+                "scaling": "[1, 1]"
+              },
+              "Component": {
+                "active": true
+              },
+              "idMaterial": "Material|2022-11-14T11:09:55.537Z|77996"
+            }
+          }
+        ],
+        "ComponentMesh": [
+          {
+            "ƒ.ComponentMesh": {
+              "idMesh": "MeshPyramid|2022-12-15T13:46:16.130Z|30217",
+              "pivot": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[11.300000190734863, 11.5, 11.300000190734863]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "TurretStateMachine": [
+          {
+            "Script.TurretStateMachine": {
+              "active": true
+            }
+          }
+        ]
+      },
+      "children": [
+        {
+          "ƒ.Node": {
+            "name": "Sphere",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSphere|2022-11-17T13:50:56.664Z|16571",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[11, 11, 11]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[0.5215686274509804, 0, 0, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2022-11-14T11:09:55.537Z|77996"
+                  }
+                }
+              ],
+              "ComponentTransform": [
+                {
+                  "ƒ.ComponentTransform": {
+                    "local": {
+                      "translation": "[0, 11, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Cannon",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshExtrusion|2022-11-14T11:11:34.896Z|12460",
+                    "pivot": {
+                      "translation": "[0, 12.199999809265137, 0.4000000059604645]",
+                      "rotation": "[70, 0, 0]",
+                      "scaling": "[0.9999997615814209, 0.5000002384185791, 1.0000001192092896]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[0.18823529411764706, 0.18823529411764706, 0.18823529411764706, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2022-11-14T11:09:55.537Z|77996"
+                  }
+                }
+              ],
+              "ComponentTransform": [
+                {
+                  "ƒ.ComponentTransform": {
+                    "local": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        }
+      ],
+      "idResource": "Graph|2022-12-15T13:38:21.686Z|43512",
       "type": "Graph"
     }
   }
