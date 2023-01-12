@@ -1,10 +1,10 @@
 declare namespace Script {
     class Luigi extends ƒ.Node {
+        static spriteSheedPath: string;
         node: ƒAid.NodeSprite;
         ySpeed: number;
         ctrSideways: ƒ.Control;
         animState: Animation;
-        spriteSheedPath: string;
         private readonly moveSpeed;
         private readonly jumpForce;
         private readonly resolution;

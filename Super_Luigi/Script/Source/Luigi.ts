@@ -1,7 +1,8 @@
 namespace Script {
   interface Rectangles { [label: string]: number[]; }
   export class Luigi extends ƒ.Node {
-
+    
+    public static spriteSheedPath: string = "./Sprites/Luigi_Moves_Sheet2.png";
     public node: ƒAid.NodeSprite;
 
     public ySpeed: number = 0;
@@ -9,7 +10,6 @@ namespace Script {
     ctrSideways: ƒ.Control;
 
     public animState: Animation;
-    public spriteSheedPath: string = "./Sprites/Luigi_Moves_Sheet2.png";
 
     private readonly moveSpeed: number = 7;
     private readonly jumpForce: number = 15;

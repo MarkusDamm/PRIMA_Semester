@@ -5,7 +5,6 @@ var Script;
         constructor() {
             super("LuigiPosition");
             this.ySpeed = 0;
-            this.spriteSheedPath = "./Sprites/Luigi_Moves_Sheet2.png";
             this.moveSpeed = 7;
             this.jumpForce = 15;
             this.resolution = 16;
@@ -204,6 +203,7 @@ var Script;
             this.isOnGround = false;
         }
     }
+    Luigi.spriteSheedPath = "./Sprites/Luigi_Moves_Sheet2.png";
     Script.Luigi = Luigi;
 })(Script || (Script = {}));
 var Script;
@@ -232,7 +232,7 @@ var Script;
         // get Nodes
         let branch = Script.viewport.getBranch();
         let texture = new ƒ.TextureImage();
-        await texture.load("./Sprites/Luigi_Moves_Sheet2.png");
+        await texture.load(Script.Luigi.spriteSheedPath);
         luigi = new Script.Luigi();
         luigi.initializeAnimations(texture);
         branch.appendChild(luigi);

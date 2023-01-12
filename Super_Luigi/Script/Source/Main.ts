@@ -23,7 +23,7 @@ namespace Script {
     // get Nodes
     let branch: ƒ.Node = viewport.getBranch();
     let texture: ƒ.TextureImage = new ƒ.TextureImage();
-    await texture.load("./Sprites/Luigi_Moves_Sheet2.png");
+    await texture.load(Luigi.spriteSheedPath);
     luigi = new Luigi();
     luigi.initializeAnimations(texture);
     branch.appendChild(luigi);
